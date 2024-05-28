@@ -17,6 +17,7 @@
                 <div class="grow">
                     <h5 class="text-16">Sistem Informasi Monitoring Mahasiswa </h5>
                 </div>
+
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
@@ -186,7 +187,8 @@
                     <div class="relative card-body">
                         <div class="grid items-center grid-cols-12">
                             <div class="col-span-12 lg:col-span-8 2xl:col-span-7">
-                                <h5 class="mb-3 font-normal tracking-wide text-slate-200">Welcome ---admin--- 🎉</h5>
+                                <h5 class="mb-3 font-normal tracking-wide text-slate-200">Selamat Datang
+                                    {{ Auth::user()->name }} 🎉</h5>
                                 <p class="mb-5 text-slate-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 </p>
                                 <button type="button"

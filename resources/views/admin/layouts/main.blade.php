@@ -351,6 +351,7 @@
     <script src="{{ asset('admin-template/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/prismjs/prism.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/lucide/umd/lucide.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/starcode.bundle.js') }}"></script>
 
     <!-- App js -->
