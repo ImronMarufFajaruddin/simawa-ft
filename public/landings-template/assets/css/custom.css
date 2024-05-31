@@ -1,0 +1,207 @@
+/* Landings Custom */
+.maps {
+    background: #f6f9ff;
+    padding: 0;
+    font-size: 14px;
+}
+
+.maps .footer-maps {
+    padding: 50px 0;
+    background: #f6f9ff url(../img/hero-bg.png) no-repeat left;
+    border-top: 1px solid #e1ecff;
+}
+
+.maps .footer-maps h4 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 700;
+    color: #012970;
+}
+.maps .footer-maps p {
+}
+.maps iframe {
+    border-radius: 5px;
+    padding: 0;
+    box-shadow: -1px 5px 22px -6px rgba(25, 25, 25, 0.6);
+    -webkit-box-shadow: -1px 5px 22px -6px rgba(25, 25, 25, 0.6);
+    -moz-box-shadow: -1px 5px 22px -6px rgba(25, 25, 25, 0.6);
+}
+
+/* section-Header Custom  */
+.custom-header {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.custom-header p {
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+    color: #4154f1;
+    text-transform: uppercase;
+}
+
+.custom-header h2 {
+    margin: 10px 0 0 0;
+    padding: 0;
+    font-size: 38px;
+    line-height: 42px;
+    font-weight: 700;
+    color: #012970;
+}
+
+@media (max-width: 768px) {
+    .header-custom-header p {
+        font-size: 28px;
+        line-height: 32px;
+    }
+}
+
+/* tentang instansi custom */
+
+.about-instansi {
+    width: 100%;
+    height: 90vh;
+    background: url(../img/hero-bg.png) top center no-repeat;
+    background-size: cover;
+}
+
+.about-instansi .row h2 {
+    margin: 3px 0 1px 0;
+    font-size: 34px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #012970;
+}
+
+.about-instansi .row h3 {
+    margin: 0 0 1rem 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #4154f1;
+}
+
+.about-instansi .row p {
+    color: #444444;
+    margin: 10px 0 0 0;
+    font-size: 14px;
+}
+
+.about-instansi .btn-get-started {
+    margin-top: 30px;
+    line-height: 0;
+    padding: 15px 40px;
+    border-radius: 4px;
+    transition: 0.5s;
+    color: #fff;
+    background: #4154f1;
+    box-shadow: 0px 5px 30px rgba(65, 84, 241, 0.4);
+}
+
+.about-instansi .btn-get-started span {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.about-instansi .btn-get-started i {
+    margin-left: 5px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.about-instansi .btn-get-started:hover i {
+    transform: translateX(5px);
+}
+
+.about-instansi .about-instansi-img {
+    text-align: right;
+}
+
+@media (min-width: 1024px) {
+    .about-instansi {
+        background-attachment: fixed;
+    }
+}
+
+@media (max-width: 991px) {
+    .about-instansi {
+        height: auto;
+        padding: 100px 0 60px 0;
+    }
+
+    .about-instansi .about-instansi-img {
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .about-instansi .about-instansi-img img {
+        width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-instansi {
+        text-align: center;
+    }
+
+    .about-instansi h1 {
+        font-size: 32px;
+    }
+
+    .about-instansi h2 {
+        font-size: 24px;
+    }
+    .about-instansi p {
+        font-size: 14px;
+    }
+
+    .about-instansi .about-instansi-img img {
+        width: 60%;
+    }
+}
+
+/* custom struktur organisasi */
+.team-custom h4 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #012970;
+}
+
+.team-custom .anggota {
+    overflow: hidden;
+    text-align: justify;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.08);
+    transition: 0.3s;
+}
+
+.team-custom .anggota .info h6 {
+    text-align: center;
+    margin: 10px 0 0 1px;
+    font-weight: 700;
+    margin-bottom: 0;
+    font-size: 18px;
+    color: #012970;
+}
+
+.team-custom .anggota .info p {
+    /* text-align: jus; */ /* Tidak ada nilai 'jus', ganti dengan 'justify' */
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #4c586c;
+}
+
+.team-custom .anggota:hover {
+    transform: scale(1.04);
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+}
