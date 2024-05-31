@@ -7,7 +7,6 @@
     <title>
         @yield('title')
         Admin || SIMAWAFT
-
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">

@@ -1,5 +1,4 @@
 {{-- Modal Tmbah --}}
-
 <div id="modalAdd" modal-center="" data-modal-backdrop="modalAdd"
     class="fixed flex flex-col hidden transition-all
     duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 show">
