@@ -14,14 +14,16 @@ class Anggota extends Model
         'level_jabatan_id',
         'nama',
         'nim',
-        'foto'
+        'foto',
     ];
+
     public function instansi()
     {
-        return $this->belongsTo(Instansi::class, 'instansi_id');
+        return $this->belongsTo(Instansi::class);
     }
+
     public function levelJabatan()
     {
-        return $this->belongsTo(LevelJabatan::class, 'level_jabatan_id');
+        return $this->belongsTo(LevelJabatan::class);
     }
 }

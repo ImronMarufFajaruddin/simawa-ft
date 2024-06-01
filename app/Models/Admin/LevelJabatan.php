@@ -14,8 +14,14 @@ class LevelJabatan extends Model
         'periode',
         'nama_jabatan',
     ];
+
     public function instansi()
     {
-        return $this->belongsTo(Instansi::class, 'instansi_id');
+        return $this->belongsTo(Instansi::class);
+    }
+
+    public function anggota()
+    {
+        return $this->hasMany(Anggota::class);
     }
 }

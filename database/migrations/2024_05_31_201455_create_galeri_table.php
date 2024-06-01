@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('galeri', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('instansi_id');
+            $table->integer('instansi_id')->unsigned();
             $table->string('gambar');
             $table->timestamps();
 

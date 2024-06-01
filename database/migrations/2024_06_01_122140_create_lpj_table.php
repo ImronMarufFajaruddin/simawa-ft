@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('lpj', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('user_id');
+            $table->uuid('user_id');  // Define user_id as UUID
+            // $table->integer('user_id')->unsigned();
             $table->unsignedInteger('kegiatan_id');
-            $table->varchar('dokumen');
-            $table->text('catatan')->nullable();
-            $table->enum('status', ['disetujui', 'revisi', 'ditolak'])->default('revisi');
+            $table->string('dokumen');
+            $table->enum('status', ['disetujui', 'revisi', 'ditolak']);
+            $table->text('komentar')->nullable();
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('kegiatan_id')->references('id')->on('kegiatan')->onDelete('cascade');
         });
     }

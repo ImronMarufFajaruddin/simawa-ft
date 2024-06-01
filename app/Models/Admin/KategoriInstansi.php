@@ -5,16 +5,15 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KategoriBerita extends Model
+class KategoriInstansi extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'kategori_nama',
     ];
 
-    public function berita()
+    public function instansi()
     {
-        return $this->hasMany(Berita::class, 'berita_id', 'id');
+        return $this->hasMany(Instansi::class);
     }
 }

@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('level_jabatan', function (Blueprint $table) {
+        Schema::create('kategori_instansi', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('instansi_id');
-            $table->string('periode');
-            $table->string('nama_jabatan');
+            $table->string('kategori_nama');
             $table->timestamps();
-
-            $table->foreign('instansi_id')->references('id')->on('instansi')->onDelete('cascade');
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('level_jabatan');
+        Schema::dropIfExists('kategori_instansi');
     }
 };

@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('anggota', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('instansi_id');
-            $table->unsignedInteger('level_jabatan_id');
-            $table->varchar('nama');
-            $table->varchar('nim');
-            $table->varchar('foto')->nullable();
+            $table->integer('instansi_id')->unsigned();
+            $table->integer('level_jabatan_id')->unsigned();
+            $table->string('nama');
+            $table->string('nim');
+            $table->string('foto')->nullable();
             $table->timestamps();
 
-            $table->foreign('instansi_id')->references('id')->on('instansi');
+            $table->foreign('instansi_id')->references('id')->on('instansi')->onDelete('cascade');
             $table->foreign('level_jabatan_id')->references('id')->on('level_jabatan')->onDelete('cascade');
         });
     }

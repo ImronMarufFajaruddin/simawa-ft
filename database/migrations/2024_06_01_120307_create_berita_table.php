@@ -15,16 +15,17 @@ return new class extends Migration
             $table->increments('id');
             $table->uuid('user_id');
             $table->unsignedInteger('kategori_berita_id');
-            $table->varchar('judul');
-            $table->varchar('slug');
+            $table->string('judul');
+            $table->string('slug')->unique();
             $table->text('konten');
-            $table->varchar('gambar')->nullable();
-            $table->varchar('dokumen')->nullable();
+            $table->string('gambar')->nullable();
+            $table->string('dokumen')->nullable();
             $table->string('status');
             $table->timestamps();
 
+            // Define foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('kategori_berita_id')->references('id')->on('ketegori_berita')->onDelete('cascade');
+            $table->foreign('kategori_berita_id')->references('id')->on('kategori_berita')->onDelete('cascade');
         });
     }
 
@@ -33,6 +34,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('berita', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['kategori_berita_id']);
+        });
         Schema::dropIfExists('berita');
     }
 };

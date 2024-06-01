@@ -14,4 +14,14 @@ class Kegiatan extends Model
         'tanggal_mulai',
         'tanggal_selesai',
     ];
+
+    public function proposal()
+    {
+        return $this->hasMany(Proposal::class, 'proposal_id', 'id');
+    }
+
+    public function lpj()
+    {
+        return $this->hasMany(Lpj::class, 'lpj_id', 'id');
+    }
 }

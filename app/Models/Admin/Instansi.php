@@ -10,15 +10,32 @@ class Instansi extends Model
     use HasFactory;
 
     protected $fillable = [
+        'kategori_instansi_id',
         'nama_resmi',
         'nama_singkatan',
         'logo',
         'no_telp',
         'instagram',
-        'sejarah'
+        'sejarah',
     ];
-    public function kategoriOrmawa()
+
+    public function kategoriInstansi()
     {
-        $this->belongsTo(KategoriOrmawa::class, 'kategori_ormawa_id');
+        return $this->belongsTo(KategoriInstansi::class);
+    }
+
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class);
+    }
+
+    public function anggota()
+    {
+        return $this->hasMany(Anggota::class);
+    }
+
+    public function levelJabatan()
+    {
+        return $this->hasMany(LevelJabatan::class);
     }
 }

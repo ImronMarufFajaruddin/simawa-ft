@@ -5,10 +5,7 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KategoriOrmawa extends Model
+class User extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'kategori_nama'
-    ];
 }
