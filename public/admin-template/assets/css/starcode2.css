@@ -12758,10 +12758,9 @@ div:where(.swal2-container) {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     grid-template-areas: "top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";
-    grid-template-rows: minmax(-webkit-min-content, auto) minmax(
-            -webkit-min-content,
-            auto
-        ) minmax(-webkit-min-content, auto);
+    grid-template-rows:
+        minmax(-webkit-min-content, auto) minmax(-webkit-min-content, auto)
+        minmax(-webkit-min-content, auto);
     grid-template-rows: minmax(min-content, auto) minmax(min-content, auto) minmax(
             min-content,
             auto
@@ -23923,9 +23922,6 @@ div.flatpickr-day.dataTables_scrollBody
 .content-\[\'this-is-also-valid\]-weirdly-enough\'\] {
     --tw-content: "this-is-also-valid]-weirdly-enough";
     content: var(--tw-content);
-}
-.\[-\:\=\] {
-    -: =;
 }
 .gridjs-container {
     --tw-text-opacity: 1;

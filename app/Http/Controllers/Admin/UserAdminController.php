@@ -43,9 +43,7 @@ class UserAdminController extends Controller
 
             // Commit transaksi jika tidak ada masalah
             DB::commit();
-
             // Redirect ke halaman utama dengan pesan sukses
-
 
             Session::flash('success', 'Berhasil menambahkan data');
             return redirect()->route('admin.user.index');

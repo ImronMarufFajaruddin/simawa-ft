@@ -9,10 +9,13 @@ class Galeri extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'instansi_id',
-        'gambar',
-    ];
+    protected $table = 'galeri';
+    protected $primaryLey = 'id';
+
+    // protected $fillable = [
+    //     'instansi_id',
+    //     'gambar',
+    // ];
 
     public function instansi()
     {

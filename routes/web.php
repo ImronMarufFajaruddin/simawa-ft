@@ -5,9 +5,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\InstansiController;
+use App\Http\Controllers\Admin\KategoriBeritaController;
+use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Admin\UserSettingController;
+use App\Models\Admin\KategoriBerita;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +50,18 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('data-instansi')->middleware('can:superadmin-only')->group(function () {
         Route::get('/', [InstansiController::class, 'index'])->name('data-instansi.index');
-        Route::post('/', [InstansiController::class, 'store'])->name('data-instansi.store');
+        Route::post('/store', [InstansiController::class, 'store'])->name('data-instansi.store');
+        Route::get('/edit/{id}', [InstansiController::class, 'edit'])->name('data-instansi.edit');
+        Route::put('/update/{id}', [InstansiController::class, 'update'])->name('data-instansi.update');
+        Route::delete('/destroy/{id}', [InstansiController::class, 'destroy'])->name('data-instansi.destroy');
+    });
+
+    Route::prefix('data-kategori-instansi')->middleware('can:superadmin-only')->group(function () {
+        Route::get('/', [KategoriInstansiController::class, 'index'])->name('data-kategori-instansi.index');
+        Route::post('/store', [KategoriInstansiController::class, 'store'])->name('data-kategori-instansi.store');
+        Route::get('/edit/{id}', [KategoriInstansiController::class, 'edit'])->name('data-kategori-instansi.edit');
+        Route::put('/update/{id}', [KategoriInstansiController::class, 'update'])->name('data-kategori-instansi.update');
+        Route::delete('/destroy/{id}', [KategoriInstansiController::class, 'destroy'])->name('data-kategori-instansi.destroy');
     });
 
     Route::group(['prefix' => 'user-setting'], function () {
@@ -56,6 +70,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/edit/{id}', [UserSettingController::class, 'edit'])->name('user-setting.edit');
         Route::post('/update', [UserSettingController::class, 'update'])->name('user-setting.update');
         Route::delete('/destroy/{id}', [UserSettingController::class, 'destroy'])->name('user-setting.destroy');
+    });
+
+    Route::group(['prefix' => 'data-kategori-berita'], function () {
+        Route::get('/', [KategoriBeritaController::class, 'index'])->name('data-kategori-berita.index');
+        Route::post('/store', [KategoriBerita::class, 'store'])->name('data-kategori-berita.store');
+        Route::get('/edit/{id}', [KategoriBerita::class, 'edit'])->name('data-kategori-berita.edit');
+        Route::post('/update/{id}', [KategoriBerita::class, 'update'])->name('data-kategori-berita.update');
+        Route::delete('/destroy/{id}', [KategoriBerita::class, 'destroy'])->name('data-kategori-berita.destroy');
     });
 });
 

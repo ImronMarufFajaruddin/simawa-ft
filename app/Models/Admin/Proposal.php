@@ -10,13 +10,16 @@ class Proposal extends Model
 {
     use HasFactory, HashUuid;
 
-    protected $fillable = [
-        'user_id',
-        'kegiatan_id',
-        'dokumen',
-        'status',
-        'komentar',
-    ];
+    protected $table = 'proposal';
+    protected $primaryKey = 'id';
+
+    // protected $fillable = [
+    //     'user_id',
+    //     'kegiatan_id',
+    //     'dokumen',
+    //     'status',
+    //     'komentar',
+    // ];
 
     public function user()
     {

@@ -9,13 +9,16 @@ class Anggota extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'instansi_id',
-        'level_jabatan_id',
-        'nama',
-        'nim',
-        'foto',
-    ];
+    protected $table = 'anggota';
+    protected $primaryKey = 'id';
+
+    // protected $fillable = [
+    //     'instansi_id',
+    //     'level_jabatan_id',
+    //     'nama',
+    //     'nim',
+    //     'foto',
+    // ];
 
     public function instansi()
     {

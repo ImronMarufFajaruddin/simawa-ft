@@ -10,13 +10,16 @@ class Lpj extends Model
 {
     use HasFactory, HashUuid;
 
-    protected $fillable = [
-        'user_id',
-        'kegiatan_id',
-        'dokumen',
-        'status',
-        'komentar',
-    ];
+    protected $table = 'lpj';
+    protected $primaryKey = 'id';
+
+    // protected $fillable = [
+    //     'user_id',
+    //     'kegiatan_id',
+    //     'dokumen',
+    //     'status',
+    //     'komentar',
+    // ];
 
     public function user()
     {

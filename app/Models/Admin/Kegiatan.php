@@ -9,11 +9,14 @@ class Kegiatan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nama_kegiatan',
-        'tanggal_mulai',
-        'tanggal_selesai',
-    ];
+    protected $table = 'kegiatan';
+    protected $primaryKey = 'id';
+
+    // protected $fillable = [
+    //     'nama_kegiatan',
+    //     'tanggal_mulai',
+    //     'tanggal_selesai',
+    // ];
 
     public function proposal()
     {

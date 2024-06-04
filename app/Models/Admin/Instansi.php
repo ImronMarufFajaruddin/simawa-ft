@@ -9,19 +9,12 @@ class Instansi extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'kategori_instansi_id',
-        'nama_resmi',
-        'nama_singkatan',
-        'logo',
-        'no_telp',
-        'instagram',
-        'sejarah',
-    ];
+    protected $table = 'instansi';
+    protected $primaryKey = 'id';
 
     public function kategoriInstansi()
     {
-        return $this->belongsTo(KategoriInstansi::class);
+        return $this->belongsTo(KategoriInstansi::class, 'kategori_instansi_id', 'id');
     }
 
     public function galeri()

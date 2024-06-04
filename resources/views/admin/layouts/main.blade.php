@@ -5,8 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>
-        @yield('title')
-        Admin || SIMAWAFT
+        @stack('title')
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
@@ -360,13 +359,16 @@
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.tailwindcss.min.js') }}"></script>
     <!--buttons dataTables-->
-    {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script> --}}
+    <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/jszip.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/pdfmake.min.js') }}"></script>
-    {{-- <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script> --}}
+    <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.print.min.js') }}"></script>
 
     <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/libs/dropzone/dropzone-min.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/js/pages/apps-ecommerce-product-create.init.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/js/pages/form-file-upload.init.js') }}"></script>
     <!-- Sweet Alerts js -->
     {{-- <script src="{{ asset('admin-template/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
