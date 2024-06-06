@@ -59,14 +59,13 @@
                                 </svg> <span class="align-middle">Tambah Data</span></button>
                         </div>
                     </div>
-                    <table id="borderedTable" class="bordered group" style="width:100%">
+                    <table id="dataTable" class="bordered group" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="ltr:!text-left rtl:!text-right">Nomor</th>
                                 <th>Kategori</th>
                                 <th>Slug</th>
                                 <th>Action</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -105,3 +104,47 @@
     </div>
     @include('admin.kategori-berita.modal')
 @endsection
+
+@push('js')
+    <script>
+        function confirmDelete(id) {
+            let form = document.getElementById('deleteForm' + id);
+            Swal.fire({
+                title: 'Apakah anda Yakin?',
+                text: "Data akan dihapus secara permanen",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+
+            let errorMessage = '{{ session('error') }}';
+            if (errorMessage !== '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ooops!",
+                    text: errorMessage,
+                    showConfirmButton: true,
+                });
+            }
+        }
+
+        let successMessage = '{{ session('success') }}';
+        if (successMessage !== '') {
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: successMessage,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
+@endpush

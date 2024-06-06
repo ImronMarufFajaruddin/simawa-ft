@@ -107,7 +107,6 @@ class UserAdminController extends Controller
             $user->delete();
 
             DB::commit();
-
             // Session()->flash('success', 'User deleted successfully');
             Session::flash('success', 'Data Berhasil dihapus');
 

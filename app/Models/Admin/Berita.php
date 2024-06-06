@@ -2,9 +2,10 @@
 
 namespace App\Models\Admin;
 
+use App\Models\User;
+use App\Traits\HashUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Traits\HashUuid;
 
 class Berita extends Model
 {
@@ -13,16 +14,16 @@ class Berita extends Model
     protected $table = 'berita';
     protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'user_id',
-        'kategori_berita_id',
-        'judul',
-        'slug',
-        'konten',
-        'gambar',
-        'dokumen',
-        'status',
-    ];
+    // protected $fillable = [
+    //     'user_id',
+    //     'kategori_berita_id',
+    //     'judul',
+    //     'slug',
+    //     'konten',
+    //     'gambar',
+    //     'dokumen',
+    //     'status',
+    // ];
 
     public function user()
     {

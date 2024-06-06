@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('berita', function (Blueprint $table) {
-            $table->increments('id');
-            $table->uuid('user_id');
+            $table->id();
+            $table->foreignUuid('user_id');
             $table->unsignedInteger('kategori_berita_id');
             $table->string('judul');
             $table->string('slug')->unique();
             $table->text('konten');
             $table->string('gambar')->nullable();
             $table->string('dokumen')->nullable();
-            $table->string('status');
+            $table->enum('status', ['Publish', 'Draft'])->default('Draft');
             $table->timestamps();
 
             // Define foreign keys
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreign('kategori_berita_id')->references('id')->on('kategori_berita')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

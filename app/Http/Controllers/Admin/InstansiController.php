@@ -50,7 +50,7 @@ class InstansiController extends Controller
                 $file_logo = request()->file('logo');
                 $file_extention =  $file_logo->getClientOriginalExtension();
                 $file_name = date('Ymdhis') . '.' . $file_extention;
-                $file_logo->storeAs('public/instansi/logo', $file_name);
+                $file_logo->storeAs('instansi/logo', $file_name);
                 $data['logo'] = $file_name;
             }
 
@@ -129,8 +129,8 @@ class InstansiController extends Controller
             $instansi = Instansi::findOrFail($id);
 
             // Hapus file logo jika ada
-            if ($instansi->logo && Storage::exists('public/instansi/logo/' . $instansi->logo)) {
-                Storage::delete('public/instansi/logo/' . $instansi->logo);
+            if ($instansi->logo && Storage::exists('instansi/logo/' . $instansi->logo)) {
+                Storage::delete('instansi/logo/' . $instansi->logo);
             }
 
             $instansi->delete();

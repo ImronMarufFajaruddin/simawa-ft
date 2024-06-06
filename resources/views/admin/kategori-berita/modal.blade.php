@@ -15,7 +15,7 @@
             <form action="{{ route('data-kategori-berita.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="kategori_nama" class="inline-block mb-2 text-base font-medium">Kategori Instansi<span
+                    <label for="kategori_nama" class="inline-block mb-2 text-base font-medium">Kategori Berita<span
                             class="text-red-500">*</span></label>
                     <input type="text" name="kategori_nama" id="kategori_nama"
                         class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
@@ -53,7 +53,6 @@
 </div>
 {{-- Modal Tambah Kategori End --}}
 
-
 @foreach ($dataKategoriBerita as $data)
     <div id="modalEdit{{ $data->id }}" modal-center="" data-modal-backdrop="modalEdit{{ $data->id }}"
         class="fixed flex flex-col hidden transition-all
@@ -67,7 +66,6 @@
             </div>
 
             <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-                {{-- <h5 class="mb-3 text-16">Modal Content</h5> --}}
                 <form action="{{ route('data-kategori-berita.update', $data->id) }}" method="POST">
                     @csrf
                     @method('PUT')

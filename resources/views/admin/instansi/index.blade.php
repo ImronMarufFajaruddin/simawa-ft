@@ -42,7 +42,7 @@
                                 </svg> <span class="align-middle">Tambah Data</span></button>
                         </div>
                     </div>
-                    <table id="rowBorder" class="bordered group" style="width:100%">
+                    <table id="dataTable" class="bordered group" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No.</th>

@@ -57,6 +57,7 @@ class KategoriInstansiController extends Controller
             Session::flash('success', 'Berhasil mengubah data');
             return redirect()->route('data-kategori-instansi.index');
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
@@ -70,6 +71,7 @@ class KategoriInstansiController extends Controller
             Session::flash('success', 'Berhasil menghapus data');
             return redirect()->route('data-kategori-instansi.index');
         } catch (\Exception $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }

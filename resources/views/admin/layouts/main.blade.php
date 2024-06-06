@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/starcode2.css') }}">
     <!-- message toastr -->
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/toastr.min.css') }}">
+    {{-- <link href="https://cdn.datatables.net/2.0.8/css/dataTables.tailwindcss.css"> --}}
+    </link>
+
     <script src="{{ asset('admin-template/assets/js/toastr_jquery.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/toastr.min.js') }}"></script>
 
@@ -33,10 +36,12 @@
                 <a href=""
                     class="group-data-[sidebar=brand]:hidden group-data-[sidebar=dark]:hidden group-data-[sidebar=modern]:hidden">
                     <span class="hidden group-data-[sidebar-size=sm]:block">
-                        <img src="admin-template/assets/images/logo.png" alt="" class="mx-auto h-6">
+                        <img src="{{ asset('admin-template/assets/images/logo.png') }}" alt=""
+                            class="mx-auto h-6">
                     </span>
                     <span class="group-data-[sidebar-size=sm]:hidden">
-                        <img src="admin-template/assets/images/logo-dark.png" alt="" class="mx-auto h-6">
+                        <img src="{{ asset('admin-template/assets/images/logo-dark.png') }}" alt=""
+                            class="mx-auto h-6">
                     </span>
                 </a>
                 <a href=""
@@ -358,14 +363,15 @@
     <script src="{{ asset('admin-template/assets/js/datatables/jquery-3.7.0.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.tailwindcss.min.js') }}"></script>
+
     <!--buttons dataTables-->
-    <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script> --}}
     <script src="{{ asset('admin-template/assets/js/datatables/jszip.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/pdfmake.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.print.min.js') }}"></script>
 
-    <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script> --}}
     <script src="{{ asset('admin-template/assets/libs/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/pages/apps-ecommerce-product-create.init.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/pages/form-file-upload.init.js') }}"></script>
@@ -375,6 +381,12 @@
     <!--sweet alert init js-->
     {{-- <script src="{{ asset('admin-template/assets/js/pages/sweetalert.init.js') }}"></script> --}}
 
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>
     @stack('js')
 </body>
 

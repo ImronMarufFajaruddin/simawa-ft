@@ -63,7 +63,7 @@
                                 </svg> <span class="align-middle">Tambah Data</span></button>
                         </div>
                     </div>
-                    <table id="borderedTable" class="bordered group" style="width:100%">
+                    <table id="dataTable" class="bordered group" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="ltr:!text-left rtl:!text-right">Nomor</th>

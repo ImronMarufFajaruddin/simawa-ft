@@ -1,16 +1,17 @@
 <?php
 
+use App\Models\Admin\KategoriBerita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\InstansiController;
-use App\Http\Controllers\Admin\KategoriBeritaController;
-use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Admin\UserSettingController;
-use App\Models\Admin\KategoriBerita;
+use App\Http\Controllers\Admin\KategoriBeritaController;
+use App\Http\Controllers\Admin\KategoriInstansiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,10 +75,19 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'data-kategori-berita'], function () {
         Route::get('/', [KategoriBeritaController::class, 'index'])->name('data-kategori-berita.index');
-        Route::post('/store', [KategoriBerita::class, 'store'])->name('data-kategori-berita.store');
-        Route::get('/edit/{id}', [KategoriBerita::class, 'edit'])->name('data-kategori-berita.edit');
-        Route::post('/update/{id}', [KategoriBerita::class, 'update'])->name('data-kategori-berita.update');
-        Route::delete('/destroy/{id}', [KategoriBerita::class, 'destroy'])->name('data-kategori-berita.destroy');
+        Route::post('/store', [KategoriBeritaController::class, 'store'])->name('data-kategori-berita.store');
+        Route::get('/edit/{id}', [KategoriBeritaController::class, 'edit'])->name('data-kategori-berita.edit');
+        Route::post('/update/{id}', [KategoriBeritaController::class, 'update'])->name('data-kategori-berita.update');
+        Route::delete('/destroy/{id}', [KategoriBeritaController::class, 'destroy'])->name('data-kategori-berita.destroy');
+    });
+
+    Route::group(['prefix' => 'data-berita'], function () {
+        Route::get('/', [BeritaController::class, 'index'])->name('data-berita.index');
+        Route::get('/create', [BeritaController::class, 'create'])->name('data-berita.create');
+        Route::post('/store', [BeritaController::class, 'store'])->name('data-berita.store');
+        Route::get('/edit/{id}', [BeritaController::class, 'edit'])->name('data-berita.edit');
+        Route::post('/update/{id}', [BeritaController::class, 'update'])->name('data-berita.update');
+        Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('data-berita.destroy');
     });
 });
 

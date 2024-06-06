@@ -21,7 +21,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id', // Include id in fillable
         'name',
         'username',
         'email',
@@ -31,7 +30,7 @@ class User extends Authenticatable
 
     public function berita()
     {
-        return $this->hasMany(Berita::class);
+        return $this->hasMany(Berita::class, 'user_id', 'id');
     }
 
 

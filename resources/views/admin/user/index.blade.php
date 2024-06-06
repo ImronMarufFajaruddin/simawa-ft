@@ -54,7 +54,7 @@
                             Tambah Data
                         </button>
                     </div>
-                    <table id="borderedTable" class="bordered group" style="width:100%">
+                    <table id="dataTable" class="w-full bordered group" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
