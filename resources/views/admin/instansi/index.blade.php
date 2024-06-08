@@ -65,7 +65,7 @@
                                     <td>{{ $data->nama_singkatan }}</td>
                                     <td>
                                         @if ($data->logo)
-                                            <img src="{{ asset('storage/instansi/logo/' . $data->logo) }}" alt="Logo"
+                                            <img src="{{ asset('instansi/logo/' . $data->logo) }}" alt="Logo"
                                                 style="width: 100px; height: auto;">
                                         @else
                                             <img src="{{ asset('admin-template/assets/images/avatar-1.png') }}"

@@ -81,9 +81,7 @@
 
                             <div class="xl:col-span-12">
                                 <label for="konten" class="block mb-2 text-base font-medium">Isi Konten Berita</label>
-                                <textarea id="konten" name="konten"
-                                    class="w-full form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                    placeholder="Enter your description" rows="6"></textarea>
+                                <textarea id="konten" name="konten"></textarea>
                             </div><!--end col-->
 
                             <div class="xl:col-span-6">
@@ -115,9 +113,9 @@
                             <div class="xl:col-span-6">
                                 <label for="publishDate" class="inline-block mb-2 text-base font-medium">Tanggal
                                     Publikasi</label>
-                                <input type="text" id="publishDate" name="publishDate"
+                                <input type="date" id="publishDate" name="tanggal_publish"
                                     class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200 flatpickr-input"
-                                    placeholder="Pilih" data-provider="flatpickr" data-date-format="d M, Y" readonly>
+                                    placeholder="Pilih" flatpickr-input readonly>
                             </div><!--end col-->
 
                             <div class="xl:col-span-12">
@@ -146,54 +144,26 @@
 
 @push('js')
     <script>
+        flatpickr("#publishDate", {
+            dateFormat: "Y-m-d",
+            // tambahkan konfigurasi lainnya sesuai kebutuhan
+        });
         document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor
+                .create(document.querySelector('#konten'), {
+                    // Konfigurasi CKEditor
+                })
+                // .then(editor => {
+                //     editor.ui.getEditableElement().parentElement.style.height = '300px';
+                // })
+                .catch(error => {
+                    console.error(error);
+                });
             document.getElementById('judul').addEventListener('input', function() {
                 var judul = this.value;
                 var slug = judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
                 document.getElementById('slug').setAttribute('placeholder', slug);
             });
         });
-    </script>
-
-    <script>
-        function confirmDelete(id) {
-            let form = document.getElementById('deleteForm' + id);
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Data akan dihapus secara permanen",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                confirmButtonText: 'Hapus'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        }
-
-        let successMessage = '{{ session('success') }}';
-        if (successMessage) {
-            Swal.fire({
-                icon: "success",
-                title: "Success!",
-                text: successMessage,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-
-        let errorMessage = '{{ session('error') }}';
-        if (errorMessage) {
-            Swal.fire({
-                icon: "error",
-                title: "Ooops!",
-                text: errorMessage,
-                showConfirmButton: true,
-            });
-        }
     </script>
 @endpush

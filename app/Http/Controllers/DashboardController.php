@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Berita;
 use App\Models\Admin\Instansi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,9 +16,9 @@ class DashboardController extends Controller
         // $user = User::where('role', 'admin')->count();
         $userCount = User::count();
         $instansiCount = Instansi::count();
-        // $beritaCount = User::count();
+        $beritaCount = Berita::count();
         // $laporanCount = User::count();
         // $proposalCount = User::count()
-        return view('admin.index', compact('userCount', 'instansiCount'));
+        return view('admin.index', compact('userCount', 'instansiCount', 'beritaCount'));
     }
 }

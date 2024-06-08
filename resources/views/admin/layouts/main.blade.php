@@ -14,6 +14,7 @@
     <link rel="shortcut icon" href="{{ asset('admin-template/assets/images/favicon.ico') }}">
     <!-- Layout config Js -->
     <script src="{{ asset('admin-template/assets/js/layout.js') }}"></script>
+    <script src="{{ asset('assets/vendor/ckeditor5/build/ckeditor.js') }}"></script>
     <!-- StarCode CSS -->
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/starcode2.css') }}">
     <!-- message toastr -->
@@ -354,7 +355,9 @@
     <script src="{{ asset('admin-template/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/prismjs/prism.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/lucide/umd/lucide.js') }}"></script>
-    <script src="{{ asset('admin-template/assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/libs/flatpickr/flatpickr.min.js') }}"></script> --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ asset('admin-template/assets/js/starcode.bundle.js') }}"></script>
 
     <!-- App js -->

@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', [KategoriBeritaController::class, 'index'])->name('data-kategori-berita.index');
         Route::post('/store', [KategoriBeritaController::class, 'store'])->name('data-kategori-berita.store');
         Route::get('/edit/{id}', [KategoriBeritaController::class, 'edit'])->name('data-kategori-berita.edit');
-        Route::post('/update/{id}', [KategoriBeritaController::class, 'update'])->name('data-kategori-berita.update');
+        Route::put('/update/{id}', [KategoriBeritaController::class, 'update'])->name('data-kategori-berita.update');
         Route::delete('/destroy/{id}', [KategoriBeritaController::class, 'destroy'])->name('data-kategori-berita.destroy');
     });
 
@@ -85,8 +85,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', [BeritaController::class, 'index'])->name('data-berita.index');
         Route::get('/create', [BeritaController::class, 'create'])->name('data-berita.create');
         Route::post('/store', [BeritaController::class, 'store'])->name('data-berita.store');
+        Route::get('/show/{id}', [BeritaController::class, 'show'])->name('data-berita.show');
         Route::get('/edit/{id}', [BeritaController::class, 'edit'])->name('data-berita.edit');
-        Route::post('/update/{id}', [BeritaController::class, 'update'])->name('data-berita.update');
+        Route::put('/update/{id}', [BeritaController::class, 'update'])->name('data-berita.update');
         Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('data-berita.destroy');
     });
 });

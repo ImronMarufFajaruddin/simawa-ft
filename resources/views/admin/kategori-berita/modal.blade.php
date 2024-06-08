@@ -11,7 +11,6 @@
         </div>
 
         <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-            {{-- <h5 class="mb-3 text-16">Modal Content</h5> --}}
             <form action="{{ route('data-kategori-berita.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DeleteFile;
+use App\Helpers\UploadFile;
 use Illuminate\Http\Request;
 use App\Models\Admin\Instansi;
 use Illuminate\Support\Facades\DB;
@@ -16,42 +18,27 @@ class InstansiController extends Controller
     {
         $dataInstansi = Instansi::with('kategoriInstansi')->get();
         $dataKategoriInstansi = KategoriInstansi::all();
-        // dd($dataInstansi);
         return view('admin.instansi.index', compact('dataInstansi', 'dataKategoriInstansi'));
     }
+
     public function store(Request $request)
     {
-        $data = $request->validate(
-            [
-                'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
-                'nama_resmi' => 'required|unique:instansi,nama_resmi',
-                'nama_singkatan' => 'required|unique:instansi,nama_singkatan',
-                'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
-                'no_telp' => 'required|numeric',
-                'instagram' => 'required|url',
-                'sejarah' => 'required',
-            ],
-            [
-                'kategori_instansi_id.required' => 'Kategori Instansi Tidak Boleh Kosong',
-                'nama_resmi.required' => 'Nama Instansi Tidak Boleh Kosong',
-                'nama_resmi.unique' => 'Nama Instansi Sudah Ada',
-                'nama_singkatan.required' => 'Singkatan Instansi Tidak Boleh Kosong',
-                'nama_singkatan.unique' => 'Singkatan Instansi Sudah Ada',
-                'logo.required' => 'Logo Instansi Tidak Boleh Kosong',
-                'logo.mimes' => 'Logo Instansi Harus Berupa PNG, JPG, JPEG',
-                'logo.max' => 'Logo Instansi Maksimal 2 MB',
-            ]
-        );
+        $data = $request->validate([
+            'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
+            'nama_resmi' => 'required|unique:instansi,nama_resmi',
+            'nama_singkatan' => 'required|unique:instansi,nama_singkatan',
+            'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'no_telp' => 'required|numeric',
+            'instagram' => 'required|url',
+            'sejarah' => 'required',
+        ]);
 
         try {
             DB::beginTransaction();
 
-            if (request()->file('logo')) {
-                $file_logo = request()->file('logo');
-                $file_extention =  $file_logo->getClientOriginalExtension();
-                $file_name = date('Ymdhis') . '.' . $file_extention;
-                $file_logo->storeAs('instansi/logo', $file_name);
-                $data['logo'] = $file_name;
+            if ($request->hasFile('logo')) {
+                $file_url = UploadFile::upload('instansi/logo', $request->file('logo'));
+                $data['logo'] = basename($file_url);
             }
 
             $dataInstansi = new Instansi();
@@ -71,8 +58,8 @@ class InstansiController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             Session::flash('error', $e->getMessage('Data Gagal Disimpan'));
+            return redirect()->route('data-instansi.index');
         }
-        return redirect()->route('data-instansi.index');
     }
 
     public function edit($id)
@@ -94,31 +81,35 @@ class InstansiController extends Controller
             'sejarah' => 'required',
         ]);
 
+        $instansi = Instansi::findOrFail($id);
+        $logoLama = $instansi->logo;
+
         try {
-            $dataInstansi = Instansi::findOrFail($id);
+            DB::beginTransaction();
 
-            // Update data instansi
-            $dataInstansi->kategori_instansi_id = $data['kategori_instansi_id'];
-            $dataInstansi->nama_resmi = $data['nama_resmi'];
-            $dataInstansi->nama_singkatan = $data['nama_singkatan'];
-            $dataInstansi->logo = $data['logo'] ?? $dataInstansi->logo;;
-            $dataInstansi->no_telp = $data['no_telp'];
-            $dataInstansi->instagram = $data['instagram'];
-            $dataInstansi->sejarah = $data['sejarah'];
+            $instansi->kategori_instansi_id = $data['kategori_instansi_id'];
+            $instansi->nama_resmi = $data['nama_resmi'];
+            $instansi->nama_singkatan = $data['nama_singkatan'];
+            $instansi->no_telp = $data['no_telp'];
+            $instansi->instagram = $data['instagram'];
+            $instansi->sejarah = $data['sejarah'];
 
-            if (request()->hasFile('logo')) {
-                $file_logo = request()->file('logo');
-                $file_extention =  $file_logo->getClientOriginalExtension();
-                $file_name = date('Ymdhis') . '.' . $file_extention;
-                $file_logo->storeAs('public/instansi/logo', $file_name);
-                $data['logo'] = $file_name;
+            if ($request->hasFile('logo')) {
+                if ($logoLama) {
+                    DeleteFile::delete('instansi/logo/' . $logoLama);
+                }
+
+                $file_logo = $request->file('logo');
+                $file_url = UploadFile::upload('instansi/logo', $file_logo);
+                $instansi->logo = basename($file_url);
             }
 
-            $dataInstansi->save();
+            $instansi->save();
 
+            DB::commit();
             return redirect()->route('data-instansi.index')->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
-            Session::flash('error', $e->getMessage('Data gagal diupdate'));
+            DB::rollback();
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -127,10 +118,9 @@ class InstansiController extends Controller
     {
         try {
             $instansi = Instansi::findOrFail($id);
-
             // Hapus file logo jika ada
-            if ($instansi->logo && Storage::exists('instansi/logo/' . $instansi->logo)) {
-                Storage::delete('instansi/logo/' . $instansi->logo);
+            if ($instansi->logo) {
+                DeleteFile::delete('instansi/logo/' . $instansi->logo);
             }
 
             $instansi->delete();

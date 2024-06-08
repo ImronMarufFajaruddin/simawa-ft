@@ -61,8 +61,8 @@
                                 <th>Author</th>
                                 <th>Kategori Berita</th>
                                 <th>Judul</th>
-                                <th>Slug</th>
-                                <th>Konten</th>
+                                {{-- <th>Slug</th>
+                                <th>Konten</th> --}}
                                 <th>Gambar</th>
                                 <th>Dokumen</th>
                                 <th>Status</th>
@@ -77,10 +77,44 @@
                                     <td>{{ $data->user->name }}</td>
                                     <td>{{ $data->kategoriBerita->kategori_nama }}</td>
                                     <td>{{ $data->judul }}</td>
-                                    <td>{{ $data->slug }}</td>
-                                    <td>{{ Str::limit($data->konten, 50) }}</td>
-                                    <td>{{ $data->gambar }}</td>
-                                    <td>{{ $data->dokumen }}</td>
+                                    {{-- <td>{{ $data->slug }}</td>
+                                    <td>{{ Str::limit($data->konten, 50) }}</td> --}}
+                                    {{-- <td>{{ $data->gambar }}</td> --}}
+
+
+                                    <td>
+                                        @if ($data->gambar)
+                                            <img src="{{ asset('/uploads/berita/foto/' . $data->gambar) }}" alt="gambar"
+                                                style="width: 100px; height: auto;">
+                                        @else
+                                            <img src="{{ asset('admin-template/assets/images/avatar-1.png') }}"
+                                                alt="gambar" style="width: 50px; height: auto;">
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center justify-center">
+                                            @if ($data->dokumen)
+                                                <a href="/uploads/berita/dokumen/{{ $data->dokumen }}" type="button"
+                                                    class="flex items-center text-center justify-center size-[37.5px] transition-all duration-200 ease-linear p-0 text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100 dark:bg-sky-500/20 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white dark:focus:bg-sky-500 dark:focus:text-white dark:active:bg-sky-500 dark:active:text-white dark:ring-sky-400/20">
+                                                    <i class="ri-download-2-line"></i>
+                                                </a>
+                                            @else
+                                                <span>No Document</span>
+                                            @endif
+                                        </div>
+                                    </td>
+
+                                    {{-- <td>
+                                        @if ($data->dokumen)
+                                            <a href="{{ asset('uploads/berita/dokumen/' . $data->dokumen) }}" download>
+                                                <i class="ri-file-download-line"></i>
+                                            </a>
+                                        @else
+                                            <span>No Document</span>
+                                        @endif
+                                    </td> --}}
+                                    {{-- <td>{{ $data->dokumen }}</td> --}}
 
                                     @if ($data->status == 'Draft')
                                         <td><span
@@ -109,29 +143,31 @@
                                                 </svg> {{ $data->status }}</span>
                                         </td>
                                     @endif
-                                    <td class="flex gap-1">
-                                        <button type="button" data-modal-target="" type="button" action=""
-                                            data-tooltip="default" data-tooltip-content="Lihat"
-                                            class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-green-500 border-green-500 hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/20">
-                                            <i class="ri-eye-fill"></i>
-                                        </button>
+                                    <td>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <a href="{{ route('data-berita.show', $data->id) }}" data-tooltip="default"
+                                                data-tooltip-content="Lihat"
+                                                class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-green-500 border-green-500 hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/20">
+                                                <i class="ri-eye-fill"></i>
+                                            </a>
 
-                                        <button type="button" data-modal-target="" type="button" data-tooltip="default"
-                                            data-tooltip-content="Edit" action="{{ route('data-berita.edit', $data->id) }}"
-                                            class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-yellow-500 border-yellow-500 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-yellow-100 dark:ring-yellow-400/20">
-                                            <i class="ri-edit-2-fill"></i>
-                                        </button>
+                                            <a data-tooltip="default" data-tooltip-content="Edit"
+                                                href="{{ route('data-berita.edit', $data->id) }}"
+                                                class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-yellow-500 border-yellow-500 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-yellow-100 dark:ring-yellow-400/20">
+                                                <i class="ri-edit-2-fill"></i>
+                                            </a>
 
-                                        <form action="{{ route('data-berita.destroy', $data->id) }}" method="POST"
-                                            id="deleteForm{{ $data->id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" data-tooltip="default" data-tooltip-content="Hapus"
-                                                class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20">
-                                                <i class="ri-delete-bin-fill"
-                                                    onclick="confirmDelete('{{ $data->id }}')"></i>
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('data-berita.destroy', $data->id) }}" method="POST"
+                                                id="deleteForm{{ $data->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" data-tooltip="default" data-tooltip-content="Hapus"
+                                                    class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20">
+                                                    <i class="ri-delete-bin-fill"
+                                                        onclick="confirmDelete('{{ $data->id }}')"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

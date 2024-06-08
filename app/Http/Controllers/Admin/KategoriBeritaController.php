@@ -52,8 +52,11 @@ class KategoriBeritaController extends Controller
         $data['slug'] = Str::slug($data['kategori_nama']);
         try {
             DB::beginTransaction();
+
             $dataKategoriBerita = KategoriBerita::findOrFail($id);
-            $dataKategoriBerita->update($data);
+            $dataKategoriBerita->kategori_nama = $data['kategori_nama'];
+            $dataKategoriBerita->slug = $data['slug'];
+            $dataKategoriBerita->save();
 
             DB::commit();
 
@@ -61,7 +64,7 @@ class KategoriBeritaController extends Controller
             return redirect()->route('data-kategori-berita.index');
         } catch (\Exception $e) {
             DB::rollBack();
-            Session::flash('error', $e->getMessage());
+            // Session::flash('error', $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }

@@ -9,8 +9,13 @@ class DeleteFile
 
   public static function delete($name_file)
   {
-    $basePath = url('/');
-    $delfile = str_replace("$basePath/", "", $name_file);
-    return File::delete($delfile);
+    $publicPath = public_path();
+    $file_path = $publicPath . '/' . $name_file;
+
+    if (File::exists($file_path)) {
+      return File::delete($file_path);
+    }
+
+    return false;
   }
 }

@@ -9,21 +9,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Berita extends Model
 {
-    use HasFactory, HashUuid;
+    use HasFactory;
 
     protected $table = 'berita';
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'user_id',
-    //     'kategori_berita_id',
-    //     'judul',
-    //     'slug',
-    //     'konten',
-    //     'gambar',
-    //     'dokumen',
-    //     'status',
-    // ];
+    protected $fillable = [
+        'user_id',
+        'kategori_berita_id',
+        'judul',
+        'slug',
+        'konten',
+        'gambar',
+        'dokumen',
+        'status',
+    ];
 
     public function user()
     {

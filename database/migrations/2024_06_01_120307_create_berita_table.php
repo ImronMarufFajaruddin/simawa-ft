@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('gambar')->nullable();
             $table->string('dokumen')->nullable();
             $table->enum('status', ['Publish', 'Draft'])->default('Draft');
+            $table->date('tanggal_publish')->default(now());
             $table->timestamps();
 
             // Define foreign keys
