@@ -9,12 +9,10 @@ use Illuminate\Support\Str;
 use App\Models\Admin\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KategoriBerita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
@@ -25,6 +23,7 @@ class BeritaController extends Controller
         $dataBerita = Berita::latest()->get();
         return view('admin.berita.index', compact('dataBerita', 'dataKategoriBerita', 'dataUser'));
     }
+
     public function create()
     {
         $statuses = ['Publish', 'Draft'];
@@ -42,7 +41,6 @@ class BeritaController extends Controller
             'dokumen' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:2048',
             'status' => 'required|in:Publish,Draft',
             'tanggal_publish' => 'nullable|date',
-
         ]);
 
         $dataBerita['slug'] = Str::slug($dataBerita['judul']);
@@ -110,8 +108,6 @@ class BeritaController extends Controller
             'dokumen' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:2048',
             'gambar' => 'nullable|mimes:png,jpg,jpeg|max:2048',
             'tanggal_publish' => 'nullable|date',
-
-
         ]);
 
         $dataBerita['slug'] = Str::slug($dataBerita['judul']);
@@ -127,7 +123,6 @@ class BeritaController extends Controller
             $berita->judul = $dataBerita['judul'];
             $berita->status = $dataBerita['status'];
             $berita->tanggal_publish = $dataBerita['tanggal_publish'];
-
 
             if ($request->hasFile('gambar')) {
                 // Menghapus file gambar lama jika ada
@@ -149,6 +144,10 @@ class BeritaController extends Controller
                 $file_url = UploadFile::upload('uploads/berita/dokumen', $request->file('dokumen'));
                 $berita->dokumen = basename($file_url);
             }
+
+            // Menghapus gambar CKEditor yang dihapus dari konten
+            // CkeditorImage::deleteUnusedImages($berita->konten, $dataBerita['konten']);
+
             $berita->save();
             DB::commit();
 
@@ -172,6 +171,10 @@ class BeritaController extends Controller
             if ($berita->dokumen) {
                 DeleteFile::delete('uploads/berita/dokumen/' . $berita->dokumen);
             }
+
+            // Menghapus gambar CKEditor
+            // CkeditorImage::deleteImagesFromContent($berita->konten);
+
             $berita->delete();
             DB::commit();
 
@@ -182,4 +185,15 @@ class BeritaController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    // public function uploadImage(Request $request)
+    // {
+    //     if ($request->hasFile('upload')) {
+    //         $file = $request->file('upload');
+    //         $fileUrl = UploadFile::upload('uploads/konten-gambar', $file);
+    //         return response()->json(['url' => asset($fileUrl)]);
+    //     }
+
+    //     return response()->json(['error' => 'Gagal Upload Gambar'], 500);
+    // }
 }

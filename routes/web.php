@@ -8,10 +8,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\UserAdminController;
-use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
+use App\Http\Controllers\Admin\LevelJabatanController;
+use App\Http\Controllers\Landings\LandingController;
+use App\Http\Controllers\Landing\LandingBeritaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,12 +92,27 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/update/{id}', [BeritaController::class, 'update'])->name('data-berita.update');
         Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('data-berita.destroy');
     });
+
+
+    Route::group(['prefix' => 'data-level-jabatan'], function () {
+        Route::get('/', [LevelJabatanController::class, 'index'])->name('data-level-jabatan.index');
+        Route::post('/store', [LevelJabatanController::class, 'store'])->name('data-level-jabatan.store');
+        Route::get('/edit/{id}', [LevelJabatanController::class, 'edit'])->name('data-level-jabatan.edit');
+        Route::put('/update/{id}', [LevelJabatanController::class, 'update'])->name('data-level-jabatan.update');
+        Route::delete('/destroy/{id}', [LevelJabatanController::class, 'destroy'])->name('data-level-jabatan.destroy');
+    });
 });
 
 // ===== Landings Route ===== //
 Route::resource('/', LandingController::class)->only([
     'index'
 ]);
+Route::group(['prefix' => 'berita'], function () {
+    // Route::resource('/', LandingBeritaController::class)->only([
+    //     'index'
+    // ]);
+    Route::get('/', [LandingBeritaController::class, 'index'])->name('landings-berita.index');
+});
 
 // Route::group(['prefix' => 'landing-page'], function () {
 //     Route::get('/', function () {

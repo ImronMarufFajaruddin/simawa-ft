@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Instansi;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\KategoriInstansi;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +44,7 @@ class InstansiController extends Controller
 
             $dataInstansi = new Instansi();
             $dataInstansi->kategori_instansi_id = $data['kategori_instansi_id'];
+            $dataInstansi->user_id = Auth::id();
             $dataInstansi->nama_resmi = $data['nama_resmi'];
             $dataInstansi->nama_singkatan = $data['nama_singkatan'];
             $dataInstansi->logo = $data['logo'];

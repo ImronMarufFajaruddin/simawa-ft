@@ -5,6 +5,11 @@
 @endpush
 
 @push('css')
+    <style type="text/css">
+        .ck-editor__editable_inline {
+            height: 420px;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -151,11 +156,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             ClassicEditor
                 .create(document.querySelector('#konten'), {
-                    // Konfigurasi CKEditor
+                    toolbar: ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList',
+                        'numberedList',
+                        'blockQuote', '|', 'fontfamily', 'fontsize', 'fontColor', '|', 'outdent', 'indent',
+                    ],
                 })
-                // .then(editor => {
-                //     editor.ui.getEditableElement().parentElement.style.height = '300px';
-                // })
+
                 .catch(error => {
                     console.error(error);
                 });
