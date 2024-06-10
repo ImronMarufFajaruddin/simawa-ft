@@ -119,7 +119,7 @@
             </div>
 
             <div class="max-h-[calc(100vh-180px)] p-4 overflow-y-auto">
-                <form action="{{ route('data-instansi.store', $data->id) }}" method="POST"
+                <form action="{{ route('data-instansi.update', $data->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

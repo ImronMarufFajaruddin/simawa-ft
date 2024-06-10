@@ -11,9 +11,12 @@ use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
+use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\LevelJabatanController;
+use App\Http\Controllers\Admin\ProposalController;
 use App\Http\Controllers\Landings\LandingController;
-use App\Http\Controllers\Landing\LandingBeritaController;
+use App\Http\Controllers\Landings\LandingBeritaController;
+use App\Http\Controllers\Landings\LandingInstansiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +96,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('data-berita.destroy');
     });
 
-
     Route::group(['prefix' => 'data-level-jabatan'], function () {
         Route::get('/', [LevelJabatanController::class, 'index'])->name('data-level-jabatan.index');
         Route::post('/store', [LevelJabatanController::class, 'store'])->name('data-level-jabatan.store');
@@ -101,17 +103,42 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/update/{id}', [LevelJabatanController::class, 'update'])->name('data-level-jabatan.update');
         Route::delete('/destroy/{id}', [LevelJabatanController::class, 'destroy'])->name('data-level-jabatan.destroy');
     });
+
+    Route::group(['prefix' => 'data-kegiatan', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [KegiatanController::class, 'index'])->name('data-kegiatan.index');
+        Route::post('/store', [KegiatanController::class, 'store'])->name('data-kegiatan.store');
+        Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('data-kegiatan.edit');
+        Route::put('/update/{id}', [KegiatanController::class, 'update'])->name('data-kegiatan.update');
+        Route::delete('/destroy/{id}', [KegiatanController::class, 'destroy'])->name('data-kegiatan.destroy');
+    });
+
+    Route::group(['prefix' => 'data-proposal', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [ProposalController::class, 'index'])->name('data-proposal.index');
+        Route::get('/show/{id}', [ProposalController::class, 'show'])->name('data-proposal.show');
+        Route::post('/store', [ProposalController::class, 'store'])->name('data-proposal.store');
+        Route::get('/edit/{id}', [ProposalController::class, 'edit'])->name('data-proposal.edit');
+        Route::put('/update/{id}', [ProposalController::class, 'update'])->name('data-proposal.update');
+        Route::delete('/destroy/{id}', [ProposalController::class, 'destroy'])->name('data-proposal.destroy');
+        Route::put('/proposal/{id}/update-status', [ProposalController::class, 'updateStatus'])->name('proposal.update-status');
+        Route::post('/proposal/{id}/tambah-komentar', [ProposalController::class, 'tambahKomentar'])->name('proposal.tambahKomentar');
+    });
 });
 
 // ===== Landings Route ===== //
 Route::resource('/', LandingController::class)->only([
     'index'
 ]);
+
+Route::group(['prefix' => 'instansi'], function () {
+    Route::get('/{slug}', [LandingInstansiController::class, 'index'])->name('instansi.index');
+});
+
 Route::group(['prefix' => 'berita'], function () {
     // Route::resource('/', LandingBeritaController::class)->only([
     //     'index'
     // ]);
-    Route::get('/', [LandingBeritaController::class, 'index'])->name('landings-berita.index');
+    Route::get('/', [LandingBeritaController::class, 'index'])->name('berita.index');
+    Route::get('/{id}', [LandingBeritaController::class, 'show'])->name('berita.show');
 });
 
 // Route::group(['prefix' => 'landing-page'], function () {

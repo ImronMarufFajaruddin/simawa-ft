@@ -37,12 +37,12 @@
                 <a href=""
                     class="group-data-[sidebar=brand]:hidden group-data-[sidebar=dark]:hidden group-data-[sidebar=modern]:hidden">
                     <span class="hidden group-data-[sidebar-size=sm]:block">
-                        <img src="{{ asset('admin-template/assets/images/logo.png') }}" alt=""
+                        <img src="{{ asset('landings-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
                             class="mx-auto h-6">
                     </span>
-                    <span class="group-data-[sidebar-size=sm]:hidden">
-                        <img src="{{ asset('admin-template/assets/images/logo-dark.png') }}" alt=""
-                            class="mx-auto h-6">
+                    <span class="group-data-[sidebar-size=sm]:hidden text-center font-bold">
+                        <img src="{{ asset('landings-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
+                            class="mx-auto h-6">SIMAWA FT UNIMAL
                     </span>
                 </a>
                 <a href=""

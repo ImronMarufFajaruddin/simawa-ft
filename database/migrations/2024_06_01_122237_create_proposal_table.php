@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('proposal', function (Blueprint $table) {
             $table->increments('id');
-            $table->uuid('user_id');  // Define user_id as UUID
-            // $table->integer('user_id')->unsigned();
+            $table->uuid('user_id');
             $table->unsignedInteger('kegiatan_id')->unsigned();
             $table->string('dokumen');
-            $table->enum('status', ['disetujui', 'revisi', 'ditolak']);
+            $table->enum('status', ['menunggu', 'revisi', 'ditolak', 'diterima'])->default('menunggu');
             $table->text('komentar')->nullable();
             $table->timestamps();
 

@@ -28,5 +28,19 @@ class UserSeeder extends Seeder
             'role' => 'admin',
             'password' => bcrypt('password')
         ]);
+        User::create([
+            'name' => 'HIMASI UNIMAL',
+            'username' => 'himasi-unimal',
+            'email' => 'himasi@gmail.com',
+            'role' => 'admin',
+            'password' => bcrypt('password')
+        ]);
+        User::create([
+            'name' => 'DPM FT-UNIMAL',
+            'username' => 'dpm-ft-unimal',
+            'email' => 'dpm@gmail.com',
+            'role' => 'admin',
+            'password' => bcrypt('password')
+        ]);
     }
 }

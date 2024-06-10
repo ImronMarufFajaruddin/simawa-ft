@@ -44,7 +44,7 @@ class InstansiController extends Controller
 
             $dataInstansi = new Instansi();
             $dataInstansi->kategori_instansi_id = $data['kategori_instansi_id'];
-            $dataInstansi->user_id = Auth::id();
+            // $dataInstansi->user_id = Auth::id();
             $dataInstansi->nama_resmi = $data['nama_resmi'];
             $dataInstansi->nama_singkatan = $data['nama_singkatan'];
             $dataInstansi->logo = $data['logo'];

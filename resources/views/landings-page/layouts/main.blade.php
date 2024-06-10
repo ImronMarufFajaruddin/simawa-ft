@@ -31,6 +31,7 @@
 
     <!-- Template Main CSS File -->
     <link rel="stylesheet" href="{{ asset('landings-template/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('landings-template/assets/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('landings-template/assets/css/custom.css') }}">
 
     <style>
@@ -84,6 +85,7 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('landings-template/assets/js/main.js') }}"></script>
+    <script src="{{ asset('landings-template/assets/js/script.js') }}"></script>
 </body>
 
 </html>

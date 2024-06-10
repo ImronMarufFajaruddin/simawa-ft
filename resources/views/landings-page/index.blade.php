@@ -1,6 +1,33 @@
 @extends('landings-page.layouts.main')
 
 @section('content')
+    {{-- <section id="hero" class="hero section">
+
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    <h1 data-aos="fade-up" class="aos-init aos-animate">We offer modern solutions for growing your business
+                    </h1>
+                    <p data-aos="fade-up" data-aos-delay="100" class="aos-init aos-animate">We are team of talented designers
+                        making websites with Bootstrap</p>
+                    <div class="d-flex flex-column flex-md-row aos-init aos-animate" data-aos="fade-up"
+                        data-aos-delay="200">
+                        <a href="#about" class="btn-get-started">Get Started <i class="bi bi-arrow-right"></i></a>
+                        <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                            class="glightbox btn-watch-video d-flex align-items-center justify-content-center ms-0 ms-md-4 mt-4 mt-md-0"><i
+                                class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 hero-img aos-init aos-animate" data-aos="zoom-out">
+                    <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section> --}}
+
+
+
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="hero d-flex align-items-center">
         <div class="container">
@@ -102,15 +129,14 @@
     <!-- End Logo Section -->
 
     <!-- ======= Recent Blog Posts Section ======= -->
-    <section id="recent-blog-posts" class="recent-blog-posts">
+    {{-- <section id="recent-blog-posts" class="recent-blog-posts">
         <div class="container" data-aos="fade-up">
             <header class="section-header">
                 <p>Berita</p>
                 <h2 class="mt-3">Berita Terbaru Dari Keluarga Teknik</h2>
-
             </header>
-            <div class="row d-flex justify-content-center">
 
+            <div class="row d-flex justify-content-center">
                 @foreach ($dataBerita as $data)
                     <div class="col-lg-3">
                         <div class="post-box">
@@ -153,9 +179,69 @@
             </div>
         </div>
 
-    </section>
+    </section> --}}
     <!-- End Recent Blog Posts Section -->
 
+    <section id="recent-posts" class="recent-posts section">
+
+        <!-- Section Title -->
+        {{-- <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+            <h2>Recent Posts</h2>
+            <p>Recent posts form our Blog</p>
+        </div><!-- End Section Title --> --}}
+
+        <header class="section-header">
+            <p>Berita</p>
+            <h2 class="mt-3">Berita Terbaru Dari Keluarga Teknik</h2>
+        </header>
+
+        <div class="container">
+
+            <div class="row gy-5">
+                @foreach ($dataBerita as $data)
+                    <div class="col-xl-3 col-md-4">
+                        <div class="post-item position-relative h-100 aos-init aos-animate" data-aos="fade-up"
+                            data-aos-delay="100">
+
+                            <div class="post-img position-relative overflow-hidden">
+                                <img src="{{ asset('uploads/berita/foto/' . $data->gambar) }}" class="img-fluid"
+                                    alt="">
+                                <span
+                                    class="post-date">{{ \Carbon\Carbon::parse($data->tanggal_publish)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
+                            </div>
+
+                            <div class="post-content d-flex flex-column">
+
+                                <h3 class="post-title">{{ $data->judul }}</h3>
+
+                                <div class="meta d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person"></i> <span class="ps-2">{{ $data->user->name }}</span>
+                                    </div>
+                                    <span class="px-3 text-black-50">/</span>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-folder2"></i> <span
+                                            class="ps-2">{{ $data->kategoriBerita->kategori_nama }}</span>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <a href="{{ route('berita.show', ['id' => $data->id]) }}"
+                                    class="readmore stretched-link"><span>Read More</span><i
+                                        class="bi bi-arrow-right"></i></a>
+
+                            </div>
+
+                        </div>
+                    </div><!-- End post item -->
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </section>
 
 
 
