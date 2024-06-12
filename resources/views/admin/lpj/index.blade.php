@@ -70,7 +70,7 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($datalpj as $data)
+                            @foreach ($dataLpj as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->user->name }}</td>

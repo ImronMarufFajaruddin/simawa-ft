@@ -2,13 +2,14 @@
 
 namespace App\Models\Admin;
 
-use App\Traits\HashUuid;
+use App\Models\User;
+use App\Models\Admin\Kegiatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Lpj extends Model
 {
-    use HasFactory, HashUuid;
+    use HasFactory;
 
     protected $table = 'lpj';
     protected $primaryKey = 'id';
@@ -28,6 +29,6 @@ class Lpj extends Model
 
     public function kegiatan()
     {
-        return $this->belongsTo(Kegiatan::class, 'kegiatan_id', 'id');
+        return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
     }
 }

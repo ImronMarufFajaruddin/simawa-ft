@@ -1,20 +1,20 @@
 <?php
 
-use App\Models\Admin\KategoriBerita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use App\Http\Controllers\Admin\LpjController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\InstansiController;
+use App\Http\Controllers\Admin\KegiatanController;
+use App\Http\Controllers\Admin\ProposalController;
 use App\Http\Controllers\Admin\UserAdminController;
+use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Admin\UserSettingController;
+use App\Http\Controllers\Admin\LevelJabatanController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
-use App\Http\Controllers\Admin\KegiatanController;
-use App\Http\Controllers\Admin\LevelJabatanController;
-use App\Http\Controllers\Admin\ProposalController;
-use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Landings\LandingBeritaController;
 use App\Http\Controllers\Landings\LandingInstansiController;
 
@@ -29,14 +29,13 @@ use App\Http\Controllers\Landings\LandingInstansiController;
 |
 */
 
-/** for side bar menu active */
-// function set_active($route)
-// {
-//     if (is_array($route)) {
-//         return in_array(Request::path(), $route) ? 'active' : '';
-//     }
-//     return Request::path() == $route ? 'active' : '';
-// }
+function set_active($route)
+{
+    if (is_array($route)) {
+        return in_array(Request::path(), $route) ? 'active' : '';
+    }
+    return Request::path() == $route ? 'active' : '';
+}
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -121,6 +120,17 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', [ProposalController::class, 'destroy'])->name('data-proposal.destroy');
         Route::put('/proposal/{id}/update-status', [ProposalController::class, 'updateStatus'])->name('proposal.update-status');
         Route::post('/proposal/{id}/tambah-komentar', [ProposalController::class, 'tambahKomentar'])->name('proposal.tambahKomentar');
+    });
+
+    Route::group(['prefix' => 'data-lpj', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [LpjController::class, 'index'])->name('data-lpj.index');
+        Route::get('/show/{id}', [LpjController::class, 'show'])->name('data-lpj.show');
+        Route::post('/store', [LpjController::class, 'store'])->name('data-lpj.store');
+        Route::get('/edit/{id}', [LpjController::class, 'edit'])->name('data-lpj.edit');
+        Route::put('/update/{id}', [LpjController::class, 'update'])->name('data-lpj.update');
+        Route::delete('/destroy/{id}', [LpjController::class, 'destroy'])->name('data-lpj.destroy');
+        Route::put('/lpj/{id}/update-status', [LpjController::class, 'updateStatus'])->name('lpj.update-status');
+        Route::post('/lpj/{id}/tambah-komentar', [LpjController::class, 'tambahKomentar'])->name('lpj.tambahKomentar');
     });
 });
 

@@ -148,9 +148,6 @@ class ProposalController extends Controller
 
         return redirect()->route('data-proposal.index')->with('success', 'Status proposal berhasil diperbarui.');
     }
-
-
-
     public function destroy($id)
     {
         try {
