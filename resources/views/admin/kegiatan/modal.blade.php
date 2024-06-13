@@ -14,9 +14,7 @@
             {{-- <h5 class="mb-3 text-16">Modal Content</h5> --}}
             <form action="{{ route('data-kegiatan.store') }}" method="POST">
                 @csrf
-
                 <div class="grid grid-cols-1 gap-5 xl:grid-cols-12">
-
                     <div class="xl:col-span-12">
                         <label for="nama_kegiatann" class="inline-block mb-2 text-base font-medium">Nama Kegiatan<span
                                 class="text-red-500">*</span></label>

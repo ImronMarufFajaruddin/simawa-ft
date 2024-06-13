@@ -29,6 +29,21 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="user_id" class="inline-block mb-2 text-base font-medium">Kategori
+                        Instansi<span class="text-red-500">*</span></label>
+                    <select name="user_id" id="user_id"
+                        class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                        <option value="">---Pilih User---</option>
+                        @foreach ($dataUser as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('kategori_instansi_id')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
                     <label for="nama_resmi" class="inline-block mb-2 text-base font-medium">Nama Resmi<span
                             class="text-red-500">*</span></label>
                     <input type="text" name="nama_resmi" id="nama_resmi" placeholder=""
@@ -108,7 +123,8 @@
 
 
 @foreach ($dataInstansi as $data)
-    <div id="modalEdit{{ $data->id }}" class="fixed hidden z-drawer inset-0 flex items-center justify-center p-4">
+    <div id="modalEdit{{ $data->id }}"
+        class="fixed hidden z-drawer inset-0 flex items-center justify-center p-4">
         <div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
             <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
                 <h5 class="text-16">Edit Data</h5>

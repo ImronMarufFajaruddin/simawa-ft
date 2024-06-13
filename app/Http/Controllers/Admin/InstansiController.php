@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\KategoriInstansi;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,14 +19,16 @@ class InstansiController extends Controller
     public function index()
     {
         $dataInstansi = Instansi::with('kategoriInstansi')->get();
+        $dataUser = User::all();
         $dataKategoriInstansi = KategoriInstansi::all();
-        return view('admin.instansi.index', compact('dataInstansi', 'dataKategoriInstansi'));
+        return view('admin.instansi.index', compact('dataInstansi', 'dataKategoriInstansi', 'dataUser'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
+            'user_id' => 'required|exists:users,id',
             'nama_resmi' => 'required|unique:instansi,nama_resmi',
             'nama_singkatan' => 'required|unique:instansi,nama_singkatan',
             'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
@@ -44,7 +47,7 @@ class InstansiController extends Controller
 
             $dataInstansi = new Instansi();
             $dataInstansi->kategori_instansi_id = $data['kategori_instansi_id'];
-            // $dataInstansi->user_id = Auth::id();
+            $dataInstansi->user_id = $data['user_id'];
             $dataInstansi->nama_resmi = $data['nama_resmi'];
             $dataInstansi->nama_singkatan = $data['nama_singkatan'];
             $dataInstansi->logo = $data['logo'];

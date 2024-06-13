@@ -45,6 +45,23 @@
                 </div>
             @endif
 
+            @if (Session::has('error'))
+                <div class="flex mb-2 gap-3 p-4 text-sm text-red-500 rounded-md bg-red-50 dark:bg-red-400/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        data-lucide="alert-triangle"
+                        class="lucide lucide-alert-triangle inline-block size-4 mt-0.5 shrink-0">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                        <path d="M12 9v4"></path>
+                        <path d="M12 17h.01"></path>
+                    </svg>
+                    <div>
+                        <h6 class="mb-1">Terjadi Kesalahan!</h6>
+                        <p>{{ Session::get('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-body">
                     <h6 class="mb-4 text-15">Data Level Jabatan</h6>
@@ -62,8 +79,12 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                @if (Gate::allows('superadmin-only'))
+                                    <th>Instansi</th>
+                                @endif
                                 <th>Periode</th>
                                 <th>Nama Jabatan</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
@@ -71,8 +92,31 @@
                             @foreach ($dataLevelJabatan as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    @if (Gate::allows('superadmin-only'))
+                                        <td>{{ $data->instansi->nama_singkatan }}</td>
+                                    @endif
                                     <td>{{ $data->periode }}</td>
                                     <td>{{ $data->nama_jabatan }}</td>
+                                    <td class="flex gap-1">
+                                        <button data-modal-target="modalEdit{{ $data->id }}" type="button"
+                                            action="{{ route('data-level-jabatan.edit', $data->id) }}"
+                                            class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-yellow-400 border-yellow-400 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-custom-100 dark:ring-yellow-400/20">
+                                            <i
+                                                class="ri-edit-2-fill w-[26px] bg-white/10 flex absolute ltr:-left-[1px] rtl:-right-[1px] -bottom-[1px] -top-[1px] items-center justify-center">
+                                            </i>Edit
+                                        </button>
+                                        <form action="{{ route('data-level-jabatan.destroy', $data->id) }}" method="POST"
+                                            id="deleteForm{{ $data->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20"
+                                                onclick="confirmDelete('{{ $data->id }}')">
+                                                <i
+                                                    class="ri-delete-bin-5-line w-[26px] bg-white/10 flex absolute ltr:-left-[1px] rtl:-right-[1px] -bottom-[1px] -top-[1px] items-center justify-center"></i>Hapus
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

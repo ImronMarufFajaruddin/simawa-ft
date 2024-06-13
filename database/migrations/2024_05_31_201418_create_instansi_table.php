@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('instansi', function (Blueprint $table) {
             $table->increments('id');
+            $table->foreignUuid('user_id');
             $table->integer('kategori_instansi_id')->unsigned();
             $table->string('nama_resmi');
             $table->string('nama_singkatan');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->text('sejarah')->nullable();
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('kategori_instansi_id')->references('id')->on('kategori_instansi')->onDelete('cascade');
         });
     }

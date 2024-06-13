@@ -3,62 +3,133 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Models\Admin\Instansi;
 use App\Models\Admin\LevelJabatan;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Instansi;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class LevelJabatanController extends Controller
 {
     public function index()
     {
-        $dataLevelJabatan = LevelJabatan::all();
-        return view('admin.level-jabatan.index', compact('dataLevelJabatan'));
+        $user = Auth::user();
+        $instansi = Instansi::where('user_id', $user->id)->first();
+
+        if (Gate::allows('superadmin-only')) {
+            $dataLevelJabatan = LevelJabatan::all();
+            $dataInstansi = Instansi::all();
+        } else {
+            if ($instansi) {
+                $dataLevelJabatan = LevelJabatan::where('instansi_id', $instansi->id)->get();
+            } else {
+                $dataLevelJabatan = collect();
+            }
+            $dataInstansi = collect([$instansi]);
+        }
+
+        return view('admin.level-jabatan.index', compact('dataLevelJabatan', 'dataInstansi'));
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
-            // 'periode' => 'required|unique:level_jabatan',
             'mulai_periode' => 'required|numeric',
             'akhir_periode' => 'required|numeric',
-            'nama_jabatan' => 'required|unique:level_jabatan',
+            'nama_jabatan' => 'required',
         ]);
 
         $mulai_periode = $request->input('mulai_periode');
         $akhir_periode = $request->input('akhir_periode');
         $nama_jabatan = $request->input('nama_jabatan');
-
         $periode = $mulai_periode . ' - ' . $akhir_periode;
 
         try {
             DB::beginTransaction();
             $dataLevelJabatan = new LevelJabatan();
-            // $dataLevelJabatan->user_id = Auth::id();
 
-            $dataLevelJabatan = Instansi::find($request->input('instansi_id'));
+            $instansi = Instansi::where('user_id', Auth::id())->first();
+            if (!$instansi) {
+                throw new \Exception('Anda Tidak Memiliki Instansi.');
+            }
+
+            $existingJabatan = LevelJabatan::where('instansi_id', $instansi->id)
+                ->where('nama_jabatan', $nama_jabatan)
+                ->exists();
+            if ($existingJabatan) {
+                throw new \Exception('Nama Jabatan sudah ada untuk instansi anda.');
+            }
+
             $dataLevelJabatan->periode = $periode;
             $dataLevelJabatan->nama_jabatan = $nama_jabatan;
+            $dataLevelJabatan->instansi_id = $instansi->id;
+
             // dd($dataLevelJabatan);
+
             $dataLevelJabatan->save();
             DB::commit();
-            return redirect()->route('data-level-jabatan.index')->with('success', 'Level Jabatan Berhasil Diubah');
+            return redirect()->route('data-level-jabatan.index')->with('success', 'Level Jabatan Berhasil Disimpan');
         } catch (\Exception $e) {
             DB::rollback();
-            Session::flash('error', 'Level Jabatan Gagal Diubah');
+            Session::flash('error', 'Level Jabatan Gagal Disimpan: ' . $e->getMessage());
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
     public function edit($id)
     {
+        $dataInstansi = Instansi::findOrFail($id);
+        return response()->json($dataInstansi, 200);
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'mulai_periode' => 'required|numeric',
+            'akhir_periode' => 'required|numeric',
+            'nama_jabatan' => 'required',
+        ]);
+
+        $mulai_periode = $request->input('mulai_periode');
+        $akhir_periode = $request->input('akhir_periode');
+        $nama_jabatan = $request->input('nama_jabatan');
+        $periode = $mulai_periode . ' - ' . $akhir_periode;
+
+        try {
+            DB::beginTransaction();
+            $dataLevelJabatan = LevelJabatan::findOrFail($id);
+
+            $instansi = Instansi::where('user_id', Auth::id())->first();
+            if (!$instansi) {
+                throw new \Exception('Anda Tidak Memiliki Instansi.');
+            }
+
+            $existingJabatan = LevelJabatan::where('instansi_id', $instansi->id)
+                ->where('id', '!=', $dataLevelJabatan->id)
+                ->where('nama_jabatan', $nama_jabatan)
+                ->exists();
+            if ($existingJabatan) {
+                throw new \Exception('Nama Jabatan sudah ada untuk instansi anda.');
+            }
+
+            $dataLevelJabatan->periode = $periode;
+            $dataLevelJabatan->nama_jabatan = $nama_jabatan;
+            $dataLevelJabatan->instansi_id = $instansi->id;
+
+            $dataLevelJabatan->save();
+            DB::commit();
+
+            return redirect()->route('data-level-jabatan.index')->with('success', 'Level Jabatan Berhasil Diperbarui');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Level Jabatan Gagal Diperbarui: ' . $e->getMessage())->withInput();
+        }
     }
+
 
     public function destroy($id)
     {

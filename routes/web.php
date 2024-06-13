@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Admin\LpjController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\ProposalController;
@@ -131,6 +132,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', [LpjController::class, 'destroy'])->name('data-lpj.destroy');
         Route::put('/lpj/{id}/update-status', [LpjController::class, 'updateStatus'])->name('lpj.update-status');
         Route::post('/lpj/{id}/tambah-komentar', [LpjController::class, 'tambahKomentar'])->name('lpj.tambahKomentar');
+    });
+
+    Route::group(['prefix' => 'data-galeri', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [GaleriController::class, 'index'])->name('data-galeri.index');
+        Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
+        Route::get('/create', [GaleriController::class, 'create'])->name('data-galeri.create');
     });
 });
 

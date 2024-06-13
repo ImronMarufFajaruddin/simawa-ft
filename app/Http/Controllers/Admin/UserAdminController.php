@@ -32,7 +32,6 @@ class UserAdminController extends Controller
             // Memulai transaksi database
             DB::beginTransaction();
 
-            // Membuat instance baru dari model User dan mengisi atributnya
             $newUser = new User();
             $newUser->name = $data['name'];
             $newUser->username = $data['username'];

@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="StarCode Kh" name="author">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('admin-template/assets/images/favicon.ico') }}">
     <!-- Layout config Js -->
@@ -21,6 +23,8 @@
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/toastr.min.css') }}">
     {{-- <link href="https://cdn.datatables.net/2.0.8/css/dataTables.tailwindcss.css"> --}}
     </link>
+
+    @stack('css')
 
     <script src="{{ asset('admin-template/assets/js/toastr_jquery.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/toastr.min.js') }}"></script>
@@ -376,9 +380,9 @@
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.print.min.js') }}"></script>
 
     {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script> --}}
-    <script src="{{ asset('admin-template/assets/libs/dropzone/dropzone-min.js') }}"></script>
-    <script src="{{ asset('admin-template/assets/js/pages/apps-ecommerce-product-create.init.js') }}"></script>
-    <script src="{{ asset('admin-template/assets/js/pages/form-file-upload.init.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/libs/dropzone/dropzone-min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('admin-template/assets/js/pages/apps-ecommerce-product-create.init.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/js/pages/form-file-upload.init.js') }}"></script> --}}
     <!-- Sweet Alerts js -->
     {{-- <script src="{{ asset('admin-template/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

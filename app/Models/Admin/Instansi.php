@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,12 @@ class Instansi extends Model
     {
         return $this->belongsTo(KategoriInstansi::class, 'kategori_instansi_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->hasMany(User::class);
+    }
+
 
     public function galeri()
     {
