@@ -92,7 +92,8 @@
                             <h3 style="color: #0040ff;">{{ $data->nama_singkatan }}</h3>
                             @if ($data->logo)
                                 <img src="{{ asset('instansi/logo/' . $data->logo) }}" alt="Logo"
-                                    class="img-fluid mx-auto d-block" style="width: 80%; height: 160px; object-fit: cover;">
+                                    class="img-fluid mx-auto d-block"
+                                    style="width: 200px; height: 200px; object-fit: contain;">
                             @else
                                 <img src="{{ asset('landings-template/assets/img/logo_ormawa/maskot.png') }}" alt="Logo"
                                     class="img-fluid mx-auto d-block" style="width: 80%; height: 150px; object-fit: cover;">
@@ -100,7 +101,12 @@
                             <p>{{ $data->nama_instansi }}</p>
                             <p>{{ $data->nama_resmi }}</p>
                             <span>{{ Str::limit($data->sejarah, 50) }}</span>
-                            <a href="#" class="read-more"><span>Read More</span> <i class="bi bi-arrow-right"></i></a>
+                            <br>
+                            <a href="{{ route('instansi.index', ['slug' => $data->slug]) }}" class="read-more">
+                                <span>Selengkapnya</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+
                         </div>
                     </div>
                 @endforeach

@@ -128,7 +128,23 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="anggota">
                         <div class="anggota-img">
-                            <img src="{{ asset('frontend/assets/img/person.jpg') }}" class="card-img-top" alt="imf-fluid">
+                            <img src="{{ asset('landings-template/assets/img/person.jpg') }}" class="card-img-top"
+                                alt="imf-fluid">
+                            <div class="info">
+                                <h6>Imron Ma'ruf Fajaruddin</h6>
+                                <p class="mb-3">Jabatan apa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4 justify-content-center align-item-center mt-4">
+                <div class="col-lg-3 col-md-6 col-sm-12 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                    <div class="anggota">
+                        <div class="anggota-img">
+                            <img src="{{ asset('landings-template/assets/img/person.jpg') }}" class="card-img-top"
+                                alt="imf-fluid">
                             <div class="info">
                                 <h6>Imron Ma'ruf Fajaruddin</h6>
                                 <p class="mb-3">Jabatan apa</p>

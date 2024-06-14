@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnggotaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -102,6 +103,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/edit/{id}', [LevelJabatanController::class, 'edit'])->name('data-level-jabatan.edit');
         Route::put('/update/{id}', [LevelJabatanController::class, 'update'])->name('data-level-jabatan.update');
         Route::delete('/destroy/{id}', [LevelJabatanController::class, 'destroy'])->name('data-level-jabatan.destroy');
+    });
+
+    Route::group(['prefix' => 'data-anggota'], function () {
+        Route::get('/', [AnggotaController::class, 'index'])->name('data-anggota.index');
+        Route::post('/store', [AnggotaController::class, 'store'])->name('data-anggota.store');
+        Route::get('/edit/{id}', [AnggotaController::class, 'edit'])->name('data-anggota.edit');
+        Route::put('/update/{id}', [AnggotaController::class, 'update'])->name('data-anggota.update');
+        Route::delete('/destroy/{id}', [AnggotaController::class, 'destroy'])->name('data-anggota.destroy');
     });
 
     Route::group(['prefix' => 'data-kegiatan', 'middleware' => ['auth', 'can:all-access']], function () {

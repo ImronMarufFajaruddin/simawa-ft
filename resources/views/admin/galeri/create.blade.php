@@ -132,34 +132,5 @@
             maxFileSize: '2MB',
             storeAsFile: true,
         });
-
-        // const inputElement = document.querySelector('input[id="gambar"]');
-
-        // const pond = FilePond.create(inputElement, {
-        //     acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'],
-        //     maxFileSize: '2MB',
-        //     server: {
-        //         process: {
-        //             url: `http://127.0.0.1:8001/data-galeri/store?`,
-        //             method: 'POST',
-        //             headers: {
-        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //             },
-        //             withCredentials: false,
-        //             onload: (response) => {
-        //                 console.log('File uploaded successfully', response);
-        //                 return response;
-        //             },
-        //             onerror: (response) => {
-        //                 console.error('File upload error', response);
-        //                 return response.data;
-        //             },
-        //             ondata: (formData) => {
-        //                 formData.append('_token', '{{ csrf_token() }}');
-        //                 return formData;
-        //             },
-        //         },
-        //     },
-        // });
     </script>
 @endpush
