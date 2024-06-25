@@ -13,7 +13,17 @@ class Instansi extends Model
 
     protected $table = 'instansi';
     protected $primaryKey = 'id';
-
+    protected $fillable = [
+        'kategori_instansi_id',
+        'user_id',
+        'nama_resmi',
+        'nama_singkatan',
+        'logo',
+        'no_telp',
+        'instagram',
+        'website_link',
+        'sejarah',
+    ];
     public function kategoriInstansi()
     {
         return $this->belongsTo(KategoriInstansi::class, 'kategori_instansi_id', 'id');
@@ -21,13 +31,18 @@ class Instansi extends Model
 
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 
     public function galeri()
     {
         return $this->hasMany(Galeri::class);
+    }
+
+    public function temporaryGalery()
+    {
+        return $this->hasMany(TemporaryUploadGaleriModel::class);
     }
 
     public function anggota()

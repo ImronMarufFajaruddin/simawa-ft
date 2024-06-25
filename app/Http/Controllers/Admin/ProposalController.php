@@ -34,9 +34,13 @@ class ProposalController extends Controller
 
     public function show($id)
     {
+        $proposal = Proposal::find($id);
+        if (!Gate::allows('superadmin-only') && $proposal->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         return view('admin.proposal.show', [
-            'dataProposal' => Proposal::find($id)
+            'dataProposal' => $proposal
         ]);
     }
 
@@ -45,13 +49,11 @@ class ProposalController extends Controller
         $dataProposal = $request->validate([
             'kegiatan_id' => 'required|exists:kegiatan,id',
             'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:2048',
-
         ]);
 
         try {
 
             DB::beginTransaction();
-
             if ($request->hasFile('dokumen')) {
                 $file_url = UploadFile::upload('dokumen/proposal', $request->file('dokumen'));
                 $dataProposal['dokumen'] = basename($file_url);
@@ -75,46 +77,51 @@ class ProposalController extends Controller
     }
     public function edit($id)
     {
-        $dataProposal = Proposal::findOrFail($id);
-        return response()->json($dataProposal, 200);
+        if (Gate::denies('superadmin-only')) {
+            $dataProposal = Proposal::findOrFail($id);
+            return response()->json($dataProposal, 200);
+        }
+
+        return response()->json(['error' => 'Superadmin tidak diizinkan untuk mengedit proposal'], 403);
     }
     public function update(Request $request, $id)
     {
-        $dataProposal = $request->validate([
-            'kegiatan_id' => 'required|exists:kegiatan,id',
-            'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:2048',
-            // 'tanggal_selesai' => 'required',
-        ]);
+        if (Gate::denies('superadmin-only')) {
+            $dataProposal = $request->validate([
+                'kegiatan_id' => 'required|exists:kegiatan,id',
+                'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:2048',
+            ]);
+            try {
+                DB::beginTransaction();
 
-        try {
+                $proposal = Proposal::findOrFail($id);
+                $proposal->user_id = Auth::id();
+                $proposal->kegiatan_id = $dataProposal['kegiatan_id'];
+                $proposal->dokumen = $dataProposal['dokumen'];
 
-            DB::beginTransaction();
-
-            $proposal = Proposal::findOrFail($id);
-            $proposal->user_id = Auth::id();
-            $proposal->kegiatan_id = $dataProposal['kegiatan_id'];
-            $proposal->dokumen = $dataProposal['dokumen'];
-
-            if ($request->hasFile('dokumen')) {
-                // Menghapus file dokumen lama jika ada
-                if ($proposal->dokumen) {
-                    DeleteFile::delete('dokumen/proposal/' . $proposal->dokumen);
+                if ($request->hasFile('dokumen')) {
+                    // Menghapus file dokumen lama jika ada
+                    if ($proposal->dokumen) {
+                        DeleteFile::delete('dokumen/proposal/' . $proposal->dokumen);
+                    }
+                    // Upload file dokumen baru
+                    $file_url = UploadFile::upload('dokumen/proposal/', $request->file('dokumen'));
+                    $proposal->dokumen = basename($file_url);
                 }
-                // Upload file dokumen baru
-                $file_url = UploadFile::upload('dokumen/proposal/', $request->file('dokumen'));
-                $proposal->dokumen = basename($file_url);
+                $proposal->status = 'menunggu';
+                $proposal->save();
+                DB::commit();
+
+                Session::flash('success', 'Data proposal berhasil diperbarui');
+                return redirect()->route('data-proposal.index');
+            } catch (\Exception $e) {
+                DB::rollback();
+                Session::flash('error', 'Data proposal gagal diperbarui');
+                return redirect()->back();
             }
-
-            $proposal->save();
-            DB::commit();
-
-            Session::flash('success', 'Data proposal berhasil ditambahkan');
-            return redirect()->route('data-proposal.index');
-        } catch (\Exception $e) {
-            DB::rollback();
-            Session::flash('error', 'Data proposal gagal ditambahkan');
-            return redirect()->back();
         }
+
+        return redirect()->back()->with('error', 'Superadmin tidak diizinkan untuk mengedit proposal');
     }
 
     public function tambahKomentar(Request $request, $id)

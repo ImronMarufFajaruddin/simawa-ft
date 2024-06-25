@@ -15,7 +15,7 @@
 
             <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                 <div class="grow">
-                    <h5 class="text-16">Sistem Informasi Monitoring Mahasiswa </h5>
+                    <h5 class="text-16">Sistem Informasi Monitoring ORMAWA </h5>
                 </div>
 
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
@@ -189,15 +189,28 @@
                             <div class="col-span-12 lg:col-span-8 2xl:col-span-7">
                                 <h5 class="mb-3 font-normal tracking-wide text-slate-200">Selamat Datang
                                     {{ Auth::user()->name }} 🎉</h5>
-                                <p class="mb-5 text-slate-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                </p>
-                                <button type="button"
+
+                                @if ($user->role === 'superadmin')
+                                    <p class="mb-5 text-slate-400">
+                                        Selamat datang Super Administrator! Anda memiliki akses penuh ke sistem.
+                                    </p>
+                                @elseif ($user->role === 'admin')
+                                    <p class="mb-5 text-slate-400">
+                                        Selamat Mengelola dashboard anda, jika ada kesulitan silahkan hubungi super
+                                        administrator.
+                                    </p>
+                                @endif
+                                {{-- 
+                                <p class="mb-5 text-slate-400">Selamat Mengelola dashboard anda, jika ada kesulitan
+                                    silahkan hubungi super administrator.
+                                </p> --}}
+                                {{-- <button type="button"
                                     class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-500/20 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-500/20 dark:ring-custom-400/20">Take
-                                    a Product</button>
+                                    a Product</button> --}}
                             </div>
                             <div
                                 class="hidden col-span-12 2xl:col-span-3 lg:col-span-2 lg:col-start-11 2xl:col-start-10 lg:block">
-                                <img src="assets/images/dashboard.png" alt=""
+                                <img src="{{ asset('admin-templates/assets/images/dashboard.png') }}" alt=""
                                     class="h-40 ltr:2xl:ml-auto rtl:2xl:mr-auto">
                             </div>
                         </div>
@@ -238,14 +251,39 @@
                         <p class="text-slate-500 dark:text-zink-200">Total Berita</p>
                     </div>
                 </div><!--end col-->
+
+                <div class="col-span-12 card md:col-span-6 lg:col-span-3 2xl:col-span-2">
+                    <div class="text-center card-body">
+                        <div
+                            class="flex items-center justify-center mx-auto text-orange-600 bg-orange-100 rounded-full size-14 dark:bg-orange-500/20">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <h5 class="mt-4 mb-2"><span class="counter-value" data-target="{{ $kegiatanCount }}">0</span>
+                        </h5>
+                        <p class="text-slate-500 dark:text-zink-200">Total Kegiatan</p>
+                    </div>
+                </div><!--end col-->
+
+                <div class="col-span-12 card md:col-span-6 lg:col-span-3 2xl:col-span-2">
+                    <div class="text-center card-body">
+                        <div
+                            class="flex items-center justify-center mx-auto text-sky-500 bg-sky-100 rounded-full size-14 dark:bg-sky-500/20">
+                            <i data-lucide="file-spreadsheet"></i>
+                        </div>
+                        <h5 class="mt-4 mb-2"><span class="counter-value" data-target="{{ $lpjCount }}">0</span></h5>
+                        <p class="text-slate-500 dark:text-zink-200">Total Lpj</p>
+                    </div>
+                </div><!--end col-->
+
                 <div class="col-span-12 card md:col-span-6 lg:col-span-3 2xl:col-span-2">
                     <div class="text-center card-body">
                         <div
                             class="flex items-center justify-center mx-auto text-red-500 bg-red-100 rounded-full size-14 dark:bg-red-500/20">
                             <i data-lucide="file-text"></i>
                         </div>
-                        <h5 class="mt-4 mb-2"><span class="counter-value" data-target="20">0</span></h5>
-                        <p class="text-slate-500 dark:text-zink-200">Total Lpj</p>
+                        <h5 class="mt-4 mb-2"><span class="counter-value" data-target="{{ $proposalCount }}">0</span>
+                        </h5>
+                        <p class="text-slate-500 dark:text-zink-200">Total Proposal</p>
                     </div>
                 </div><!--end col-->
             </div>

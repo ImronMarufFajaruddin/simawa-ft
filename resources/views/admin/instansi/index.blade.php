@@ -25,13 +25,33 @@
                 </ul>
             </div>
 
+            @if ($errors->any())
+                <div class="flex mb-2 gap-3 p-4 text-sm text-red-500 rounded-md bg-red-50 dark:bg-red-400/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        data-lucide="alert-triangle"
+                        class="lucide lucide-alert-triangle inline-block size-4 mt-0.5 shrink-0">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                        <path d="M12 9v4"></path>
+                        <path d="M12 17h.01"></path>
+                    </svg>
+                    <div>
+                        <h6 class="mb-1">Ada kesalahan pada input anda!</h6>
+                        <ul class="ml-2 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
 
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3 flex items-center">
                         <h6 class="mb-4 text-xl grow">Data Instansi</h6>
                         <div class="shrink-0">
-                            <button data-modal-target="modalAddInstansi" type="button"
+                            <button data-modal-target="modalAdd" type="button"
                                 class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -51,8 +71,9 @@
                                 <th>Nama Singkatan</th>
                                 <th>Logo</th>
                                 <th>No Telp.</th>
-                                <th>Instagram</th>
-                                <th>Sejarah</th>
+                                {{-- <th>Instagram</th>
+                                <th>Website</th>
+                                <th>Sejarah</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -68,14 +89,15 @@
                                             <img src="{{ asset('instansi/logo/' . $data->logo) }}" alt="Logo"
                                                 style="width: 100px; height: auto;">
                                         @else
-                                            <img src="{{ asset('admin-template/assets/images/avatar-1.png') }}"
-                                                alt="Logo" style="width: 50px; height: auto;">
+                                            <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}"
+                                                alt="Logo" style="width: 80px; height: auto;">
                                         @endif
                                         {{-- <img src="{{ $data->logo }}" alt="Logo" style="width: 50px; height: auto;"> --}}
                                     </td>
                                     <td>{{ $data->no_telp }}</td>
-                                    <td>{{ $data->instagram }}</td>
-                                    <td>{{ Str::limit($data->sejarah, 5) }}</td>
+                                    {{-- <td>{{ $data->instagram }}</td>
+                                    <td>{{ $data->website_link }}</td>
+                                    <td>{{ Str::limit($data->sejarah, 5) }}</td> --}}
                                     {{-- <button type="button" action="{{  }}">Edit</button> --}}
 
                                     <td
@@ -96,14 +118,35 @@
                                             <ul class="absolute z-50 py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md dropdown-menu min-w-[5rem] dark:bg-zink-600 hidden"
                                                 aria-labelledby="orderAction1" data-popper-placement="bottom-start"
                                                 style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(682px, 2243.5px, 0px);">
+
+
                                                 <li>
-                                                    <button data-modal-target="modalEdit{{ $data->id }}" type="button"
-                                                        action="{{ route('data-instansi.edit', $data->id) }}"
+                                                    <a type="button" href="{{ route('data-instansi.detail', $data->id) }}"
                                                         class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"><svg
                                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                            data-lucide="file-edit"
+                                                            data-lucide="eye"
+                                                            class="lucide eye inline-block size-3 ltr:mr-1 rtl:ml-1">
+                                                            <path
+                                                                d="M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5">
+                                                            </path>
+                                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                                            <path
+                                                                d="M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z">
+                                                            </path>
+                                                        </svg>
+                                                        <span class="align-justify">Detail </span></a>
+                                                </li>
+
+                                                <li>
+                                                    <button data-modal-target="modalEdit{{ $data->id }}" type="button"
+                                                        action="{{ route('data-instansi.edit', $data->id) }}"
+                                                        class="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" data-lucide="file-edit"
                                                             class="lucide lucide-file-edit inline-block size-3 ltr:mr-1 rtl:ml-1">
                                                             <path
                                                                 d="M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5">
@@ -115,6 +158,8 @@
                                                         </svg>
                                                         <span class="align-justify">Edit </span></button>
                                                 </li>
+
+
                                                 <li>
                                                     <form action="{{ route('data-instansi.destroy', $data->id) }}"
                                                         method="POST" id="deleteForm{{ $data->id }}">
@@ -154,8 +199,9 @@
                                 <th>Nama Singkatan</th>
                                 <th>Logo</th>
                                 <th>No Telp.</th>
-                                <th>Instagram</th>
-                                <th>Sejarah</th>
+                                {{-- <th>Instagram</th>
+                                <th>Website</th>
+                                <th>Sejarah</th> --}}
                                 <th>Action</th>
                             </tr>
                         </tfoot>

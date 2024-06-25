@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Models\Admin\Berita;
+use App\Models\Admin\Lpj;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -24,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // Izin akses dashboard
+
         Gate::define('superadmin-only', function ($user) {
             return $user->role === 'superadmin';
         });
@@ -34,6 +39,19 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('all-access', function ($user) {
             return in_array($user->role, ['superadmin', 'admin']);
+        });
+
+        // Izin akses berita
+        Gate::define('view-berita', function (User $user, Berita $berita) {
+            return $user->role === 'superadmin' || $user->id === $berita->user_id;
+        });
+
+        Gate::define('view-kategori-berita', function ($user, $kategori) {
+            return $user->id === $kategori->user_id;
+        });
+
+        Gate::define('view-all-kategori-berita', function ($user) {
+            return $user->role === 'superadmin';
         });
     }
 }

@@ -115,7 +115,7 @@
                                     @else
                                         <td>
                                             <span
-                                                class="inline-block px-2 py-1 text-xs font-semibold leading-none {{ $data->status == 'menunggu' ? 'text-yellow-600 bg-yellow-200' : ($data->status == 'revisi' ? 'text-custom-600 bg-custom-200' : ($data->status == 'ditolak' ? 'text-red-600 bg-red-200' : 'text-green-600 bg-green-200')) }} rounded">{{ $data->status }}</span>
+                                                class="inline-block px-2 py-1 text-xs font-semibold leading-none {{ $data->status == 'menunggu' ? 'text-yellow-600 bg-yellow-200' : ($data->status == 'revisi' ? 'text-custom-600 bg-custom-200' : ($data->status == 'ditolak' ? 'text-red-600 bg-red-200' : 'text-white bg-green-500')) }} rounded">{{ $data->status }}</span>
                                         </td>
                                     @endif
 

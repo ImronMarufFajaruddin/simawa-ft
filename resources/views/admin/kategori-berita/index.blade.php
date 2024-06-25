@@ -63,6 +63,9 @@
                         <thead>
                             <tr>
                                 <th class="ltr:!text-left rtl:!text-right">Nomor</th>
+                                @if (Gate::allows('superadmin-only'))
+                                    <th>Author</th>
+                                @endif
                                 <th>Kategori</th>
                                 <th>Slug</th>
                                 <th>Action</th>
@@ -72,6 +75,9 @@
                             @foreach ($dataKategoriBerita as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    @if (Gate::allows('superadmin-only'))
+                                        <td>{{ $data->user->name }}</td>
+                                    @endif
                                     <td>{{ $data->kategori_nama }}</td>
                                     <td>{{ $data->slug }}</td>
                                     <td class="flex gap-1">

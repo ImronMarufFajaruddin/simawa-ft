@@ -31,8 +31,13 @@ class LpjController extends Controller
 
     public function show($id)
     {
+        $lpj = Lpj::find($id);
+        if (!Gate::allows('superadmin-only') && $lpj->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('admin.lpj.show', [
-            'dataLpj' => Lpj::find($id)
+            'dataLpj' => $lpj
         ]);
     }
 
@@ -71,6 +76,10 @@ class LpjController extends Controller
     public function edit($id)
     {
         $dataLpj = Lpj::findOrFail($id);
+
+        if (!Gate::allows('superadmin-only') && $dataLpj->user_id !== Auth::id()) {
+            abort(403);
+        }
         return response()->json($dataLpj, 200);
     }
 
@@ -97,6 +106,7 @@ class LpjController extends Controller
                 $lpj->dokumen = basename($file_url);
             }
 
+            $lpj->status = 'menunggu';
             $lpj->save();
             DB::commit();
 

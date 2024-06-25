@@ -7,13 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KategoriBerita;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class KategoriBeritaController extends Controller
 {
     public function index()
     {
-        $dataKategoriBerita = KategoriBerita::latest()->get();
+
+        if (Gate::allows('superadmin-only')) {
+            $dataKategoriBerita = KategoriBerita::latest()->get();
+        } else {
+            $dataKategoriBerita = KategoriBerita::where('user_id', Auth::id())->latest()->get();
+        }
+        // $dataKategoriBerita = KategoriBerita::latest()->get();
         return view('admin.kategori-berita.index', compact('dataKategoriBerita'));
     }
 
@@ -26,6 +34,7 @@ class KategoriBeritaController extends Controller
         try {
             DB::beginTransaction();
             $newKategoriBerita = new KategoriBerita();
+            $newKategoriBerita->user_id = Auth::id();
             $newKategoriBerita->kategori_nama = $data['kategori_nama'];
             $newKategoriBerita->slug = $data['slug'];
             $newKategoriBerita->save();

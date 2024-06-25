@@ -38,8 +38,6 @@
 @endpush
 
 @section('content')
-
-
     <div
         class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
         <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto ">
@@ -80,8 +78,6 @@
                 <div class="card-body">
                     <div class="mb-3 flex items-center">
                         <h6 class="mb-4 text-xl grow">Galeri Upload</h6>
-                        <!--Tabel-->
-
                     </div>
                     <form action="{{ route('data-galeri.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -91,9 +87,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="gambar" class="form-label">Gambar</label>
-                            <input type="file" id="gambar" name="gambar[]" multiple required>
+                            <input type="file" id="gambar" name="gambar" multiple required>
                         </div>
-
 
                         <button type="submit"
                             class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i
@@ -102,35 +97,95 @@
 
                 </div>
             </div>
-        </div><!--end card-->
-    </div>
+        </div>
+    @endsection
 
-@endsection
+    @push('js')
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js">
+        </script>
+        <script
+            src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js">
+        </script>
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
 
-@push('js')
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js">
-    </script>
-    <script
-        src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js">
-    </script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script>
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            const pond = FilePond.create(document.querySelector('input[type="file"]'));
 
-    <script>
-        FilePond.registerPlugin(
-            FilePondPluginFileEncode,
-            FilePondPluginFileValidateSize,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginImagePreview
-        );
+            pond.setOptions({
+                storeasfile: true,
+                server: {
+                    url: '/data-galeri/upload-temporary',
+                    process: {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response) => {
+                            return response;
+                        }
+                    },
+                    revert: {
+                        url: '/data-galeri/revert-temporary/{filename}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response) => {
+                            return response;
+                        }
+                    }
+                }
+            });
 
-        const inputElement = document.querySelector('input[id="gambar"]');
+            function confirmDelete(id) {
+                let form = document.getElementById('deleteForm' + id);
+                Swal.fire({
+                    title: 'Apakah anda Yakin?',
+                    text: "Data akan dihapus secara permanen",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    confirmButtonText: 'Hapus'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
 
-        FilePond.create(inputElement, {
-            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'],
-            maxFileSize: '2MB',
-            storeAsFile: true,
-        });
-    </script>
-@endpush
+                let errorMessage = '{{ session('error') }}';
+                if (errorMessage !== '') {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ooops!",
+                        text: errorMessage,
+                        showConfirmButton: true,
+                    });
+                }
+            }
+
+            let errorMessage = '{{ session('error') }}';
+            if (errorMessage !== '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ooops!",
+                    text: errorMessage,
+                    showConfirmButton: true,
+                });
+            }
+
+            let successMessage = '{{ session('success') }}';
+            if (successMessage !== '') {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: successMessage,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        </script>
+    @endpush

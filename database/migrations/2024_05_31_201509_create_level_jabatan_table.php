@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('level_jabatan', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('instansi_id')->unsigned();
+            $table->enum('level', ['1', '2', '3', '4', '5']);
             $table->string('periode');
             $table->string('nama_jabatan');
             $table->timestamps();

@@ -12,7 +12,7 @@
     <meta content="Minimal Admin & Dashboard Template" name="description">
     <meta content="StarCode Kh" name="author">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('admin-template') }}/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}">
     <!-- Layout config Js -->
     <script src="{{ asset('admin-template') }}/assets/js/layout.js"></script>
     <!-- Icons CSS -->
@@ -31,7 +31,6 @@
     </div>
     <script src="{{ asset('admin-template') }}/assets/libs/lucide/umd/lucide.js"></script>
     <script src="{{ asset('admin-template') }}/assets/js/starcode.bundle.js"></script>
-    <script src="assets/js/pages/auth-login.init.js"></script>
 
 </body>
 

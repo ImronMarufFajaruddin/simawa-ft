@@ -21,17 +21,15 @@ class LevelJabatanController extends Controller
 
         if (Gate::allows('superadmin-only')) {
             $dataLevelJabatan = LevelJabatan::all();
-            $dataInstansi = Instansi::all();
         } else {
             if ($instansi) {
                 $dataLevelJabatan = LevelJabatan::where('instansi_id', $instansi->id)->get();
             } else {
                 $dataLevelJabatan = collect();
             }
-            $dataInstansi = collect([$instansi]);
         }
 
-        return view('admin.level-jabatan.index', compact('dataLevelJabatan', 'dataInstansi'));
+        return view('admin.level-jabatan.index', compact('dataLevelJabatan'));
     }
 
 
@@ -40,11 +38,13 @@ class LevelJabatanController extends Controller
         $request->validate([
             'mulai_periode' => 'required|numeric',
             'akhir_periode' => 'required|numeric',
+            'level' => 'required',
             'nama_jabatan' => 'required',
         ]);
 
         $mulai_periode = $request->input('mulai_periode');
         $akhir_periode = $request->input('akhir_periode');
+        $level = $request->input('level');
         $nama_jabatan = $request->input('nama_jabatan');
         $periode = $mulai_periode . ' - ' . $akhir_periode;
 
@@ -65,10 +65,9 @@ class LevelJabatanController extends Controller
             }
 
             $dataLevelJabatan->periode = $periode;
+            $dataLevelJabatan->level = $level;
             $dataLevelJabatan->nama_jabatan = $nama_jabatan;
             $dataLevelJabatan->instansi_id = $instansi->id;
-
-            // dd($dataLevelJabatan);
 
             $dataLevelJabatan->save();
             DB::commit();
@@ -79,7 +78,6 @@ class LevelJabatanController extends Controller
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
-
     public function edit($id)
     {
         $dataInstansi = Instansi::findOrFail($id);
@@ -91,11 +89,13 @@ class LevelJabatanController extends Controller
         $request->validate([
             'mulai_periode' => 'required|numeric',
             'akhir_periode' => 'required|numeric',
+            'level' => 'required',
             'nama_jabatan' => 'required',
         ]);
 
         $mulai_periode = $request->input('mulai_periode');
         $akhir_periode = $request->input('akhir_periode');
+        $level = $request->input('level');
         $nama_jabatan = $request->input('nama_jabatan');
         $periode = $mulai_periode . ' - ' . $akhir_periode;
 
@@ -117,6 +117,7 @@ class LevelJabatanController extends Controller
             }
 
             $dataLevelJabatan->periode = $periode;
+            $dataLevelJabatan->level = $level;
             $dataLevelJabatan->nama_jabatan = $nama_jabatan;
             $dataLevelJabatan->instansi_id = $instansi->id;
 
@@ -130,8 +131,18 @@ class LevelJabatanController extends Controller
         }
     }
 
-
     public function destroy($id)
     {
+        try {
+            DB::beginTransaction();
+            $dataLevelJabatan = LevelJabatan::findOrFail($id);
+            $dataLevelJabatan->delete();
+            DB::commit();
+            Session::flash('success', 'Berhasil menghapus data');
+            return redirect()->route('data-level-jabatan.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
+        }
     }
 }

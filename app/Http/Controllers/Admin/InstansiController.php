@@ -26,16 +26,38 @@ class InstansiController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
-            'user_id' => 'required|exists:users,id',
-            'nama_resmi' => 'required|unique:instansi,nama_resmi',
-            'nama_singkatan' => 'required|unique:instansi,nama_singkatan',
-            'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
-            'no_telp' => 'required|numeric',
-            'instagram' => 'required|url',
-            'sejarah' => 'required',
-        ]);
+        $data = $request->validate(
+            [
+                'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
+                'user_id' => 'required|exists:users,id',
+                'nama_resmi' => 'required|unique:instansi,nama_resmi',
+                'nama_singkatan' => 'required|unique:instansi,nama_singkatan',
+                'logo' => 'nullable|mimes:png,jpg,jpeg|max:2048',
+                'no_telp' => 'required|numeric',
+                'instagram' => 'required|url',
+                'website_link' => 'nullable|url',
+                'sejarah' => 'required',
+            ],
+            [
+                'logo.mimes' => 'File harus berformat PNG, JPG, atau JPEG',
+                'logo.max' => 'File melebihi batas ukuran 2 MB',
+                'no_telp.numeric' => 'No. Telp harus berupa angka',
+                'no_telp.required' => 'No. Telp harus diisi',
+                'instagram.required' => 'Instagram harus diisi',
+                'instagram.url' => 'Instagram harus berupa link URL',
+                'website_link.url' => 'Website harus berupa link URL',
+                'sejarah.required' => 'Sejarah harus diisi',
+                'user_id.required' => 'User harus diisi',
+                'user_id.exists' => 'User tidak ditemukan',
+                'kategori_instansi_id.required' => 'Kategori Instansi harus diisi',
+                'kategori_instansi_id.exists' => 'Kategori Instansi tidak ditemukan',
+                'nama_resmi.required' => 'Nama resmi harus diisi',
+                'nama_resmi.unique' => 'Nama resmi sudah ada',
+                'nama_singkatan.required' => 'Nama singkatan harus diisi',
+                'nama_singkatan.unique' => 'Nama singkatan sudah ada',
+                'logo.max' => 'File melebihi batas ukuran 2 MB',
+            ]
+        );
 
         try {
             DB::beginTransaction();
@@ -53,6 +75,7 @@ class InstansiController extends Controller
             $dataInstansi->logo = $data['logo'];
             $dataInstansi->no_telp = $data['no_telp'];
             $dataInstansi->instagram = $data['instagram'];
+            $dataInstansi->website_link = $data['website_link'];
             $dataInstansi->sejarah = $data['sejarah'];
             $dataInstansi->save();
 
@@ -76,15 +99,36 @@ class InstansiController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->validate([
-            'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
-            'nama_resmi' => 'required|unique:instansi,nama_resmi,' . $id,
-            'nama_singkatan' => 'required|unique:instansi,nama_singkatan,' . $id,
-            'logo' => 'nullable|mimes:png,jpg,jpeg|max:2048',
-            'no_telp' => 'required|numeric',
-            'instagram' => 'required|url',
-            'sejarah' => 'required',
-        ]);
+        $data = $request->validate(
+            [
+                'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
+                'nama_resmi' => 'required|unique:instansi,nama_resmi,' . $id,
+                'nama_singkatan' => 'required|unique:instansi,nama_singkatan,' . $id,
+                'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'no_telp' => 'required|numeric',
+                'instagram' => 'required|url',
+                'website_link' => 'required|url',
+                'sejarah' => 'required',
+            ],
+            [
+                'logo.mimes' => 'File harus berformat PNG, JPG, atau JPEG',
+                'logo.max' => 'File melebihi batas ukuran 2 MB',
+                'no_telp.numeric' => 'No. Telp harus berupa angka',
+                'no_telp.required' => 'No. Telp harus diisi',
+                'instagram.required' => 'Instagram harus diisi',
+                'instagram.url' => 'Instagram harus berupa link URL',
+                'website_link.url' => 'Website harus berupa link URL',
+                'sejarah.required' => 'Sejarah harus diisi',
+                'user_id.required' => 'User harus diisi',
+                'user_id.exists' => 'User tidak ditemukan',
+                'kategori_instansi_id.required' => 'Kategori Instansi harus diisi',
+                'kategori_instansi_id.exists' => 'Kategori Instansi tidak ditemukan',
+                'nama_resmi.required' => 'Nama resmi harus diisi',
+                'nama_resmi.unique' => 'Nama resmi sudah ada',
+                'nama_singkatan.required' => 'Nama singkatan harus diisi',
+                'nama_singkatan.unique' => 'Nama singkatan sudah ada',
+            ]
+        );
 
         $instansi = Instansi::findOrFail($id);
         $logoLama = $instansi->logo;
@@ -97,6 +141,7 @@ class InstansiController extends Controller
             $instansi->nama_singkatan = $data['nama_singkatan'];
             $instansi->no_telp = $data['no_telp'];
             $instansi->instagram = $data['instagram'];
+            $instansi->website_link = $data['website_link'];
             $instansi->sejarah = $data['sejarah'];
 
             if ($request->hasFile('logo')) {
@@ -117,6 +162,12 @@ class InstansiController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function detail($id)
+    {
+        $dataInstansi = Instansi::find($id);
+        return view('admin.instansi.detail', compact('dataInstansi'));
     }
 
     public function destroy($id)

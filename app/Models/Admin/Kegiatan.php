@@ -13,13 +13,6 @@ class Kegiatan extends Model
     protected $table = 'kegiatan';
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'nama_kegiatan',
-    //     'tanggal_mulai',
-    //     'tanggal_selesai',
-    // ];
-
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

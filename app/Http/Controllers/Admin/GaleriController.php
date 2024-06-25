@@ -6,15 +6,19 @@ use App\Helpers\DeleteFile;
 use App\Helpers\UploadFile;
 use App\Models\Admin\Galeri;
 use Illuminate\Http\Request;
+use App\Models\Admin\Instansi;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
+use App\Models\Admin\TemporaryUploadGaleriModel;
 
 class GaleriController extends Controller
 {
-
     public function index()
     {
-        $galeri = Galeri::all();
+        $galeri = Galeri::where('instansi_id', Auth::user()->instansi_id)->get();
         return view('admin.galeri.index', compact('galeri'));
     }
 
@@ -23,88 +27,99 @@ class GaleriController extends Controller
         return view('admin.galeri.create');
     }
 
-    public function store(Request $request)
+    public function uploadTemporary(Request $request)
     {
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $storageLocation = 'uploads/galeri/tmp/';
+            $file_url = UploadFile::upload($storageLocation, $file);
 
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'gambar.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ], [
-            'gambar.*.required' => 'Setiap gambar harus diunggah.',
-            'gambar.*.image' => 'Setiap file harus berupa gambar.',
-            'gambar.*.mimes' => 'Setiap gambar harus memiliki tipe: jpeg, png, jpg, gif, svg.',
-            'gambar.*.max' => 'Setiap gambar tidak boleh lebih dari 2MB.',
-        ]);
-        // dd($request->all());
-
-        $galeri = new Galeri();
-        $galeri->judul = $request->judul;
-
-        if ($request->file('gambar')) {
-            foreach ($request->file('gambar') as $file) {
-                $name = time() . rand(1, 100) . '.' . $file->extension();
-                $file->move(public_path('images'), $name);
-                $data[] = $name;
+            $instansi = Instansi::where('user_id', Auth::id())->first();
+            if (!$instansi) {
+                return response()->json(['error' => 'Anda tidak memiliki instansi'], 400);
             }
-            $galeri->gambar = json_encode($data);
+
+            $fileName = $file->getClientOriginalName(); // Ambil nama file asli
+            TemporaryUploadGaleriModel::create([
+                'instansi_id' => $instansi->id,
+                'file_name' => $fileName, // Gunakan nama file asli untuk file_name
+                'file_path' => str_replace(url('/') . '/', '', $file_url),
+            ]);
+
+            return response()->json(['filename' => $file_url]);
         }
-
-        $galeri->save();
-
-        return redirect()->route('data-galeri.index')->with('success', 'Galeri berhasil ditambahkan.');
+        return response()->json(['error' => 'No file uploaded'], 400);
     }
 
-    public function update(Request $request, $id)
+    public function revertTemporary($filename)
+    {
+        $temporaryFile = TemporaryUploadGaleriModel::where('file_name', $filename)->first();
+
+        if ($temporaryFile) {
+            // Hapus file dari folder temporary
+            $oldPath = public_path($temporaryFile->file_path);
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+
+            // Hapus data dari tabel temporary
+            $temporaryFile->delete();
+
+            return response()->json(['success' => 'File reverted successfully']);
+        }
+
+        return response()->json(['error' => 'File not found'], 404);
+    }
+
+
+
+    public function store(Request $request)
     {
         $request->validate([
             'judul' => 'required',
-            'gambar.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        DB::beginTransaction();
+        $instansi = Instansi::where('user_id', Auth::id())->first();
+        if (!$instansi) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki instansi');
+        }
+
+        $temporaryFiles = TemporaryUploadGaleriModel::where('instansi_id', $instansi->id)->get();
 
         try {
-            $galeri = Galeri::findOrFail($id);
-            $galeri->judul = $request->judul;
+            DB::beginTransaction();
 
-            if ($request->hasFile('gambar')) {
-                DeleteFile::delete($galeri->gambar);
+            foreach ($temporaryFiles as $temporaryFile) {
+                $newFilePath = 'uploads/galeri/' . $instansi->nama_singkatan . '/' . $temporaryFile->file_name;
 
-                $gambarUrls = [];
-                foreach ($request('gambar') as $file) {
-                    $file_url = UploadFile::upload('uploads/galeri', $file);
-                    $gambarUrls[] = $file_url;
+                // Pastikan folder instansi sudah ada, jika belum, buat folder baru
+                if (!File::isDirectory(public_path('uploads/galeri/' . $instansi->nama_singkatan))) {
+                    File::makeDirectory(public_path('uploads/galeri/' . $instansi->nama_singkatan), 0777, true, true);
                 }
-                $galeri->gambar = json_encode($gambarUrls);
+
+                // Pindahkan file dari folder temporary ke folder final
+                $oldPath = public_path($temporaryFile->file_path);
+                $newPath = public_path($newFilePath);
+                if (File::exists($oldPath)) {
+                    File::move($oldPath, $newPath);
+                }
+
+                Galeri::create([
+                    'instansi_id' => $instansi->id,
+                    'judul' => $request->judul,
+                    'gambar' => $newFilePath,
+                ]);
+
+                $temporaryFile->delete();
             }
 
-            $galeri->save();
-
             DB::commit();
-
-            return redirect()->route('data-galeri.index')->with('success', 'Galeri berhasil diperbarui');
+            Session::flash('success', 'Gambar berhasil diunggah');
+            return redirect()->route('data-galeri.index');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Gagal memperbarui galeri: ' . $e->getMessage());
-        }
-    }
-
-
-    public function destroy($id)
-    {
-        DB::beginTransaction();
-
-        try {
-            $galeri = Galeri::findOrFail($id);
-            DeleteFile::delete($galeri->gambar);
-            $galeri->delete();
-
-            DB::commit();
-
-            return redirect()->route('data-galeri.index')->with('success', 'Galeri berhasil dihapus');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()->with('error', 'Gagal menghapus galeri: ' . $e->getMessage());
+            Session::flash('error', 'Gagal mengunggah gambar: ' . $e->getMessage());
+            return redirect()->route('data-galeri.create');
         }
     }
 }

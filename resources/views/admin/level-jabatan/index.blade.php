@@ -83,6 +83,7 @@
                                     <th>Instansi</th>
                                 @endif
                                 <th>Periode</th>
+                                <th>Level</th>
                                 <th>Nama Jabatan</th>
                                 <th>Action</th>
                             </tr>
@@ -96,6 +97,28 @@
                                         <td>{{ $data->instansi->nama_singkatan }}</td>
                                     @endif
                                     <td>{{ $data->periode }}</td>
+                                    <td>
+                                        @switch($data->level)
+                                            @case(1)
+                                                Ketua/Wakil Ketua
+                                            @break
+
+                                            @case(2)
+                                                Pengurus Teras
+                                            @break
+
+                                            @case(3)
+                                                Kabid/Staff Khusus
+                                            @break
+
+                                            @case(4)
+                                                Anggota
+                                            @break
+
+                                            @default
+                                                Tidak Diketahui
+                                        @endswitch
+                                    </td>
                                     <td>{{ $data->nama_jabatan }}</td>
                                     <td class="flex gap-1">
                                         <button data-modal-target="modalEdit{{ $data->id }}" type="button"
@@ -129,3 +152,47 @@
     </div>
     @include('admin.level-jabatan.modal')
 @endsection
+
+@push('js')
+    <script>
+        function confirmDelete(id) {
+            let form = document.getElementById('deleteForm' + id);
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data akan dihapus secara permanen",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+
+        let successMessage = '{{ session('success') }}';
+        if (successMessage) {
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: successMessage,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        let errorMessage = '{{ session('error') }}';
+        if (errorMessage) {
+            Swal.fire({
+                icon: "error",
+                title: "Ooops!",
+                text: errorMessage,
+                showConfirmButton: true,
+            });
+        }
+    </script>
+@endpush

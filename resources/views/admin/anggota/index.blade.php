@@ -78,6 +78,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Periode</th>
                                 <th>Nama Jabatan</th>
                                 <th>Nama Anggota</th>
                                 <th>NIM</th>
@@ -90,14 +91,24 @@
                             @foreach ($dataAnggota as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $data->levelJabatan->periode }}</td>
                                     <td>{{ $data->levelJabatan->nama_jabatan }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td>{{ $data->nim }}</td>
-                                    <td>{{ $data->foto }}</td>
-                                    <td class="flex gap-1">
+                                    {{-- <td>{{ $data->foto }}</td> --}}
+                                    <td>
+                                        @if ($data->foto)
+                                            <img src="{{ asset($data->foto) }}" alt="foto"
+                                                style="width: 100px; height: auto;">
+                                        @else
+                                            <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}"
+                                                alt="foto" style="width: 50px; height: auto;">
+                                        @endif
+                                    </td>
+                                    <td>
                                         <button data-modal-target="modalEdit{{ $data->id }}" type="button"
                                             action="{{ route('data-anggota.edit', $data->id) }}"
-                                            class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-yellow-400 border-yellow-400 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-custom-100 dark:ring-yellow-400/20">
+                                            class="mb-2 py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-yellow-400 border-yellow-400 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-custom-100 dark:ring-yellow-400/20">
                                             <i
                                                 class="ri-edit-2-fill w-[26px] bg-white/10 flex absolute ltr:-left-[1px] rtl:-right-[1px] -bottom-[1px] -top-[1px] items-center justify-center">
                                             </i>Edit
@@ -116,6 +127,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            {{-- @dd($data) --}}
                         </tbody>
 
                     </table>

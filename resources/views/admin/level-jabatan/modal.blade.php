@@ -61,19 +61,47 @@
                     </div>
 
                     <div class="xl:col-span-12">
+                        <label for="level" class="inline-block mb-2 text-base font-medium">Level Jabatan<span
+                                class="text-red-500">*</span></label>
+                        <select name="level" id="level"
+                            class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800">
+                            <option value="">----Pilih Level Jabatan----</option>
+                            <option value="1">Ketua/Wakil Ketua</option>
+                            <option value="2">Pengurus Teras</option>
+                            <option value="3">Kabid/Stafsus</option>
+                            <option value="4">Anggota</option>
+                            <option value="5">Lainnya</option>
+                        </select>
+
+                        @error('level')
+                            <div
+                                class="flex gap-1 px-1 py-1 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" data-lucide="alert-circle"
+                                    class="lucide lucide-alert-circle h-4">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" x2="12" y1="8" y2="12"></line>
+                                    <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                                </svg> <span class="font-bold">Error</span> {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="xl:col-span-12">
                         <label for="nama_jabatan" class="inline-block mb-2 text-base font-medium">Nama Jabatan<span
                                 class="text-red-500">*</span></label>
                         <input type="text" name="nama_jabatan" id="nama_jabatan"
                             class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
-                      @error('name') is-invalid @enderror"
+                            @error('name') is-invalid @enderror"
                             value="{{ old('nama_jabatan') }}" autofocus>
 
                         @error('nama_jabatan')
                             <div
                                 class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" data-lucide="alert-circle"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-circle"
                                     class="lucide lucide-alert-circle h-4">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <line x1="12" x2="12" y1="8" y2="12"></line>
@@ -171,6 +199,41 @@
                                 </div>
                             @enderror
                         </div>
+
+                        <div class="xl:col-span-12">
+                            <label for="level" class="inline-block mb-2 text-base font-medium">Level Jabatan<span
+                                    class="text-red-500">*</span></label>
+                            <select name="level" id="level"
+                                class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800">
+                                <option value="">Pilih Level Jabatan</option>
+                                <option value="1" {{ old('level', $data->level) == '1' ? 'selected' : '' }}>Ketua
+                                </option>
+                                <option value="2" {{ old('level', $data->level) == '2' ? 'selected' : '' }}>Wakil
+                                </option>
+                                <option value="3" {{ old('level', $data->level) == '3' ? 'selected' : '' }}>
+                                    Kabid/Stafsus</option>
+                                <option value="4" {{ old('level', $data->level) == '4' ? 'selected' : '' }}>
+                                    Anggota</option>
+                                <option value="5" {{ old('level', $data->level) == '5' ? 'selected' : '' }}>
+                                    Lainnya</option>
+                            </select>
+
+                            @error('level')
+                                <div
+                                    class="flex gap-1 px-1 py-1 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-circle"
+                                        class="lucide lucide-alert-circle h-4">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" x2="12" y1="8" y2="12"></line>
+                                        <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                                    </svg> <span class="font-bold">Error</span> {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+
 
                         <div class="xl:col-span-12">
                             <label for="nama_jabatan{{ $data->id }}"

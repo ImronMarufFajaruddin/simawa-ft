@@ -79,8 +79,13 @@
                                     class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
                                     <option selected="">---Pilih Kategori---</option>
                                     @foreach ($dataKategoriBerita as $kategori)
-                                        <option value="{{ $kategori->id }}">{{ $kategori->kategori_nama }}</option>
+                                        @can('view-kategori-berita', $kategori)
+                                            // Memeriksa izin untuk melihat kategori
+                                            <option value="{{ $kategori->id }}">{{ $kategori->kategori_nama }}</option>
+                                        @endcan
                                     @endforeach
+
+
                                 </select>
                             </div><!--end col-->
 
@@ -135,13 +140,6 @@
                 </div><!--end grid-->
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h6 class="mb-4 text-15">Data Berita</h6>
-                <!-- Add content here -->
-            </div>
-        </div><!--end card-->
     </div>
     <!-- container-fluid -->
     </div>

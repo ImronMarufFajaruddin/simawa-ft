@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('no_telp')->nullable();
             $table->string('instagram')->nullable();
+            $table->string('website_link')->nullable();
             $table->text('sejarah')->nullable();
             $table->timestamps();
 
@@ -32,6 +33,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('instansi', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['kategori_instansi_id']);
+        });
         Schema::dropIfExists('instansi');
     }
 };

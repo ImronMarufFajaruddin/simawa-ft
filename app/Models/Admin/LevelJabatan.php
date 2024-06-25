@@ -11,11 +11,6 @@ class LevelJabatan extends Model
 
     protected $table = 'level_jabatan';
     protected $primaryKey = 'id';
-    // protected $fillable = [
-    //     'instansi_id',
-    //     'periode',
-    //     'nama_jabatan',
-    // ];
 
     public function instansi()
     {

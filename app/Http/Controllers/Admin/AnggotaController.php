@@ -59,9 +59,9 @@ class AnggotaController extends Controller
             }
 
             if ($request->hasFile('foto')) {
-                $folderPath = 'instansi/anggota/' . $instansi->nama_singkatan; // Buat path dengan nama instansi
+                $folderPath = 'instansi/anggota/' . $instansi->nama_singkatan;
                 $file_url = UploadFile::upload($folderPath, $request->file('foto'));
-                $data['foto'] = basename($file_url);
+                $data['foto'] = $folderPath . '/' . basename($file_url);
             }
 
             $dataAnggota = new Anggota();
@@ -82,7 +82,6 @@ class AnggotaController extends Controller
             return redirect()->back()->withInput();
         }
     }
-
     public function edit($id)
     {
         $dataAnggota = Anggota::findOrFail($id);
@@ -97,8 +96,8 @@ class AnggotaController extends Controller
         $data = $request->validate([
             'level_jabatan_id' => 'required|exists:level_jabatan,id',
             'nama' => 'required',
-            'nim' => 'required|numeric',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'nim' => 'numeric',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         try {
@@ -112,9 +111,9 @@ class AnggotaController extends Controller
             }
 
             if ($request->hasFile('foto')) {
-                $folderPath = 'instansi/anggota/' . $instansi->nama; // Buat path dengan nama instansi
+                $folderPath = 'instansi/anggota/' . $instansi->nama_singkatan;
                 $file_url = UploadFile::upload($folderPath, $request->file('foto'));
-                $data['foto'] = basename($file_url);
+                $data['foto'] = $folderPath . '/' . basename($file_url);
             }
 
             $dataAnggota->level_jabatan_id = $data['level_jabatan_id'];

@@ -12,20 +12,29 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KategoriBerita;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class BeritaController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
+        if (Gate::allows('superadmin-only')) {
+            $dataBerita = Berita::latest()->get();
+        } else {
+            $dataBerita = Berita::where('user_id', $user->id)->latest()->get();
+        }
+
         $dataKategoriBerita = KategoriBerita::all();
         $dataUser = User::all();
-        $dataBerita = Berita::latest()->get();
         return view('admin.berita.index', compact('dataBerita', 'dataKategoriBerita', 'dataUser'));
     }
 
     public function create()
     {
+
         $statuses = ['Publish', 'Draft'];
         $dataKategoriBerita = KategoriBerita::all();
         return view('admin.berita.create', compact('statuses', 'dataKategoriBerita'));
@@ -44,6 +53,7 @@ class BeritaController extends Controller
         ]);
 
         $dataBerita['slug'] = Str::slug($dataBerita['judul']);
+        $dataBerita['user_id'] = Auth::user()->id;
 
         try {
             DB::beginTransaction();
@@ -83,23 +93,45 @@ class BeritaController extends Controller
 
     public function show($id)
     {
+
+        $berita = Berita::find($id);
+
+        if (!Gate::allows('view-berita', $berita)) {
+            abort(403);
+        }
         return view('admin.berita.show', [
-            'dataBerita' => Berita::find($id)
+            'dataBerita' => $berita
         ]);
     }
 
     public function edit($id)
     {
+        $dataBerita = Berita::find($id);
+
+        if (!Gate::allows('view-berita', $dataBerita)) {
+            abort(403);
+        }
+
         $statuses = ['Publish', 'Draft'];
 
         $dataKategoriBerita = KategoriBerita::all();
         $dataUser = User::all();
-        $dataBerita = Berita::find($id);
         return view('admin.berita.edit', compact('dataBerita', 'dataKategoriBerita', 'dataUser', 'statuses'));
     }
 
     public function update(Request $request, $id)
     {
+
+        $berita = Berita::find($id);
+
+        if ($berita->user_id !== Auth::id()) {
+            return redirect()->route('data-berita.index')->with('error', 'Anda tidak diizinkan untuk mengubah data berita ini.');
+        }
+
+        if (!Gate::allows('view-berita', $berita)) {
+            abort(403);
+        }
+
         $dataBerita = $request->validate([
             'kategori_berita_id' => 'required|exists:kategori_berita,id',
             'judul' => 'required',
@@ -114,8 +146,6 @@ class BeritaController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $berita = Berita::find($id);
             $berita->kategori_berita_id = $dataBerita['kategori_berita_id'];
             $berita->user_id = Auth::id();
             $berita->slug = $dataBerita['slug'];
@@ -161,10 +191,15 @@ class BeritaController extends Controller
 
     public function destroy($id)
     {
+
+        $berita = Berita::find($id);
+
+        if (!Gate::allows('view-berita', $berita)) {
+            abort(403);
+        }
         try {
             DB::beginTransaction();
 
-            $berita = Berita::find($id);
             if ($berita->gambar) {
                 DeleteFile::delete('uploads/berita/foto/' . $berita->gambar);
             }

@@ -12,14 +12,6 @@ class Anggota extends Model
     protected $table = 'anggota';
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'instansi_id',
-    //     'level_jabatan_id',
-    //     'nama',
-    //     'nim',
-    //     'foto',
-    // ];
-
     public function instansi()
     {
         return $this->belongsTo(Instansi::class);
@@ -27,6 +19,6 @@ class Anggota extends Model
 
     public function levelJabatan()
     {
-        return $this->belongsTo(LevelJabatan::class);
+        return $this->belongsTo(LevelJabatan::class, 'level_jabatan_id', 'id');
     }
 }

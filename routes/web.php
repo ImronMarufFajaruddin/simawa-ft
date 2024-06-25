@@ -17,6 +17,9 @@ use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\LevelJabatanController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
+use App\Http\Controllers\Admin\LandingFooterController;
+use App\Http\Controllers\Admin\LandingHeroController;
+use App\Http\Controllers\Admin\LandingSettingController;
 use App\Http\Controllers\Landings\LandingBeritaController;
 use App\Http\Controllers\Landings\LandingInstansiController;
 
@@ -31,13 +34,13 @@ use App\Http\Controllers\Landings\LandingInstansiController;
 |
 */
 
-function set_active($route)
-{
-    if (is_array($route)) {
-        return in_array(Request::path(), $route) ? 'active' : '';
-    }
-    return Request::path() == $route ? 'active' : '';
-}
+// function set_active($route)
+// {
+//     if (is_array($route)) {
+//         return in_array(Request::path(), $route) ? 'active' : '';
+//     }
+//     return Request::path() == $route ? 'active' : '';
+// }
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -46,6 +49,22 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::prefix('data-landings')->middleware('can:superadmin-only')->group(function () {
+        Route::get('/heroSetting', [LandingHeroController::class, 'heroIndex'])->name('data-landings.heroIndex');
+        Route::get('/heroCreate', [LandingHeroController::class, 'heroCreate'])->name('data-landings.heroCreate');
+        Route::post('/heroStore', [LandingHeroController::class, 'heroStore'])->name('data-landings.heroStore');
+        Route::get('/heroEdit/{id}', [LandingHeroController::class, 'heroEdit'])->name('data-landings.heroEdit');
+        Route::put('/heroUpdate/{id}', [LandingHeroController::class, 'heroUpdate'])->name('data-landings.heroUpdate');
+        Route::delete('/heroDestroy/{id}', [LandingHeroController::class, 'heroDestroy'])->name('data-landings.heroDestroy');
+
+        Route::get('/footerSetting', [LandingFooterController::class, 'footerIndex'])->name('data-landings.footerIndex');
+        Route::get('/footerCreate', [LandingFooterController::class, 'footerCreate'])->name('data-landings.footerCreate');
+        Route::post('/footerStore', [LandingFooterController::class, 'footerStore'])->name('data-landings.footerStore');
+        Route::get('/footerEdit/{id}', [LandingFooterController::class, 'footerEdit'])->name('data-landings.footerEdit');
+        Route::put('/footerUpdate/{id}', [LandingFooterController::class, 'footerUpdate'])->name('data-landings.footerUpdate');
+        Route::delete('/footerDestroy/{id}', [LandingFooterController::class, 'footerDestroy'])->name('data-landings.footerDestroy');
+    });
 
     Route::prefix('data-user')->middleware('can:superadmin-only')->group(function () {
         Route::get('/', [UserAdminController::class, 'index'])->name('data-user.index');
@@ -61,6 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/edit/{id}', [InstansiController::class, 'edit'])->name('data-instansi.edit');
         Route::put('/update/{id}', [InstansiController::class, 'update'])->name('data-instansi.update');
         Route::delete('/destroy/{id}', [InstansiController::class, 'destroy'])->name('data-instansi.destroy');
+        Route::get('/detail/{id}', [InstansiController::class, 'detail'])->name('data-instansi.detail');
     });
 
     Route::prefix('data-kategori-instansi')->middleware('can:superadmin-only')->group(function () {
@@ -143,10 +163,23 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/lpj/{id}/tambah-komentar', [LpjController::class, 'tambahKomentar'])->name('lpj.tambahKomentar');
     });
 
+    // Route::group(['prefix' => 'data-galeri', 'middleware' => ['auth', 'can:all-access']], function () {
+    //     Route::get('/', [GaleriController::class, 'index'])->name('data-galeri.index');
+    //     Route::get('/create', [GaleriController::class, 'create'])->name('data-galeri.create');
+    //     Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
+    //     Route::post('/upload-temporary', [GaleriController::class, 'storeTemporary'])->name('upload-temporary');
+    //     Route::delete('/revert-temporary', [GaleriController::class, 'revertTemporary'])->name('revert-temporary');
+    // });
+
     Route::group(['prefix' => 'data-galeri', 'middleware' => ['auth', 'can:all-access']], function () {
         Route::get('/', [GaleriController::class, 'index'])->name('data-galeri.index');
-        Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
         Route::get('/create', [GaleriController::class, 'create'])->name('data-galeri.create');
+        Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
+        Route::post('/upload-temporary', [GaleriController::class, 'uploadTemporary'])->name('data-galeri.uploadTemporary');
+        Route::delete('/revert-temporary/{filename}', [GaleriController::class, 'revertTemporary'])->name('data-galeri.revertTemporary');
+        Route::get('/edit/{id}', [GaleriController::class, 'edit'])->name('data-galeri.edit');
+        Route::put('/update/{id}', [GaleriController::class, 'update'])->name('data-galeri.update');
+        Route::delete('/delete/{id}', [GaleriController::class, 'destroy'])->name('data-galeri.destroy');
     });
 });
 
