@@ -1,33 +1,10 @@
 @extends('admin.layouts.main')
 
 @push('title')
-    Galeri
+    Edit Galeri
 @endpush
 
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-container .select2-selection--single {
-            height: 38px;
-            border: 1px solid #cbd5e0;
-            border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 1.75rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 36px;
-            display: flex;
-            align-items: center;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -37,7 +14,7 @@
             <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
-                        class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
+                        class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
                         <a href="#!" class="text-slate-400 dark:text-zink-200">Tables</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100">
@@ -72,85 +49,68 @@
                     <div class="mb-3 flex items-center">
                         <h6 class="mb-4 text-xl grow">Galeri Upload</h6>
                     </div>
-                    <form action="{{ route('data-galeri.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('data-galeri.update', $dataGaleri->id) }}" method="POST"
+                        enctype="multipart/form-data" id="editGaleriForm">
                         @csrf
-                        @method('POST')
+                        @method('PUT')
                         <div class="mb-3">
-                            <label for="judulDropdown" class="inline-block mb-2 text-base font-medium">Judul Yang sudah
-                                ada</label>
-                            <select name="judulDropdown" id="judulDropdown"
-                                class="select2 w-full border-slate-200"></select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="judulDropdown" class="inline-block mb-2 text-base font-medium">Judul Baru <span
+                            <label for="judul" class="inline-block mb-2 text-base font-medium">Judul <span
                                     class="text-red-500">*</span></label>
                             <input type="text" name="judul" id="judul"
-                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 mt-2"
-                                placeholder="Masukkan Judul Galeri Anda">
+                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                                value="{{ old('judul', $dataGaleri->judul) }}">
                         </div>
 
                         <div class="mb-3">
                             <label for="gambar" class="inline-block mb-2 text-base font-medium">Gambar <span
                                     class="text-red-500">*</span></label>
-                            <input type="file" name="gambar" id="gambar" required
-                                class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"
-                                onchange="previewImage(event)">
+                            <input type="file" name="gambar" id="gambar"
+                                class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
                         </div>
 
                         <div class="mb-3">
-                            <img id="imgPreview" class="img-fluid max-w-full h-auto" src="#" alt="Gambar Preview"
-                                style="display: none; width: 300px; height: auto;">
+                            <img src="{{ asset('uploads/galeri/foto/' . old('gambar', $dataGaleri->gambar)) }}"
+                                id="currentImage" alt="Gambar Saat Ini" class="img-fluid max-w-full h-auto"
+                                style="width: 300px; height: auto;">
                         </div>
                         <button type="submit"
                             class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i
                                 class="align-baseline ltr:pr-1 rtl:pl-1 ri-upload-2-line"></i> Upload</button>
                     </form>
-
                 </div>
             </div>
         </div>
     @endsection
 
     @push('js')
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $('#judulDropdown').select2({
-                    placeholder: 'Pilih atau ketik judul',
-                    tags: true,
-                    ajax: {
-                        url: '{{ route('get-judul') }}',
-                        dataType: 'json',
-                        processResults: function(data) {
-                            return {
-                                results: data.map(function(item) {
-                                    return {
-                                        id: item.id,
-                                        text: item.judul
-                                    };
-                                })
-                            };
-                        }
-                    }
+            let errorMessage = '{{ session('error') }}';
+            if (errorMessage !== '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ooops!",
+                    text: errorMessage,
+                    showConfirmButton: true,
                 });
-
-                $('#judulDropdown').on('change', function() {
-                    var judul = $(this).find('option:selected').text();
-                    $('#judul').val(judul);
-                });
-            });
-
-            function previewImage(event) {
-                var input = event.target;
-                var reader = new FileReader();
-                reader.onload = function() {
-                    var dataURL = reader.result;
-                    var imgPreview = document.getElementById('imgPreview');
-                    imgPreview.src = dataURL;
-                    imgPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
             }
+
+            let successMessage = '{{ session('success') }}';
+            if (successMessage !== '') {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: successMessage,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+            // Update current image preview when a new file is selected
+            document.getElementById('gambar').addEventListener('change', function(event) {
+                const [file] = event.target.files;
+                if (file) {
+                    document.getElementById('currentImage').src = URL.createObjectURL(file);
+                }
+            });
         </script>
     @endpush

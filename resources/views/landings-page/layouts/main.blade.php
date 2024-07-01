@@ -31,18 +31,7 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('landing-template/assets/css/main.css') }}" rel="stylesheet" />
-    {{-- <link rel="stylesheet" href="{{ asset('landings-template/assets/css/custom.css') }}"> --}}
-
-
     @stack('css')
-
-    <!-- =======================================================
-  * Template Name: FlexStart
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Updated: Jun 06 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="index-page">

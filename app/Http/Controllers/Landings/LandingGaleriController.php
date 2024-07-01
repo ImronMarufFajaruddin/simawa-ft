@@ -12,17 +12,18 @@ use App\Models\Landing\HeroModel;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KategoriInstansi;
 
-class LandingController extends Controller
+class LandingGaleriController extends Controller
 {
     public function index()
     {
         $dataHero = HeroModel::first();
         $dataFooter = Footer::all();
         $dataKategoriInstansi = KategoriInstansi::all();
-        $dataInstansi = Instansi::with('kategoriInstansi')->get();
+        $dataInstansi = Instansi::with('user')->get();
         $dataBerita = Berita::latest()->take(4)->get();
-        $dataGeleri = Galeri::all();
-        $dataUser = User::all();
-        return view('landings-page.index', compact('dataInstansi', 'dataBerita', 'dataKategoriInstansi', 'dataUser', 'dataHero', 'dataFooter', 'dataGeleri'));
+        $dataGaleri = Galeri::all();
+        $namaSingkatan = $dataInstansi->pluck('nama_singkatan')->unique(); // Get unique nama_singkatan
+
+        return view('landings-page.galeri.index', compact('dataInstansi', 'dataBerita', 'dataKategoriInstansi', 'dataHero', 'dataFooter', 'dataGaleri', 'namaSingkatan'));
     }
 }

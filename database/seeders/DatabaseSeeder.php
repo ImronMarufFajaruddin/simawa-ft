@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FooterSeeder::class);
         $this->call(HeroSeeder::class);
         $this->call(KategoriInstansiSeeder::class);
+        // $this->call(KategoriBeritaSeeder::class);
         $this->call(InstansiSeeder::class);
+        // $this->call(BeritaSeeder::class);
     }
 }

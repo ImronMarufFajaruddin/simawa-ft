@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Landings;
 
-use App\Models\User;
 use App\Models\Admin\Berita;
 use App\Models\Admin\Galeri;
 use Illuminate\Http\Request;
@@ -12,17 +11,18 @@ use App\Models\Landing\HeroModel;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KategoriInstansi;
 
-class LandingController extends Controller
+class LandingKontakController extends Controller
 {
     public function index()
     {
         $dataHero = HeroModel::first();
         $dataFooter = Footer::all();
         $dataKategoriInstansi = KategoriInstansi::all();
-        $dataInstansi = Instansi::with('kategoriInstansi')->get();
+        $dataInstansi = Instansi::with('user')->get();
         $dataBerita = Berita::latest()->take(4)->get();
-        $dataGeleri = Galeri::all();
-        $dataUser = User::all();
-        return view('landings-page.index', compact('dataInstansi', 'dataBerita', 'dataKategoriInstansi', 'dataUser', 'dataHero', 'dataFooter', 'dataGeleri'));
+        $dataGaleri = Galeri::all();
+        $namaSingkatan = $dataInstansi->pluck('nama_singkatan')->unique();
+
+        return view('landings-page.kontak.index', compact('dataHero', 'dataFooter', 'dataKategoriInstansi', 'dataInstansi', 'dataBerita', 'dataGaleri', 'namaSingkatan'));
     }
 }

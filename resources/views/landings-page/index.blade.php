@@ -98,7 +98,7 @@
                                         style="width: 80%; height: 150px; object-fit: cover;">
                                 @endif
                                 <h3>{{ $data->nama_singkatan }}</h3>
-                                <p>{{ Str::limit($data->sejarah, 50) }}</p>
+                                <p>{!! Str::limit($data->sejarah, 50) !!}</p>
                                 <a href="{{ route('instansi.index', ['slug' => $data->slug]) }}" class="read-more">
                                     <span>Selengkapnya</span>
                                     <i class="bi bi-arrow-right"></i>

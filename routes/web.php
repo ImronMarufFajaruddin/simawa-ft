@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AnggotaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -8,20 +7,23 @@ use App\Http\Controllers\Admin\LpjController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\GaleriController;
+use App\Http\Controllers\Admin\AnggotaController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\ProposalController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Landings\LandingController;
+use App\Http\Controllers\Admin\LandingHeroController;
 use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\LevelJabatanController;
-use App\Http\Controllers\Admin\KategoriBeritaController;
-use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Admin\LandingFooterController;
-use App\Http\Controllers\Admin\LandingHeroController;
+use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\LandingSettingController;
+use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Landings\LandingBeritaController;
+use App\Http\Controllers\Landings\LandingGaleriController;
 use App\Http\Controllers\Landings\LandingInstansiController;
+use App\Http\Controllers\Landings\LandingKontakController;
 
 /*
 |--------------------------------------------------------------------------
@@ -172,14 +174,17 @@ Route::group(['middleware' => ['auth']], function () {
     // });
 
     Route::group(['prefix' => 'data-galeri', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('get-judul', [GaleriController::class, 'getJudul'])->name('get-judul');
+        Route::get('filter-galeri', [GaleriController::class, 'filterGaleri'])->name('filter-galeri');
+
         Route::get('/', [GaleriController::class, 'index'])->name('data-galeri.index');
         Route::get('/create', [GaleriController::class, 'create'])->name('data-galeri.create');
         Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
-        Route::post('/upload-temporary', [GaleriController::class, 'uploadTemporary'])->name('data-galeri.uploadTemporary');
-        Route::delete('/revert-temporary/{filename}', [GaleriController::class, 'revertTemporary'])->name('data-galeri.revertTemporary');
         Route::get('/edit/{id}', [GaleriController::class, 'edit'])->name('data-galeri.edit');
         Route::put('/update/{id}', [GaleriController::class, 'update'])->name('data-galeri.update');
         Route::delete('/delete/{id}', [GaleriController::class, 'destroy'])->name('data-galeri.destroy');
+        Route::post('/upload-temporary', [GaleriController::class, 'uploadTemporary'])->name('data-galeri.uploadTemporary');
+        Route::delete('/revert-temporary/{filename}', [GaleriController::class, 'revertTemporary'])->name('data-galeri.revertTemporary');
     });
 });
 
@@ -198,6 +203,22 @@ Route::group(['prefix' => 'berita'], function () {
     // ]);
     Route::get('/', [LandingBeritaController::class, 'index'])->name('berita.index');
     Route::get('/{id}', [LandingBeritaController::class, 'show'])->name('berita.show');
+});
+
+Route::group(['prefix' => 'gallery'], function () {
+    // Route::resource('/', LandingGaleriController::class)->only([
+    //     'index'
+    // ]);
+    Route::get('/', [LandingGaleriController::class, 'index'])->name('gallery.index');
+});
+
+
+
+Route::group(['prefix' => 'kontak'], function () {
+    // Route::resource('/', LandingGaleriController::class)->only([
+    //     'index'
+    // ]);
+    Route::get('/', [LandingKontakController::class, 'index'])->name('kontak.index');
 });
 
 // Route::group(['prefix' => 'landing-page'], function () {
