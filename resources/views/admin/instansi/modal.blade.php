@@ -1,150 +1,288 @@
-{{-- Modal Tmbah Kategori --}}
-<div id="modalAddCategory" modal-center="" data-modal-backdrop="modalAddCategory"
-    class="fixed flex flex-col hidden transition-all
-    duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 show">
+<div id="modalAdd" class="fixed hidden z-drawer inset-0 flex items-center justify-center p-4">
     <div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
         <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
             <h5 class="text-16">Tambah Data</h5>
-            <button data-modal-close="modalAddCategory"
-                class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500"><i
-                    data-lucide="x" class="size-5"></i></button>
+            <button data-modal-close="modalAdd"
+                class="text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+                <i data-lucide="x" class="size-4"></i>
+            </button>
         </div>
 
-        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-            {{-- <h5 class="mb-3 text-16">Modal Content</h5> --}}
-            <form action="{{ route('data-instansi.store') }}" method="POST">
+        <div class="max-h-[calc(100vh-180px)] p-4 overflow-y-auto">
+            <form action="{{ route('data-instansi.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="mb-3">
-                    <label for="name" class="inline-block mb-2 text-base font-medium">Kategori Instansi<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="name" id="name"
-                        class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
-                        @error('name') is-invalid @enderror"
-                        value="{{ old('name') }}">
 
-                    @error('name')
-                        <div
-                            class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" data-lucide="alert-circle" class="lucide lucide-alert-circle h-4">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" x2="12" y1="8" y2="12"></line>
-                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg> <span class="font-bold">Error</span> {{ $message }}
-                        </div>
+                <div class="mb-3">
+                    <label for="kategori_instansi_id" class="inline-block mb-2 text-base font-medium">Kategori
+                        Instansi<span class="text-red-500">*</span></label>
+                    <select name="kategori_instansi_id" id="kategori_instansi_id"
+                        class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                        <option value="">---Pilih Kategori Instansi---</option>
+                        @foreach ($dataKategoriInstansi as $kategori)
+                            <option value="{{ $kategori->id }}">{{ $kategori->kategori_nama }}</option>
+                        @endforeach
+                    </select>
+                    @error('kategori_instansi_id')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div
-                    class="flex p-2 justify-end justify-items-center mt-auto border-t border-slate-200 dark:border-zink-500">
-                    {{-- <h5 class="text-16">Modal Footer</h5> --}}
-                    <button type="button" data-modal-close="modalAdd"
-                        class="me-3 text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">Close
-                        <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-close-line"></i></button>
+                <div class="mb-3">
+                    <label for="user_id" class="inline-block mb-2 text-base font-medium">Admin Instansi<span
+                            class="text-red-500">*</span></label>
+                    <select name="user_id" id="user_id"
+                        class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                        <option value="">---Pilih User---</option>
+                        @foreach ($dataUser as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('kategori_instansi_id')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="nama_resmi" class="inline-block mb-2 text-base font-medium">Nama Resmi<span
+                            class="text-red-500">*</span></label>
+                    <input type="text" name="nama_resmi" id="nama_resmi" placeholder=""
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('nama_resmi') is-invalid @enderror"
+                        value="{{ old('nama_resmi') }}" autofocus>
+                    @error('nama_resmi')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="nama_singkatan" class="inline-block mb-2 text-base font-medium">Nama
+                        Singkatan<span class="text-red-500">*</span></label>
+                    <input type="text" name="nama_singkatan" id="nama_singkatan" placeholder=""
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('nama_singkatan') is-invalid @enderror"
+                        value="{{ old('nama_singkatan') }}" autofocus>
+                    @error('nama_singkatan')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="logo" class="inline-block mb-2 text-base font-medium">Upload Logo</label>
+                    <input type="file" name="logo"
+                        class="form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('logo') is-invalid @enderror">
+                    @error('logo')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="no_telp" class="inline-block mb-2 text-base font-medium">No. Telp<span
+                            class="text-red-500">*</span></label>
+                    <input type="number" name="no_telp" id="no_telp" placeholder=""
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('no_telp') is-invalid @enderror"
+                        value="{{ old('no_telp') }}" autofocus>
+                    @error('no_telp')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="instagram" class="inline-block mb-2 text-base font-medium">Instagram<span
+                            class="text-red-500">*</span></label>
+                    <input type="text" name="instagram" id="instagram" placeholder="Link Instagram"
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('instagram') is-invalid @enderror"
+                        value="{{ old('instagram') }}">
+                    @error('instagram')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="website_link" class="inline-block mb-2 text-base font-medium">Link Website</label>
+                    <input type="text" name="website_link" id="website_link" placeholder="Link Website"
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                    @error('website_link') is-invalid @enderror"
+                        value="{{ old('website_link') }}">
+                    @error('website_link')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="sejarahAdd" class="inline-block mb-2 text-base font-medium">Sejarah</label>
+                    <textarea name="sejarah" id="sejarahAdd" rows="6" placeholder="Sejarah Instansi"
+                        class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">{{ old('sejarah') }}</textarea>
+                </div>
+
+                <div class="flex justify-end mt-auto border-t border-slate-200 dark:border-zink-500 p-2">
+                    <button type="button" data-modal-close="modalAddInstansi"
+                        class="text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 me-3">Close
+                        <i class="ri-close-line"></i></button>
                     <button type="submit"
-                        class="text-white bg-custom-500 btn hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-red-custom500/20 dark:text-white-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20">
-                        Simpan
-                        <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-check-fill"></i></button>
+                        class="ml-3 text-white bg-custom-500 btn hover:bg-custom-600 focus:bg-custom-600">Simpan
+                        <i class="ri-check-fill"></i></button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-{{-- Modal Tambah Kategori End --}}
 
-{{-- Modal Tambah Instansi --}}
-<div id="modalAddInstansi" modal-center="" data-modal-backdrop="modalAddInstansi"
-    class="fixed flex flex-col hidden transition-all
-    duration-300 ease-in-out left-2/4 z-drawer -translate-x-2/4 -translate-y-2/4 show">
-    <div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
-        <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
-            <h5 class="text-16">Tambah Data</h5>
-            <button data-modal-close="modalAddInstansi"
-                class="transition-all duration-200 ease-linear text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500"><i
-                    data-lucide="x" class="size-5"></i></button>
-        </div>
 
-        <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-            {{-- <h5 class="mb-3 text-16">Modal Content</h5> --}}
-            <form action="{{ route('data-instansi.store') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="name" class="inline-block mb-2 text-base font-medium">Nama Resmi<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="name" id="name"
-                        class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
-                        @error('name') is-invalid @enderror"
-                        value="{{ old('name') }}">
+@foreach ($dataInstansi as $data)
+    <div id="modalEdit{{ $data->id }}"
+        class="fixed hidden z-drawer inset-0 flex items-center justify-center p-4">
+        <div class="w-screen md:w-[40rem] bg-white shadow rounded-md dark:bg-zink-600 flex flex-col h-full">
+            <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-zink-500">
+                <h5 class="text-16">Edit Data</h5>
+                <button data-modal-close="modalEdit{{ $data->id }}"
+                    class="text-slate-500 hover:text-red-500 dark:text-zink-200 dark:hover:text-red-500">
+                    <i data-lucide="x" class="size-4"></i>
+                </button>
+            </div>
 
-                    @error('name')
-                        <div
-                            class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" data-lucide="alert-circle" class="lucide lucide-alert-circle h-4">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" x2="12" y1="8" y2="12"></line>
-                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg> <span class="font-bold">Error</span> {{ $message }}
-                        </div>
-                    @enderror
+            <div class="max-h-[calc(100vh-180px)] p-4 overflow-y-auto">
+                <form action="{{ route('data-instansi.update', $data->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                    <label for="name" class="inline-block mb-2 text-base font-medium">Singkatan<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="name" id="name"
-                        class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
-                  @error('name') is-invalid @enderror"
-                        value="{{ old('name') }}">
+                    <div class="mb-3">
+                        <label for="kategori_instansi_id" class="inline-block mb-2 text-base font-medium">Kategori
+                            Instansi<span class="text-red-500">*</span></label>
+                        <select name="kategori_instansi_id" id="kategori_instansi_id"
+                            class="form-select border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200">
+                            <option value="">---Pilih Kategori Instansi---</option>
+                            @foreach ($dataKategoriInstansi as $kategori)
+                                <option value="{{ $kategori->id }}"
+                                    {{ old('kategori_instansi_id', $data->kategori_instansi_id) == $kategori->id ? 'selected' : '' }}>
+                                    {{ $kategori->kategori_nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('kategori_instansi_id')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                    @error('name')
-                        <div
-                            class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" data-lucide="alert-circle"
-                                class="lucide lucide-alert-circle h-4">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" x2="12" y1="8" y2="12"></line>
-                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg> <span class="font-bold">Error</span> {{ $message }}
-                        </div>
-                    @enderror
+                    <div class="mb-3">
+                        <label for="nama_resmi" class="inline-block mb-2 text-base font-medium">Nama Resmi<span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="nama_resmi" id="nama_resmi" placeholder=""
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('nama_resmi') is-invalid @enderror"
+                            value="{{ old('nama_resmi', $data->nama_resmi) }}" autofocus>
+                        @error('nama_resmi')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                    <label for="name" class="inline-block mb-2 text-base font-medium">Kategori Instansi<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="name" id="name"
-                        class="mb-2 form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
-                    @error('name') is-invalid @enderror"
-                        value="{{ old('name') }}">
-                    @error('name')
-                        <div
-                            class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" data-lucide="alert-circle"
-                                class="lucide lucide-alert-circle h-4">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" x2="12" y1="8" y2="12"></line>
-                                <line x1="12" x2="12.01" y1="16" y2="16"></line>
-                            </svg> <span class="font-bold">Error</span> {{ $message }}
-                        </div>
-                    @enderror
-                </div>
+                    <div class="mb-3">
+                        <label for="nama_singkatan" class="inline-block mb-2 text-base font-medium">Nama
+                            Singkatan<span class="text-red-500">*</span></label>
+                        <input type="text" name="nama_singkatan" id="nama_singkatan" placeholder=""
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('nama_singkatan') is-invalid @enderror"
+                            value="{{ old('nama_singkatan', $data->nama_singkatan) }}" autofocus>
+                        @error('nama_singkatan')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div
-                    class="flex p-2 justify-end justify-items-center mt-auto border-t border-slate-200 dark:border-zink-500">
-                    {{-- <h5 class="text-16">Modal Footer</h5> --}}
-                    <button type="button" data-modal-close="modalAdd"
-                        class="me-3 text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">Close
-                        <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-close-line"></i></button>
-                    <button type="submit"
-                        class="text-white bg-custom-500 btn hover:text-white hover:bg-custom-600 focus:text-white focus:bg-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:ring active:ring-custom-100 dark:bg-red-custom500/20 dark:text-white-500 dark:hover:bg-custom-500 dark:hover:text-white dark:focus:bg-custom-500 dark:focus:text-white dark:active:bg-custom-500 dark:active:text-white dark:ring-custom-400/20">
-                        Simpan
-                        <i class="align-baseline ltr:pl-1 rtl:pr-1 ri-check-fill"></i></button>
-                </div>
-            </form>
+                    <div class="mb-3">
+                        <label for="logo" class="inline-block mb-2 text-base font-medium">Upload Logo</label>
+                        <input type="file" name="logo"
+                            class="form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('logo') is-invalid @enderror">
+                        @error('logo')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="no_telp" class="inline-block mb-2 text-base font-medium">No. Telp<span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="no_telp" id="no_telp" placeholder=""
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('no_telp') is-invalid @enderror"
+                            value="{{ old('no_telp', $data->no_telp) }}" autofocus>
+                        @error('no_telp')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="instagram" class="inline-block mb-2 text-base font-medium">Instagram<span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="instagram" id="instagram" placeholder="Link Instagram"
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('instagram') is-invalid @enderror"
+                            value="{{ old('instagram', $data->instagram) }}">
+                        @error('instagram')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="website_link" class="inline-block mb-2 text-base font-medium">Link Website</label>
+                        <input type="text" name="website_link" id="website_link" placeholder="Link Website"
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                        @error('website_link') is-invalid @enderror"
+                            value="{{ old('website_link', $data->website_link) }}">
+                        @error('website_link')
+                            <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sejarahEdit{{ $data->id }}"
+                            class="inline-block mb-2 text-base font-medium">Sejarah</label>
+                        <textarea name="sejarah" id="sejarahEdit{{ $data->id }}" rows="6" placeholder="Sejarah Instansi"
+                            class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">{{ old('sejarah', $data->sejarah) }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end mt-auto border-t border-slate-200 dark:border-zink-500 p-2">
+                        <button type="button" data-modal-close="modalEdit{{ $data->id }}"
+                            class="text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 me-3">Close
+                            <i class="ri-close-line"></i></button>
+                        <button type="submit"
+                            class="ml-3 text-white bg-custom-500 btn hover:bg-custom-600 focus:bg-custom-600">Simpan
+                            <i class="ri-check-fill"></i></button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-{{-- Modal Tambah Instansi --}}
+@endforeach
+
+@push('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor
+                .create(document.querySelector('#sejarahAdd'), {
+                    toolbar: ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList',
+                        'numberedList', 'blockQuote', '|', 'fontfamily', 'fontsize', 'fontColor', '|',
+                        'outdent', 'indent'
+                    ],
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            @foreach ($dataInstansi as $data)
+                ClassicEditor
+                    .create(document.querySelector('#sejarahEdit{{ $data->id }}'), {
+                        toolbar: ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList',
+                            'numberedList', 'blockQuote', '|', 'fontfamily', 'fontsize', 'fontColor', '|',
+                            'outdent', 'indent'
+                        ],
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            @endforeach
+        });
+    </script>
+@endpush

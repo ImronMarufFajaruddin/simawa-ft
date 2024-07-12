@@ -11,17 +11,22 @@ class Lpj extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'kegiatan_id',
-        'dokumen',
-        'status',
-        'catatan',
-    ];
+    protected $table = 'lpj';
+    protected $primaryKey = 'id';
+
+    // protected $fillable = [
+    //     'user_id',
+    //     'kegiatan_id',
+    //     'dokumen',
+    //     'status',
+    //     'komentar',
+    // ];
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
     public function kegiatan()
     {
         return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
