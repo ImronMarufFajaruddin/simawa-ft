@@ -25,14 +25,14 @@
                         <a href="#" class="text-slate-400 dark:text-zink-200">Tables</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100 position-end">
-                        Proposal
+                        Laporan Pertanggung Jawaban
                     </li>
                 </ul>
             </div>
 
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mb-4 text-2xl text-green-500">Detail Proposal</h6>
+                    <h6 class="mb-4 text-2xl text-green-500">Detail Laporan Pertanggung Jawaban</h6>
 
                     <div class="overflow-x-auto">
                         <table class="w-full">
@@ -56,7 +56,11 @@
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Komentar</th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    {!! $dataLpj->komentar !!}
+                                    @if ($dataLpj->komentar)
+                                        {!! $dataLpj->komentar !!}
+                                    @else
+                                        <span>Belum ada komentar</span>
+                                    @endif
                                 </td>
                             </tr>
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
@@ -71,8 +75,10 @@
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Dokumen Proposal</th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    <iframe src="{{ url('dokumen/proposal/' . $dataLpj->dokumen) }}"
-                                        class="pdf-viewer"></iframe>
+                                    <a href="{{ asset('dokumen/lpj/' . $dataLpj->dokumen) }} "
+                                        download="{{ $dataLpj->dokumen }}" target="_blank"><span
+                                            class="text-custom-500 underline">Download</span></a>
+                                    {{-- <iframe src="{{ url('dokumen/lpj/' . $dataLpj->dokumen) }}" class="pdf-viewer"></iframe> --}}
                                 </td>
                             </tr>
                         </table>

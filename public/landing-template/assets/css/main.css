@@ -2811,6 +2811,12 @@ section,
     border: 1px solid var(--accent-color);
 }
 
+.tags-widget ul a.active {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    border: 1px solid var(--accent-color);
+}
+
 .tags-widget ul a span {
     padding-left: 5px;
     color: color-mix(in srgb, var(--default-color), transparent 60%);

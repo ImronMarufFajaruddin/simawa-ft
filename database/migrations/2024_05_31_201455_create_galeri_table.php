@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('galeri', function (Blueprint $table) {
             $table->increments('id');
-            // $table->foreignUuid('user_id');
-            $table->integer('instansi_id')->unsigned();
+            $table->foreignUuid('user_id');
+            // $table->integer('instansi_id')->unsigned();
             $table->string('judul');
             $table->string('gambar');
             $table->timestamps();
 
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('instansi_id')->references('id')->on('instansi')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('instansi_id')->references('id')->on('instansi')->onDelete('cascade');
         });
     }
 

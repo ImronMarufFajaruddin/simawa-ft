@@ -82,13 +82,21 @@
                                     <td>{{ $data->telp }}</td>
                                     <td>{{ $data->email }}</td>
                                     <td>
-                                        <a href="{{ $data->medsos_links }}" target="__blank"
-                                            class="text-custom-500 underline">link</a>
+                                        @if ($data->medsos_links)
+                                            <a href="{{ $data->medsos_links }}" target="__blank"
+                                                class="text-custom-500 underline">link</a>
+                                        @else
+                                            -----
+                                        @endif
                                     </td>
                                     <td>{!! $data->medsos_icon !!}</td>
                                     <td>
-                                        <a href="{{ $data->useful_links }}" target="__blank"
-                                            class="text-custom-500 underline">link</a>
+                                        @if ($data->useful_links)
+                                            <a href="{{ $data->useful_links }}" target="__blank"
+                                                class="text-custom-500 underline">link</a>
+                                        @else
+                                            -----
+                                        @endif
                                     </td>
                                     <td>{{ $data->useful_links_title }}</td>
 

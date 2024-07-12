@@ -46,7 +46,7 @@ class AnggotaController extends Controller
             'level_jabatan_id' => 'required|exists:level_jabatan,id',
             'nama' => 'required',
             'nim' => 'required|numeric',
-            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         try {

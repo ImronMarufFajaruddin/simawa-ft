@@ -11,6 +11,7 @@ class Footer extends Model
 
     protected $table = 'landing_page_footer';
     protected $fillable = [
+        'id',
         'alamat',
         'telp',
         'email',

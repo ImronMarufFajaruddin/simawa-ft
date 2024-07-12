@@ -15,20 +15,20 @@ class Galeri extends Model
     protected $fillable = [
         'judul',
         'gambar',
-        'instansi_id',
+        'user_id',
     ];
 
     protected $casts = [
         'gambar' => 'array',
     ];
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-
-    public function instansi()
+    public function user()
     {
-        return $this->belongsTo(Instansi::class, 'instansi_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    // public function instansi()
+    // {
+    //     return $this->belongsTo(Instansi::class, 'instansi_id', 'id');
+    // }
 }

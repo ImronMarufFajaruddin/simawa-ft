@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Admin\Lpj;
 use App\Models\Admin\Berita;
+use App\Models\Admin\Galeri;
 use Illuminate\Http\Request;
 use App\Models\Admin\Instansi;
 use App\Models\Admin\Kegiatan;
@@ -26,6 +27,7 @@ class DashboardController extends Controller
             $lpjCount = Lpj::count();
             $proposalCount = Proposal::count();
             $kegiatanCount = Kegiatan::count();
+            $galeriCount = Galeri::count();
         } elseif (Gate::allows('admin-only', $user)) {
             $userCount = 1;
             $instansiCount = $user->instansi ? 1 : 0;
@@ -33,10 +35,11 @@ class DashboardController extends Controller
             $lpjCount = Lpj::where('user_id', $user->id)->count();
             $proposalCount = Proposal::where('user_id', $user->id)->count();
             $kegiatanCount = Kegiatan::where('user_id', $user->id)->count();
+            $galeriCount = Galeri::where('user_id', $user->id)->count();
         } else {
             // Izin akses untuk non-admin diatur di sini
         }
 
-        return view('admin.index', compact('userCount', 'instansiCount', 'beritaCount', 'lpjCount', 'proposalCount', 'kegiatanCount', 'user'));
+        return view('admin.index', compact('userCount', 'instansiCount', 'beritaCount', 'lpjCount', 'proposalCount', 'kegiatanCount', 'user', 'galeriCount'));
     }
 }

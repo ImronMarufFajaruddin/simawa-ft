@@ -27,22 +27,11 @@
     <link href="{{ asset('landing-template/assets/vendor/aos/aos.css') }}" rel="stylesheet" />
     <link href="{{ asset('landing-template/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('landing-template/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('landings-template2/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ asset('landing-template/assets/vendor/') }}" rel="stylesheet" /> --}}
 
     <!-- Main CSS File -->
     <link href="{{ asset('landing-template/assets/css/main.css') }}" rel="stylesheet" />
-    {{-- <link rel="stylesheet" href="{{ asset('landings-template/assets/css/custom.css') }}"> --}}
-
-
     @stack('css')
-
-    <!-- =======================================================
-  * Template Name: FlexStart
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Updated: Jun 06 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="index-page">

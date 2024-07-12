@@ -11,15 +11,19 @@
                     <h1 data-aos="fade-up" class="aos-init aos-animate">{{ $dataInstansi->nama_resmi }}
                     </h1>
                     <p data-aos="fade-up" data-aos-delay="100" class="aos-init aos-animate">
-                        {{ Str::limit($dataInstansi->sejarah, 200) }}</p>
+                        {!! Str::limit($dataInstansi->sejarah, 200) !!}</p>
                     <div class="d-flex flex-column flex-md-row aos-init aos-animate" data-aos="fade-up"
                         data-aos-delay="200">
                         <a href="#sejarah" class="btn-get-started">Baca Selengkapnya <i class="bi bi-arrow-right"></i></a>
                         <a href="{{ $dataInstansi->instagram }}" target="__blank"
                             class="btn-get-started ms-0 ms-md-4 mt-4 mt-md-0 text-lowercase">{{ $dataInstansi->nama_singkatan }}<i
                                 class="bi bi-instagram"></i></a>
-                        <a href="{{ $dataInstansi->website_link }}" target="__blank"
-                            class="btn-get-started ms-0 ms-md-4 mt-4 mt-md-0 text-lowercase"><i class="bi bi-globe"></i></a>
+                        @if ($dataInstansi->website_link)
+                            <a href="{{ $dataInstansi->website_link }}" target="__blank"
+                                class="btn-get-started ms-0 ms-md-4 mt-4 mt-md-0 text-lowercase">
+                                <i class="bi bi-globe"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img aos-init aos-animate" data-aos="zoom-out">
@@ -46,21 +50,21 @@
                             {{ $dataInstansi->nama_resmi }}
                         </h2>
                         <p>
-                            {{ $dataInstansi->sejarah }}
+                            {!! $dataInstansi->sejarah !!}
                         </p>
-                        <div class="text-center text-lg-start">
+                        {{-- <div class="text-center text-lg-start">
                             <a href="#"
                                 class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
                                 <span>Read More</span>
                                 <i class="bi bi-arrow-right"></i>
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
-                <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+                {{-- <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
                     <img src="assets/img/about.jpg" class="img-fluid" alt="" />
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

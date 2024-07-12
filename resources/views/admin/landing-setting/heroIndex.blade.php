@@ -15,9 +15,9 @@
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                        <a href="#!" class="text-slate-400 dark:text-zink-200">Tables</a>
+                        <a href="#!" class="text-slate-400 dark:text-zink-200">Page</a>
                     </li>
-                    <li class="text-slate-700 dark:text-zink-100">Datatable</li>
+                    <li class="text-slate-700 dark:text-zink-100">Hero-About Setting</li>
                 </ul>
             </div>
 
@@ -77,18 +77,47 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->title }}</td>
-                                    <td>{{ $data->hero_deskripsi }}</td>
+                                    <td>{!! Str::limit($data->hero_deskripsi, 50) !!}</td>
+                                    {{-- <td>{! $data->hero_deskripsi !}</td> --}}
                                     <td>
                                         <img src="{{ asset('landing/hero/logo/' . $data->logo) }}" alt="Logo"
                                             style="width: 100px; height: auto;">
                                     </td>
                                     <td>{{ $data->about_title }}</td>
-                                    <td>{{ $data->about }}</td>
+                                    <td>{!! Str::limit($data->about, 50) !!}</td>
+                                    {{-- <td>{{ $data->about }}</td> --}}
                                     <td>
                                         <img src="{{ asset('landing/hero/about/' . $data->about_foto) }}" alt="about_foto"
                                             style="width: 100px; height: auto;">
                                     </td>
+
                                     <td>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <a href="{{ route('data-landings.heroShow', $data->id) }}"
+                                                data-tooltip="default" data-tooltip-content="Lihat"
+                                                class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-green-500 border-green-500 hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/20">
+                                                <i class="ri-eye-fill"></i>
+                                            </a>
+
+                                            <a data-tooltip="default" data-tooltip-content="Edit"
+                                                href="{{ route('data-landings.heroEdit', $data->id) }}"
+                                                class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-yellow-500 border-yellow-500 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-yellow-100 dark:ring-yellow-400/20">
+                                                <i class="ri-edit-2-fill"></i>
+                                            </a>
+
+                                            <form action="{{ route('data-landings.heroDestroy', $data->id) }}"
+                                                method="POST" id="deleteForm{{ $data->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" data-tooltip="default" data-tooltip-content="Hapus"
+                                                    class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20">
+                                                    <i class="ri-delete-bin-fill"
+                                                        onclick="confirmDelete('{{ $data->id }}')"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    {{-- <td>
                                         <div class="button flex gap-1 justify-items-center">
                                             <a type="button" href="{{ route('data-landings.heroEdit', $data->id) }}"
                                                 class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-yellow-400 border-yellow-400 hover:text-white hover:bg-yellow-600 hover:border-yellow-600 focus:text-white focus:bg-yellow-600 focus:border-yellow-600 focus:ring focus:ring-yellow-100 active:text-white active:bg-yellow-600 active:border-yellow-600 active:ring active:ring-custom-100 dark:ring-yellow-400/20">
@@ -108,7 +137,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
