@@ -42,15 +42,30 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
-        $dataBerita = $request->validate([
-            'kategori_berita_id' => 'required|exists:kategori_berita,id',
-            'judul' => 'required',
-            'konten' => 'required',
-            'gambar' => 'required|mimes:png,jpg,jpeg|max:4096',
-            'dokumen' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:2048',
-            'status' => 'required|in:Publish,Draft',
-            'tanggal_publish' => 'nullable|date',
-        ]);
+        $dataBerita = $request->validate(
+            [
+                'kategori_berita_id' => 'required|exists:kategori_berita,id',
+                'judul' => 'required',
+                'konten' => 'required',
+                'gambar' => 'required|mimes:png,jpg,jpeg|max:4096',
+                'dokumen' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:2048',
+                'status' => 'required|in:Publish,Draft',
+                'tanggal_publish' => 'nullable|date',
+            ],
+            [
+                'kategori_berita_id.required' => 'Kategori Berita Harus Diisi',
+                'kategori_berita_id.exists' => 'Kategori Berita Tidak Valid',
+                'judul.required' => 'Judul Wajib Diisi',
+                'konten.required' => 'Konten Wajib Diisi',
+                'gambar.required' => 'Gambar Wajib Diisi',
+                'gambar.mimes' => 'File harus berformat PNG, JPG, atau JPEG',
+                'gambar.max' => 'File melebihi batas ukuran 4 MB',
+                'dokumen.mimes' => 'File Dokumen harus berformat .pdf, .doc, .docx, .xlx, .xlsx, .ppt, .pptx, .txt',
+                'dokumen.max' => 'File Dokumen melebihi batas ukuran 2 MB',
+                'status.required' => 'Status wajib diisi',
+                'status.in' => 'Status Tidak Valid',
+            ]
+        );
 
         $dataBerita['slug'] = Str::slug($dataBerita['judul']);
         $dataBerita['user_id'] = Auth::user()->id;

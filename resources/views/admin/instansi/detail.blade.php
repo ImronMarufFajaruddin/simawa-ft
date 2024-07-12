@@ -87,8 +87,12 @@
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Website</th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    <a href="{{ $dataInstansi->website_link }}" target="__blank"
-                                        class="text-custom-500 underline">{{ $dataInstansi->website_link }}</a>
+                                    @if ($dataInstansi->website_link)
+                                        <a href="{{ $dataInstansi->website_link }}" target="__blank"
+                                            class="text-custom-500 underline">{{ $dataInstansi->website_link }}</a>
+                                    @else
+                                        Tidak ada website
+                                    @endif
                                 </td>
                             </tr>
 

@@ -8,7 +8,8 @@
     <style>
         .pdf-viewer {
             width: 100%;
-            height: 600px;
+            height: 500px;
+            /* Sesuaikan tinggi iframe sesuai kebutuhan Anda */
             border: 1px solid #ccc;
         }
     </style>
@@ -56,7 +57,11 @@
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Komentar</th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    {!! $dataProposal->komentar !!}
+                                    @if ($dataProposal->komentar)
+                                        {!! $dataProposal->komentar !!}
+                                    @else
+                                        <span>Belum ada komentar</span>
+                                    @endif
                                 </td>
                             </tr>
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
@@ -70,10 +75,20 @@
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Dokumen Proposal</th>
+
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    <iframe src="{{ url('dokumen/proposal/' . $dataProposal->dokumen) }}"
-                                        class="pdf-viewer"></iframe>
+                                    <a href="{{ asset('dokumen/proposal/' . $dataProposal->dokumen) }} "
+                                        download="{{ $dataProposal->dokumen }}" target="_blank"><span
+                                            class="text-custom-500 underline">Download</span></a>
+                                    {{-- <iframe
+                                        src="https://docs.google.com/gview?url={{ url('dokumen/proposal/' . $dataProposal->dokumen) }}&embedded=true"
+                                        class="pdf-viewer"></iframe> --}}
                                 </td>
+                                {{-- <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
+
+                                    <iframe src="{{ secure_url('dokumen/proposal/' . $dataProposal->dokumen) }}"
+                                        class="pdf-viewer"></iframe>
+                                </td> --}}
                             </tr>
                         </table>
 

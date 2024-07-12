@@ -5,34 +5,27 @@
 @endpush
 
 @push('css')
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview@^4/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        .filepond--drop-label {
-            color: #534c4c;
+        .select2-container .select2-selection--single {
+            height: 38px;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
         }
 
-        .filepond--label-action {
-            text-decoration-color: #babdc0;
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 1.75rem;
+            display: flex;
+            align-items: center;
         }
 
-        .filepond--panel-root {
-            border-radius: 2em;
-            background-color: #edf0f4;
-            height: 1em;
-        }
-
-        .filepond--item-panel {
-            background-color: #595e68;
-        }
-
-        .filepond--drip-blob {
-            background-color: #7f8a9a;
-        }
-
-        .filepond--item {
-            width: calc(20% - 0.5em);
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+            display: flex;
+            align-items: center;
         }
     </style>
 @endpush
@@ -81,15 +74,34 @@
                     </div>
                     <form action="{{ route('data-galeri.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('POST')
                         <div class="mb-3">
-                            <label for="judul" class="form-label">Judul</label>
-                            <input type="text" class="form-control" id="judul" name="judul" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="gambar" class="form-label">Gambar</label>
-                            <input type="file" id="gambar" name="gambar" multiple required>
+                            <label for="judulDropdown" class="inline-block mb-2 text-base font-medium">Judul Yang sudah
+                                ada</label>
+                            <select name="judulDropdown" id="judulDropdown"
+                                class="select2 w-full border-slate-200"></select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="judulDropdown" class="inline-block mb-2 text-base font-medium">Judul Baru <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" name="judul" id="judul"
+                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 mt-2"
+                                placeholder="Masukkan Judul Galeri Anda">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="gambar" class="inline-block mb-2 text-base font-medium">Gambar <span
+                                    class="text-red-500">*</span></label>
+                            <input type="file" name="gambar" id="gambar" required
+                                class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"
+                                onchange="previewImage(event)">
+                        </div>
+
+                        <div class="mb-3">
+                            <img id="imgPreview" class="img-fluid max-w-full h-auto" src="#" alt="Gambar Preview"
+                                style="display: none; width: 300px; height: auto;">
+                        </div>
                         <button type="submit"
                             class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><i
                                 class="align-baseline ltr:pr-1 rtl:pl-1 ri-upload-2-line"></i> Upload</button>
@@ -101,91 +113,44 @@
     @endsection
 
     @push('js')
-        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js">
-        </script>
-        <script
-            src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js">
-        </script>
-        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            FilePond.registerPlugin(FilePondPluginImagePreview);
-            const pond = FilePond.create(document.querySelector('input[type="file"]'));
-
-            pond.setOptions({
-                storeasfile: true,
-                server: {
-                    url: '/data-galeri/upload-temporary',
-                    process: {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        onload: (response) => {
-                            return response;
-                        }
-                    },
-                    revert: {
-                        url: '/data-galeri/revert-temporary/{filename}',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        onload: (response) => {
-                            return response;
+            $(document).ready(function() {
+                $('#judulDropdown').select2({
+                    placeholder: 'Pilih atau ketik judul',
+                    tags: true,
+                    ajax: {
+                        url: '{{ route('get-judul') }}',
+                        dataType: 'json',
+                        processResults: function(data) {
+                            return {
+                                results: data.map(function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.judul
+                                    };
+                                })
+                            };
                         }
                     }
-                }
+                });
+
+                $('#judulDropdown').on('change', function() {
+                    var judul = $(this).find('option:selected').text();
+                    $('#judul').val(judul);
+                });
             });
 
-            function confirmDelete(id) {
-                let form = document.getElementById('deleteForm' + id);
-                Swal.fire({
-                    title: 'Apakah anda Yakin?',
-                    text: "Data akan dihapus secara permanen",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true,
-                    confirmButtonText: 'Hapus'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-
-                let errorMessage = '{{ session('error') }}';
-                if (errorMessage !== '') {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ooops!",
-                        text: errorMessage,
-                        showConfirmButton: true,
-                    });
-                }
-            }
-
-            let errorMessage = '{{ session('error') }}';
-            if (errorMessage !== '') {
-                Swal.fire({
-                    icon: "error",
-                    title: "Ooops!",
-                    text: errorMessage,
-                    showConfirmButton: true,
-                });
-            }
-
-            let successMessage = '{{ session('success') }}';
-            if (successMessage !== '') {
-                Swal.fire({
-                    icon: "success",
-                    title: "Success!",
-                    text: successMessage,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+            function previewImage(event) {
+                var input = event.target;
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var dataURL = reader.result;
+                    var imgPreview = document.getElementById('imgPreview');
+                    imgPreview.src = dataURL;
+                    imgPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         </script>
     @endpush

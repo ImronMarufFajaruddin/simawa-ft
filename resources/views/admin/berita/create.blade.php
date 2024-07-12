@@ -7,7 +7,7 @@
 @push('css')
     <style type="text/css">
         .ck-editor__editable_inline {
-            height: 420px;
+            height: 120px;
         }
     </style>
 @endpush
@@ -20,10 +20,10 @@
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                        <a href="#" class="text-slate-400 dark:text-zink-200">Tables</a>
+                        <a href="#" class="text-slate-400 dark:text-zink-200">Page</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100">
-                        Berita
+                        Buat Berita
                     </li>
                 </ul>
             </div>
@@ -53,8 +53,23 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="mb-1 text-2xl">Tambah Berita</h6>
-                    <p class="mb-4 text-slate-500 dark:text-zink-200">Update your photo and personal details here easily.
-                    </p>
+                    <div class="flex gap-3 mb-4 p-4 text-sm rounded-md text-custom-500 bg-custom-50 dark:bg-custom-400/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" data-lucide="alert-circle"
+                            class="lucide lucide-alert-circle inline-block size-4 mt-0.5 shrink-0">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" x2="12" y1="8" y2="12"></line>
+                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                        </svg>
+                        <div>
+                            <h6 class="mb-1">Info!</h6>
+                            <ul class="ml-2 list-disc list-inside">
+                                <li>Silahkan upload dokumen pada berita anda jika ada.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <form action="{{ route('data-berita.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-1 gap-5 xl:grid-cols-12">
@@ -62,8 +77,13 @@
                                 <label for="judulBerita" class="inline-block mb-2 text-base font-medium">Judul
                                     Berita</label>
                                 <input type="text" id="judul" name="judul"
-                                    class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                    placeholder="Judul Berita anda">
+                                    class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200
+                                    @error('judul') is-invalid @enderror"
+                                    value="{{ old('judul') }}" autofocus" placeholder="Judul Berita anda">
+
+                                @error('judul')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
                             <div class="xl:col-span-6">
                                 <label for="slug" class="inline-block mb-2 text-base font-medium">Slug</label>
@@ -80,33 +100,47 @@
                                     <option selected="">---Pilih Kategori---</option>
                                     @foreach ($dataKategoriBerita as $kategori)
                                         @can('view-kategori-berita', $kategori)
-                                            // Memeriksa izin untuk melihat kategori
                                             <option value="{{ $kategori->id }}">{{ $kategori->kategori_nama }}</option>
                                         @endcan
                                     @endforeach
-
-
                                 </select>
+                                @error('kategori_berita_id')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
 
                             <div class="xl:col-span-12">
                                 <label for="konten" class="block mb-2 text-base font-medium">Isi Konten Berita</label>
                                 <textarea id="konten" name="konten"></textarea>
+
+                                @error('konten')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
 
                             <div class="xl:col-span-6">
                                 <label for="gambar" class="inline-block mb-2 text-base font-medium">Upload Gambar</label>
                                 <div>
                                     <input type="file" id="gambar" name="gambar"
-                                        class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                                        class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500
+                                        @error('gambar') is-invalid @enderror">
                                 </div>
+                                @error('gambar')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
+
                             <div class="xl:col-span-6">
-                                <label for="dokumen" class="inline-block mb-2 text-base font-medium">Upload Dokumen</label>
+                                <label for="dokumen" class="inline-block mb-2 text-base font-medium">Upload
+                                    Dokumen</label>
                                 <div>
                                     <input type="file" id="dokumen" name="dokumen"
-                                        class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                                        class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 
+                                        @error('dokumen') is-invalid @enderror">
                                 </div>
+                                @error('dokumen')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
 
                             <div class="xl:col-span-6">
@@ -118,6 +152,9 @@
                                         <option value="{{ $status }}">{{ ucfirst($status) }}</option>
                                     @endforeach
                                 </select>
+                                @error('status')
+                                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                                @enderror
                             </div><!--end col-->
 
                             <div class="xl:col-span-6">
@@ -149,7 +186,6 @@
     <script>
         flatpickr("#publishDate", {
             dateFormat: "Y-m-d",
-            // tambahkan konfigurasi lainnya sesuai kebutuhan
         });
         document.addEventListener('DOMContentLoaded', function() {
             ClassicEditor

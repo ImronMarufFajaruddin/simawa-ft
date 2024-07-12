@@ -99,15 +99,16 @@ class InstansiController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validasi data input
         $data = $request->validate(
             [
                 'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
                 'nama_resmi' => 'required|unique:instansi,nama_resmi,' . $id,
                 'nama_singkatan' => 'required|unique:instansi,nama_singkatan,' . $id,
-                'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'logo' => 'sometimes|nullable|mimes:png,jpg,jpeg|max:2048',
                 'no_telp' => 'required|numeric',
                 'instagram' => 'required|url',
-                'website_link' => 'required|url',
+                'website_link' => 'nullable|url',
                 'sejarah' => 'required',
             ],
             [
@@ -130,12 +131,14 @@ class InstansiController extends Controller
             ]
         );
 
+        // Temukan instansi yang akan diperbarui
         $instansi = Instansi::findOrFail($id);
         $logoLama = $instansi->logo;
 
         try {
             DB::beginTransaction();
 
+            // Update data instansi
             $instansi->kategori_instansi_id = $data['kategori_instansi_id'];
             $instansi->nama_resmi = $data['nama_resmi'];
             $instansi->nama_singkatan = $data['nama_singkatan'];
@@ -144,6 +147,7 @@ class InstansiController extends Controller
             $instansi->website_link = $data['website_link'];
             $instansi->sejarah = $data['sejarah'];
 
+            // Jika ada logo baru diunggah
             if ($request->hasFile('logo')) {
                 if ($logoLama) {
                     DeleteFile::delete('instansi/logo/' . $logoLama);
@@ -152,8 +156,12 @@ class InstansiController extends Controller
                 $file_logo = $request->file('logo');
                 $file_url = UploadFile::upload('instansi/logo', $file_logo);
                 $instansi->logo = basename($file_url);
+            } else {
+                // Jika tidak ada logo baru, gunakan logo lama
+                $instansi->logo = $logoLama;
             }
 
+            // Simpan data instansi yang telah diperbarui
             $instansi->save();
 
             DB::commit();

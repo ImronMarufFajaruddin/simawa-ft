@@ -20,7 +20,7 @@
                         <a href="#!" class="text-slate-400 dark:text-zink-200">Tables</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100">
-                        Datatable
+                        Instansi
                     </li>
                 </ul>
             </div>

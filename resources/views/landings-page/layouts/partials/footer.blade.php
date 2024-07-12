@@ -1,3 +1,8 @@
+@push('css')
+    <style>
+
+    </style>
+@endpush
 <footer id="footer" class="footer">
     <div class="container footer-top">
         <div class="row gy-4">
@@ -24,8 +29,7 @@
                     @foreach ($dataFooter as $footer)
                         @if ($footer->useful_links && $footer->useful_links_title)
                             <li><i class="bi bi-chevron-right"></i>
-                                <a href="{{ $footer->useful_links }}"
-                                    target="__blank">{{ $footer->useful_links_title }}</a>
+                                <a href="{{ $footer->useful_links }}">{{ $footer->useful_links_title }}</a>
                             </li>
                         @endif
                     @endforeach
@@ -53,11 +57,11 @@
     <div class="container copyright text-center mt-4">
         <p>
             © <span>Copyright</span>
-            <strong class="px-1 sitename">FlexStart</strong>
+            <strong class="px-1 sitename">IMF</strong>
             <span>All Rights Reserved</span>
         </p>
         <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            Developed by <a href="#">ImronMF</a>
         </div>
     </div>
 </footer>
