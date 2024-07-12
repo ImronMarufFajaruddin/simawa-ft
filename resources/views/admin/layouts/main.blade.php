@@ -5,20 +5,27 @@
 <head>
     <meta charset="utf-8">
     <title>
-        @yield('title')
-        Admin || SIMAWAFT
+        @stack('title')
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta content="Minimal Admin & Dashboard Template" name="description">
-    <meta content="StarCode Kh" name="author">
+    {{-- <meta content="StarCode Kh" name="author"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('admin-template/assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}">
     <!-- Layout config Js -->
     <script src="{{ asset('admin-template/assets/js/layout.js') }}"></script>
+    <script src="{{ asset('assets/vendor/ckeditor5/build/ckeditor.js') }}"></script>
     <!-- StarCode CSS -->
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/starcode2.css') }}">
     <!-- message toastr -->
     <link rel="stylesheet" href="{{ asset('admin-template/assets/css/toastr.min.css') }}">
+    {{-- <link href="https://cdn.datatables.net/2.0.8/css/dataTables.tailwindcss.css"> --}}
+    </link>
+
+    @stack('css')
+
     <script src="{{ asset('admin-template/assets/js/toastr_jquery.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/toastr.min.js') }}"></script>
 
@@ -31,22 +38,26 @@
             class="app-menu w-vertical-menu bg-vertical-menu border-vertical-menu-border group-data-[sidebar-size=md]:w-vertical-menu-md group-data-[sidebar-size=sm]:w-vertical-menu-sm group-data-[sidebar-size=sm]:pt-header group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar=dark]:border-vertical-menu-dark group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar=brand]:border-vertical-menu-brand group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[layout=horizontal]:top-header group-data-[sidebar=modern]:border-vertical-menu-border-modern group-data-[layout=horizontal]:dark:bg-zink-700 group-data-[layout=horizontal]:dark:border-zink-500 group-data-[sidebar=dark]:dark:bg-zink-700 group-data-[sidebar=dark]:dark:border-zink-600 group-data-[layout=horizontal]:group-data-[navbar=bordered]:[&.sticky]:top-header group-data-[layout=horizontal]:dark:shadow-zink-500/10 fixed bottom-0 top-0 z-[1003] hidden transition-all duration-75 ease-linear group-data-[layout=horizontal]:group-data-[navbar=scroll]:absolute group-data-[sidebar-size=sm]:absolute group-data-[layout=horizontal]:group-data-[navbar=bordered]:inset-x-4 group-data-[layout=horizontal]:bottom-auto group-data-[layout=horizontal]:group-data-[navbar=bordered]:top-[calc(theme('spacing.header')_+_theme('spacing.4'))] group-data-[layout=horizontal]:group-data-[navbar=hidden]:top-0 group-data-[layout=horizontal]:group-data-[navbar=hidden]:h-16 group-data-[layout=horizontal]:group-data-[navbar=bordered]:w-[calc(100%_-_2rem)] group-data-[layout=horizontal]:w-full group-data-[layout=horizontal]:group-data-[navbar=bordered]:rounded-b-md group-data-[layout=horizontal]:border-r-0 group-data-[layout=horizontal]:border-t group-data-[sidebar=modern]:bg-gradient-to-tr group-data-[layout=horizontal]:opacity-0 group-data-[layout=horizontal]:shadow-md group-data-[layout=horizontal]:shadow-slate-500/10 print:hidden md:block">
             <div
                 class="h-header group-data-[sidebar-size=sm]:bg-vertical-menu group-data-[sidebar-size=sm]:group-data-[sidebar=dark]:bg-vertical-menu-dark group-data-[sidebar-size=sm]:group-data-[sidebar=brand]:bg-vertical-menu-brand group-data-[sidebar-size=sm]:group-data-[sidebar=modern]:to-vertical-menu-to-modern group-data-[sidebar-size=sm]:group-data-[sidebar=modern]:from-vertical-menu-form-modern group-data-[sidebar-size=sm]:group-data-[sidebar=modern]:bg-vertical-menu-modern group-data-[sidebar-size=sm]:group-data-[sidebar=dark]:dark:bg-zink-700 flex items-center justify-center px-5 text-center group-data-[sidebar-size=sm]:fixed group-data-[sidebar-size=sm]:top-0 group-data-[sidebar-size=sm]:z-10 group-data-[layout=horizontal]:hidden group-data-[sidebar-size=sm]:w-[calc(theme('spacing.vertical-menu-sm')_-_1px)] group-data-[sidebar-size=sm]:group-data-[sidebar=modern]:bg-gradient-to-br">
-                <a href=""
+                <a href="/dashboard"
                     class="group-data-[sidebar=brand]:hidden group-data-[sidebar=dark]:hidden group-data-[sidebar=modern]:hidden">
                     <span class="hidden group-data-[sidebar-size=sm]:block">
-                        <img src="admin-template/assets/images/logo.png" alt="" class="mx-auto h-6">
+                        <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
+                            class="mx-auto h-6">
                     </span>
-                    <span class="group-data-[sidebar-size=sm]:hidden">
-                        <img src="admin-template/assets/images/logo-dark.png" alt="" class="mx-auto h-6">
+                    <span class="group-data-[sidebar-size=sm]:hidden text-center font-bold">
+                        <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
+                            class="mx-auto h-6">SIMAWA FT UNIMAL
                     </span>
                 </a>
                 <a href=""
                     class="hidden group-data-[sidebar=brand]:block group-data-[sidebar=dark]:block group-data-[sidebar=modern]:block">
                     <span class="hidden group-data-[sidebar-size=sm]:block">
-                        <img src="admin-template/assets/images/logo.png" alt="" class="mx-auto h-6">
+                        <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
+                            class="mx-auto h-6">
                     </span>
                     <span class="group-data-[sidebar-size=sm]:hidden">
-                        <img src="admin-template/assets/images/logo-light.png" alt="" class="mx-auto h-6">
+                        <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt=""
+                            class="mx-auto h-6">
                     </span>
                 </a>
                 <button type="button" class="float-end hidden p-0" id="vertical-hover">
@@ -78,26 +89,9 @@
         </div>
     </div>
     <!-- end main content -->
-    <div class="h-header fixed bottom-6 right-12 hidden items-center group-data-[navbar=hidden]:flex">
-        <button data-drawer-target="customizerButton" type="button"
-            class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-sky-500 p-0 text-sky-50 shadow-lg transition-all duration-200 ease-linear">
-            <i data-lucide="settings" class="inline-block h-5 w-5"></i>
-        </button>
-    </div>
 
     <div id="customizerButton" drawer-end=""
         class="z-drawer show dark:bg-zink-600 fixed inset-y-0 flex w-full transform flex-col bg-white shadow transition-transform duration-300 ease-in-out ltr:right-0 rtl:left-0 md:w-96">
-        <div class="dark:border-zink-500 flex justify-between border-b border-slate-200 p-4">
-            <div class="grow">
-                <h5 class="text-16 mb-1">starcode Theme Customizer</h5>
-                <p class="dark:text-zink-200 font-normal text-slate-500">Choose your themes & layouts etc.</p>
-            </div>
-            <div class="shrink-0">
-                <button data-drawer-close="customizerButton"
-                    class="dark:text-zink-200 dark:hover:text-zink-50 text-slate-500 transition-all duration-150 ease-linear hover:text-slate-800"><i
-                        data-lucide="x" class="h-4 w-4"></i></button>
-            </div>
-        </div>
         <div class="h-full overflow-y-auto p-6">
             <div>
                 <h5 class="text-15 mb-3 capitalize underline">Choose Layouts</h5>
@@ -350,7 +344,10 @@
     <script src="{{ asset('admin-template/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/prismjs/prism.js') }}"></script>
     <script src="{{ asset('admin-template/assets/libs/lucide/umd/lucide.js') }}"></script>
-    <script src="{{ asset('admin-template/assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/libs/flatpickr/flatpickr.min.js') }}"></script> --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
     <script src="{{ asset('admin-template/assets/js/starcode.bundle.js') }}"></script>
 
     <!-- App js -->
@@ -359,20 +356,30 @@
     <script src="{{ asset('admin-template/assets/js/datatables/jquery-3.7.0.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.tailwindcss.min.js') }}"></script>
+
     <!--buttons dataTables-->
     {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script> --}}
     <script src="{{ asset('admin-template/assets/js/datatables/jszip.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/pdfmake.min.js') }}"></script>
-    {{-- <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script> --}}
+    <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.print.min.js') }}"></script>
 
-    <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script>
+    {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.init.js') }}"></script> --}}
+    {{-- <script src="{{ asset('admin-template/assets/libs/dropzone/dropzone-min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('admin-template/assets/js/pages/apps-ecommerce-product-create.init.js') }}"></script>
+    <script src="{{ asset('admin-template/assets/js/pages/form-file-upload.init.js') }}"></script> --}}
     <!-- Sweet Alerts js -->
     {{-- <script src="{{ asset('admin-template/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--sweet alert init js-->
     {{-- <script src="{{ asset('admin-template/assets/js/pages/sweetalert.init.js') }}"></script> --}}
 
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>
     @stack('js')
 </body>
 

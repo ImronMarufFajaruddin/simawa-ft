@@ -32,7 +32,6 @@ class UserAdminController extends Controller
             // Memulai transaksi database
             DB::beginTransaction();
 
-            // Membuat instance baru dari model User dan mengisi atributnya
             $newUser = new User();
             $newUser->name = $data['name'];
             $newUser->username = $data['username'];
@@ -43,9 +42,7 @@ class UserAdminController extends Controller
 
             // Commit transaksi jika tidak ada masalah
             DB::commit();
-
             // Redirect ke halaman utama dengan pesan sukses
-
 
             Session::flash('success', 'Berhasil menambahkan data');
             return redirect()->route('admin.user.index');
@@ -109,7 +106,6 @@ class UserAdminController extends Controller
             $user->delete();
 
             DB::commit();
-
             // Session()->flash('success', 'User deleted successfully');
             Session::flash('success', 'Data Berhasil dihapus');
 
