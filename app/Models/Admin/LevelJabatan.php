@@ -9,11 +9,8 @@ class LevelJabatan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'instansi_id',
-        'periode',
-        'nama_jabatan',
-    ];
+    protected $table = 'level_jabatan';
+    protected $primaryKey = 'id';
 
     public function instansi()
     {

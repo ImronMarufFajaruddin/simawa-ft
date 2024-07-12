@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Http\Controllers\Admin\KategoriBeritaController;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +21,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(UserSeeder::class);
+        $this->call(FooterSeeder::class);
+        $this->call(HeroSeeder::class);
+        $this->call(KategoriInstansiSeeder::class);
+        $this->call(InstansiSeeder::class);
     }
 }

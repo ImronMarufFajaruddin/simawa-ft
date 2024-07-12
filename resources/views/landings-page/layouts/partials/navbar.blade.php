@@ -1,68 +1,47 @@
-<!-- ======= Header ======= -->
-<header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
-        <a href="index.html" class="logo d-flex align-items-center">
-            <img src="{{ asset('landings-template/assets/img/logo_ormawa/maskot.png') }}" alt="">
-            <span>SIMAWAFT</span>
+<header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt="" />
+            <h1 class="sitename">SIMAWA FT</h1>
         </a>
 
-        <nav id="navbar" class="navbar">
+        <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
-                {{-- <li><a class="getstarted scrollto" href="#hero">Beranda</a></li> --}}
-                {{-- <li class="dropdown"><a href="#"><span>ORMAWA FT-UNIMAL</span>
-                      <i class="bi bi-chevron-down"></i></a>
-                  <ul>
-                      @foreach ($dataKatInstansi as $data)
-                          <li class="dropdown"><a href="#"><span>{{ $data->nama_kategori }}</span>
-                                  <i class="bi bi-chevron-right"></i></a>
-                              @foreach ($dataInstansi as $data)
-                                  <ul>
-                                      <li><a href=""></a>{{ $data->nama_instansi }}</li>
-                                  </ul>
-                              @endforeach
-                          </li>
-                      @endforeach
-                  </ul>
-              </li> --}}
+                <li>
+                    <a href="/" class="active">Beranda<br /></a>
+                </li>
+
                 <li class="dropdown">
                     <a href="#"><span>ORMAWA FT-UNIMAL</span>
-                        <i class="bi bi-chevron-down"></i></a>
+                        <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
-                        {{-- @foreach ($dataKatInstansi as $kategori)
+
+                        @foreach ($dataKategoriInstansi as $kategori)
                             <li class="dropdown">
-                                <a href="#"><span>{{ $kategori->nama_kategori }}</span>
-                                    <i class="bi bi-chevron-right"></i></a>
+                                <a href="#ormawa"><span>{{ $kategori->kategori_nama }}</span>
+                                    <i class="bi bi-chevron-right toogle-dropdown"></i></a>
                                 <ul>
-                                    @foreach ($kategori->instansis as $instansi)
-                                        <li><a href="#">{{ $instansi->nama_instansi }}
-                                                ({{ $instansi->nama_singkatan }})
-                                            </a>
+                                    @foreach ($kategori->instansi as $data)
+                                        <li><a
+                                                href="{{ route('instansi.index', ['slug' => $data->slug]) }}">{{ $data->nama_singkatan }}</a>
                                         </li>
                                     @endforeach
                                 </ul>
                             </li>
-                        @endforeach --}}
-
-                        <li class="dropdown">
-                            <a href="#"><span>Instansi </span>
-                                <i class="bi bi-chevron-right"></i></a>
-                            <ul>
-                                <li><a href="#">Nama Instansi
-                                    </a>
-                                </li>
-                            </ul>
-
+                        @endforeach
                     </ul>
                 </li>
-                <li><a class="nav-link scrollto" href="#tentangkami">Tentang Kami</a></li>
-                <li><a class="nav-link scrollto" href="#artikel">Berita</a></li>
-                <li><a class="nav-link scrollto" href="#galeri">Galeri</a></li>
-                <li><a class="nav-link scrollto" href="#kontak">Kontak</a></li>
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
+                <li><a href="{{ url('/') }}#tentangkami">Tentang Kami</a></li>
+                <li><a href="{{ route('berita.index') }}">Berita</a></li>
+                <li><a href="#galeri">Galeri</a></li>
 
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        <!-- <a class="btn-getstarted flex-md-shrink-0" href="index.html#about"
+        >Get Started</a> -->
     </div>
-</header><!-- End Header -->
+</header>

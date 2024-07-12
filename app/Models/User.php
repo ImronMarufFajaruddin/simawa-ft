@@ -4,8 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HashUuid;
+use App\Models\Admin\Lpj;
 use Illuminate\Support\Str;
 use App\Models\Admin\Berita;
+use App\Models\Admin\Galeri;
+use App\Models\Admin\Geleri;
+use App\Models\Admin\Instansi;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +25,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id', // Include id in fillable
         'name',
         'username',
         'email',
@@ -29,11 +32,24 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function instansi()
+    {
+        return $this->hasOne(Instansi::class, 'user_id', 'id');
+    }
     public function berita()
     {
-        return $this->hasMany(Berita::class);
+        return $this->hasMany(Berita::class, 'user_id', 'id');
     }
 
+    public function lpj()
+    {
+        return $this->hasMany(Lpj::class, 'user_id', 'id');
+    }
+
+    public function galeri()
+    {
+        return $this->hasMany(Galeri::class, 'user_id', 'id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
