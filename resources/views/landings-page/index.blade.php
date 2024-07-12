@@ -45,10 +45,14 @@
                         <div class="content">
                             <h3>Tentang Kami</h3>
                             <h2>
-                                {{ $dataHero->about_title }}
+                                @if ($dataHero->about_title)
+                                    {{ $dataHero->about_title }}
+                                @endif
                             </h2>
                             <p>
-                                {!! $dataHero->about !!}
+                                @if ($dataHero->about)
+                                    {!! $dataHero->about !!}
+                                @endif
                             </p>
                             {{-- <div class="text-center text-lg-start">
                                 <a href="#"
@@ -62,7 +66,7 @@
 
                     <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
                         @if ($dataHero->logo)
-                            <img src="{{ asset('landing/hero/about/' . $dataHero->logo) }}" class="img-fluid"
+                            <img src="{{ asset('landing/hero/about/' . $dataHero->about_foto) }}" class="img-fluid"
                                 alt="" />
                         @else
                             <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt="Logo"
@@ -177,18 +181,15 @@
 
         <!-- Recent Posts Section -->
         <section id="recent-posts" class="recent-posts section">
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up" data-aos-delay="100">
-                <p class="text-uppercase">Berita</p>
-                <h2 class="text-uppercase">Berita terbaru dari keluarga teknik</h2>
-            </div>
-            <!-- End Section Title -->
-
             <div class="container">
+                <div class="container section-title">
+                    <p class="text-uppercase">Berita</p>
+                    <h2 class="text-uppercase">Berita terbaru dari keluarga teknik</h2>
+                </div>
                 <div class="row gy-5 d-flex justify-content-center">
                     @foreach ($dataBerita as $data)
                         <div class="col-xl-3 col-md-4">
-                            <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="100">
+                            <div class="post-item position-relative h-100">
                                 <div class="post-img position-relative overflow-hidden">
                                     <img src="{{ asset('uploads/berita/foto/' . $data->gambar) }}" class="img-fluid"
                                         style="width: 100%; height: 150px;" alt="" />
@@ -210,7 +211,7 @@
                                     </div>
                                     <hr />
                                     <p>{!! Str::limit(strip_tags($data->konten), 50) !!}</p>
-                                    <a href="{{ route('berita.show', ['id' => $data->id]) }}"
+                                    <a href="{{ route('berita.show', ['slug' => $data->slug]) }}"
                                         class="readmore stretched-link">
                                         <span>Read More</span><i class="bi bi-arrow-right"></i>
                                     </a>
@@ -225,6 +226,29 @@
         </section>
         <!-- /Recent Posts Section -->
     </main>
+    <footer id="footer" class="footer">
+        <div class="footer-newsletter">
+            <div class="container">
+
+                <div class="justify-content-center text-center">
+                    <div class="col-lg-12">
+                        <h4>Sekretariat</h4>
+                        <p>
+                            @if ($dataFooter->first()->alamat)
+                                {{ $dataFooter->first()->alamat }}
+                            @endif
+                        </p>
+                        <div class="card justify-content-center shadow border-none">
+                            <iframe class="col-lg-12"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3563.957944963634!2d97.0603642023118!3d5.201640803080404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3047713cc5d31357%3A0xe39c619bdb0de168!2sFakultas%20Teknik%20Universitas%20Malikussaleh!5e0!3m2!1sid!2sid!4v1720020015123!5m2!1sid!2sid"
+                                height="450" style="border-radius:4px;" allowfullscreen="true" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     {{-- <div class="maps">
         <div class="container section-title" data-aos="fade-up">
@@ -240,30 +264,4 @@
             </div>
         </div>
     </div> --}}
-
-    <footer id="footer" class="footer">
-        <div class="footer-newsletter">
-            <div class="container">
-                <div class="row justify-content-center text-center">
-                    <div class="col-lg-6">
-                        <h4>Join Our Newsletter</h4>
-                        <p>
-                            Subscribe to our newsletter and receive the latest news about
-                            our products and services!
-                        </p>
-                        <form action="forms/newsletter.php" method="post" class="php-email-form">
-                            <div class="newsletter-form">
-                                <input type="email" name="email" /><input type="submit" value="Subscribe" />
-                            </div>
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">
-                                Your subscription request has been sent. Thank you!
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 @endsection

@@ -75,14 +75,35 @@
     <div class="mb-0 w-screen lg:mx-auto lg:w-[500px] card shadow-lg border-none shadow-slate-100 relative">
         <div class="!px-10 !py-12 card-body">
             <a href="">
-                <img src="assets/images/logo-light.png" alt="" class="hidden h-6 mx-auto dark:block">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" class="hidden h-6 mx-auto dark:block">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="" class="block h-16 mx-auto dark:hidden">
             </a>
 
             <div class="mt-8 text-center">
                 <h4 class="mb-1 text-custom-500 dark:text-custom-500">Selamat Datang Kembali !</h4>
-                <p class="text-slate-500 dark:text-zink-200">Login.</p>
+                {{-- <p class="text-slate-500 dark:text-zink-200">Login.</p> --}}
             </div>
+
+            @if ($errors->any())
+                <div class="flex mt-2 gap-3 p-4 text-sm text-red-500 rounded-md bg-red-50 dark:bg-red-400/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-alert-triangle inline-block size-4 mt-0.5 shrink-0">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                        <path d="M12 9v4"></path>
+                        <path d="M12 17h.01"></path>
+                    </svg>
+                    <div>
+                        <h6 class="mb-1">Ada kesalahan pada input anda!</h6>
+                        <ul class="ml-2 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
             <form action="{{ route('login') }}" class="mt-10" id="signInForm" method="POST">
                 <div class="hidden px-4 py-3 mb-3 text-sm text-green-500 border border-green-200 rounded-md bg-green-50 dark:bg-green-400/20 dark:border-green-500/50"
                     id="successAlert">

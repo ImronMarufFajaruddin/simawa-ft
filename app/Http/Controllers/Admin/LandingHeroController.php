@@ -19,6 +19,12 @@ class LandingHeroController extends Controller
         return view('admin.landing-setting.heroIndex', compact('dataHero'));
     }
 
+    public function heroShow($id)
+    {
+        $dataHero = HeroModel::find($id);
+        return view('admin.landing-setting.heroShow', compact('dataHero'));
+    }
+
     public function heroCreate()
     {
         return view('admin.landing-setting.heroCreate');
@@ -30,10 +36,10 @@ class LandingHeroController extends Controller
             [
                 'title' => 'required',
                 'hero_deskripsi' => 'required',
-                'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'logo' => 'required|mimes:png,jpg,jpeg|max:6048',
                 'about_title' => 'required',
                 'about' => 'required',
-                'about_foto' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'about_foto' => 'required|mimes:png,jpg,jpeg|max:6048',
             ],
             [
                 'title.required' => 'Judul harus diisi',

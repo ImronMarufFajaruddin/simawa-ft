@@ -8,9 +8,11 @@
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li>
+                <li><a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Beranda
+                    </a></li>
+                {{-- <li>
                     <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Beranda</a>
-                </li>
+                </li> --}}
 
                 <li class="dropdown">
                     <a href="#"><span>ORMAWA FT-UNIMAL</span>

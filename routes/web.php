@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('data-landings')->middleware('can:superadmin-only')->group(function () {
         Route::get('/heroSetting', [LandingHeroController::class, 'heroIndex'])->name('data-landings.heroIndex');
         Route::get('/heroCreate', [LandingHeroController::class, 'heroCreate'])->name('data-landings.heroCreate');
+        Route::get('/heroShow/{id}', [LandingHeroController::class, 'heroShow'])->name('data-landings.heroShow');
         Route::post('/heroStore', [LandingHeroController::class, 'heroStore'])->name('data-landings.heroStore');
         Route::get('/heroEdit/{id}', [LandingHeroController::class, 'heroEdit'])->name('data-landings.heroEdit');
         Route::put('/heroUpdate/{id}', [LandingHeroController::class, 'heroUpdate'])->name('data-landings.heroUpdate');
@@ -202,7 +203,7 @@ Route::group(['prefix' => 'berita'], function () {
     //     'index'
     // ]);
     Route::get('/', [LandingBeritaController::class, 'index'])->name('berita.index');
-    Route::get('/{id}', [LandingBeritaController::class, 'show'])->name('berita.show');
+    Route::get('/{slug}', [LandingBeritaController::class, 'show'])->name('berita.show');
 });
 
 Route::group(['prefix' => 'gallery'], function () {

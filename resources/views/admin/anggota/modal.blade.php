@@ -117,7 +117,8 @@
             </div>
 
             <div class="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
-                <form action="{{ route('data-anggota.update', $data->id) }}" method="POST">
+                <form action="{{ route('data-anggota.update', $data->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     {{-- <div class="mb-3">

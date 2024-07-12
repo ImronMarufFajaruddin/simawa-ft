@@ -15,9 +15,9 @@
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1  before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                        <a href="#!" class="text-slate-400 dark:text-zink-200">Tables</a>
+                        <a href="#!" class="text-slate-400 dark:text-zink-200">Page</a>
                     </li>
-                    <li class="text-slate-700 dark:text-zink-100">Datatable</li>
+                    <li class="text-slate-700 dark:text-zink-100">Kegiatan</li>
                 </ul>
             </div>
 
@@ -45,7 +45,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3 flex items-center">
-                        <h6 class="mb-4 text-xl grow">Kategori</h6>
+                        <h6 class="mb-4 text-xl grow">Data Kegiatan</h6>
                         <div class="shrink-0">
                             <button data-modal-target="modalAdd" type="button"
                                 class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><svg
@@ -94,7 +94,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
-                                                class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
+                                                class="py-1 text-xs ltr:pl-[calc(theme('spacing.1')_+_26px)] rtl:pr-[calc(theme('spacing.1')_+_26px)] relative px-1.5 text-white btn bg-red-500 border-red-500 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:border-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:border-red-600 active:ring active:ring-red-100 dark:ring-red-400/20"
                                                 onclick="confirmDelete('{{ $data->id }}')">
                                                 <i
                                                     class="ri-delete-bin-5-line w-[26px] bg-white/10 flex absolute ltr:-left-[1px] rtl:-right-[1px] -bottom-[1px] -top-[1px] items-center justify-center"></i>Hapus
