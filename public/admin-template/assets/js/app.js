@@ -572,32 +572,32 @@ function removeActiveClass(selector) {
     });
 }
 
-function lightDarkMode() {
-    var lightDarkBtn = document.getElementById("light-dark-mode");
-    lightDarkBtn.addEventListener("click", () => {
-        if (sessionStorage.getItem("data-mode") === "light") {
-            // set attributes
-            setAttrItemAndTag("data-mode", "dark");
-            setAttrItemAndTag("data-sidebar", "dark");
-            setAttrItemAndTag("data-topbar", "dark");
+// function lightDarkMode() {
+//     var lightDarkBtn = document.getElementById("light-dark-mode");
+//     lightDarkBtn.addEventListener("click", () => {
+//         if (sessionStorage.getItem("data-mode") === "light") {
+//             // set attributes
+//             setAttrItemAndTag("data-mode", "dark");
+//             setAttrItemAndTag("data-sidebar", "dark");
+//             setAttrItemAndTag("data-topbar", "dark");
 
-            // set activation
-            updateActiveBtn("sidebarColorTwo");
-            updateActiveBtn("topbarColorTwo");
-            updateActiveBtn("dataModeTwo");
-        } else {
-            // set attributes
-            setAttrItemAndTag("data-mode", "light");
-            setAttrItemAndTag("data-sidebar", "light");
-            setAttrItemAndTag("data-topbar", "light");
+//             // set activation
+//             updateActiveBtn("sidebarColorTwo");
+//             updateActiveBtn("topbarColorTwo");
+//             updateActiveBtn("dataModeTwo");
+//         } else {
+//             // set attributes
+//             setAttrItemAndTag("data-mode", "light");
+//             setAttrItemAndTag("data-sidebar", "light");
+//             setAttrItemAndTag("data-topbar", "light");
 
-            // set activation
-            updateActiveBtn("sidebarColorOne");
-            updateActiveBtn("topbarColorOne");
-            updateActiveBtn("dataModeOne");
-        }
-    });
-}
+//             // set activation
+//             updateActiveBtn("sidebarColorOne");
+//             updateActiveBtn("topbarColorOne");
+//             updateActiveBtn("dataModeOne");
+//         }
+//     });
+// }
 
 function layoutSetting() {
     const dataLayout = document.querySelectorAll('input[name="dataLayout"]');
@@ -1051,7 +1051,7 @@ function init() {
     windowLoadContent();
     resetLayout();
     updateHorizontalMenus();
-    lightDarkMode();
+    // lightDarkMode();
     initLanguage();
     initFilters();
     initMenuItemScroll();

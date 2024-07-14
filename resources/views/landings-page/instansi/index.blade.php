@@ -1,6 +1,6 @@
 @extends('landings-page.layouts.main')
 @push('title')
-    About - {{ $dataInstansi->nama_singkatan }}
+    Profile - {{ $dataInstansi->nama_singkatan }}
 @endpush
 
 @section('content')
