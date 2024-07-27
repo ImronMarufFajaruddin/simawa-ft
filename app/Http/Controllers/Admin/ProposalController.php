@@ -46,23 +46,46 @@ class ProposalController extends Controller
 
     public function store(Request $request)
     {
-        $dataProposal = $request->validate([
-            'kegiatan_id' => 'required|exists:kegiatan,id',
-            'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:2048',
-        ]);
+        $dataProposal = $request->validate(
+            [
+                'kegiatan_id' => 'required|exists:kegiatan,id',
+                'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+            ],
+            [
+                'kegiatan_id.required' => 'Kegiatan Harus Diisi',
+                'kegiatan_id.exists' => 'Kegiatan Tidak Valid',
+                'dokumen.required' => 'Dokumen Wajib Diisi',
+                'dokumen.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
+                'dokumen.max' => 'File melebihi batas ukuran 5 MB',
+                'dokumen_lainnya.required' => 'Dokumen Lainnya Wajib Diisi',
+                'dokumen_lainnya.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
+                'dokumen_lainnya.max' => 'File melebihi batas ukuran 5 MB',
+            ]
+        );
 
         try {
 
             DB::beginTransaction();
+
+            $user = Auth::user(); // mengambil data user yang sedang login
+            $username = str_replace(' ', '_', $user->name); // menggantikan spasi dengan underscore
+
             if ($request->hasFile('dokumen')) {
-                $file_url = UploadFile::upload('dokumen/proposal', $request->file('dokumen'));
+                $file_url = UploadFile::upload('dokumen/proposal', $request->file('dokumen'), $username);
                 $dataProposal['dokumen'] = basename($file_url);
+            }
+
+            if ($request->hasFile('dokumen_lainnya')) {
+                $file_url = UploadFile::upload('dokumen/proposal/lainnya', $request->file('dokumen_lainnya'), $username);
+                $dataProposal['dokumen_lainnya'] = basename($file_url);
             }
 
             $proposal = new Proposal();
             $proposal->user_id = Auth::id();
             $proposal->kegiatan_id = $dataProposal['kegiatan_id'];
             $proposal->dokumen = $dataProposal['dokumen'];
+            $proposal->dokumen_lainnya = $dataProposal['dokumen_lainnya'];
             $proposal->status = 'menunggu'; // status default
             $proposal->komentar = null;
             $proposal->save();
@@ -87,27 +110,52 @@ class ProposalController extends Controller
     public function update(Request $request, $id)
     {
         if (Gate::denies('superadmin-only')) {
-            $dataProposal = $request->validate([
-                'kegiatan_id' => 'required|exists:kegiatan,id',
-                'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:2048',
-            ]);
+            $dataProposal = $request->validate(
+                [
+                    'kegiatan_id' => 'required|exists:kegiatan,id',
+                    'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                    'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                ],
+                [
+                    'kegiatan_id.required' => 'Kegiatan Harus Diisi',
+                    'kegiatan_id.exists' => 'Kegiatan Tidak Valid',
+                    'dokumen.required' => 'Dokumen Wajib Diisi',
+                    'dokumen.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
+                    'dokumen.max' => 'File melebihi batas ukuran 5 MB',
+                    'dokumen_lainnya.required' => 'Dokumen Lainnya Wajib Diisi',
+                    'dokumen_lainnya.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
+                    'dokumen_lainnya.max' => 'File melebihi batas ukuran 5 MB',
+                ]
+            );
             try {
                 DB::beginTransaction();
+                $user = Auth::user(); // mengambil data user yang sedang login
+                $username = str_replace(' ', '_', $user->name); // menggantikan spasi dengan underscore
 
                 $proposal = Proposal::findOrFail($id);
                 $proposal->user_id = Auth::id();
                 $proposal->kegiatan_id = $dataProposal['kegiatan_id'];
                 $proposal->dokumen = $dataProposal['dokumen'];
+                $proposal->dokumen_lainnya = $dataProposal['dokumen_lainnya'];
 
                 if ($request->hasFile('dokumen')) {
                     // Menghapus file dokumen lama jika ada
                     if ($proposal->dokumen) {
                         DeleteFile::delete('dokumen/proposal/' . $proposal->dokumen);
                     }
-                    // Upload file dokumen baru
-                    $file_url = UploadFile::upload('dokumen/proposal/', $request->file('dokumen'));
+                    $file_url = UploadFile::upload('dokumen/proposal', $request->file('dokumen'), $username);
                     $proposal->dokumen = basename($file_url);
                 }
+
+                if ($request->hasFile('dokumen_lainnya')) {
+                    // Menghapus file dokumen lama jika ada
+                    if ($proposal->dokumen_lainnya) {
+                        DeleteFile::delete('dokumen/proposal/lainnya/' . $proposal->dokumen_lainnya);
+                    }
+                    $file_url = UploadFile::upload('dokumen/proposal/lainnya', $request->file('dokumen_lainnya'), $username);
+                    $proposal->dokumen_lainnya = basename($file_url);
+                }
+
                 $proposal->status = 'menunggu';
                 $proposal->save();
                 DB::commit();
@@ -163,6 +211,10 @@ class ProposalController extends Controller
 
             if ($dataProposal->dokumen) {
                 DeleteFile::delete('dokumen/proposal/' . $dataProposal->dokumen);
+            }
+
+            if ($dataProposal->dokumen_lainnya) {
+                DeleteFile::delete('dokumen/proposal/lainnya/' . $dataProposal->dokumen_lainnya);
             }
 
             $dataProposal->delete();

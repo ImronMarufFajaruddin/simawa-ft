@@ -35,6 +35,14 @@
                     </div>
                 </div><!--end col-->
 
+                <div class="mb-3">
+                    <label for="dokumen_lainnya" class="inline-block mb-2 text-base font-medium">Dokumen Lainnya</label>
+                    <div>
+                        <input type="file" id="dokumen_lainnya" name="dokumen_lainnya"
+                            class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500">
+                    </div>
+                </div><!--end col-->
+
                 <div
                     class="flex p-2 justify-end justify-items-center mt-auto border-t border-slate-200 dark:border-zink-500">
                     {{-- <h5 class="text-16">Modal Footer</h5> --}}
@@ -75,6 +83,7 @@
                         <textarea name="komentar" id="komentar"
                             class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"></textarea>
                     </div>
+
 
                     <div class="flex justify-end mt-auto border-t border-slate-200 dark:border-zink-500 p-2">
                         <button type="button" data-modal-close="modalTambahKomentar{{ $data->id }}"
@@ -147,6 +156,30 @@
                             value="{{ old('dokumen') }}" autofocus>
 
                         @error('dokumen')
+                            <div
+                                class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-circle"
+                                    class="lucide lucide-alert-circle h-4">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" x2="12" y1="8" y2="12"></line>
+                                    <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                                </svg> <span class="font-bold">Error</span> {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dokumen_lainnya" class="inline-block mb-2 text-base font-medium">Dokumen
+                            Lainnya</label>
+                        <input type="file" id="dokumen_lainnya" name="dokumen_lainnya"
+                            class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 
+                            @error('dokumen_lainnya') is-invalid @enderror"
+                            value="{{ old('dokumen_lainnya') }}" autofocus>
+
+                        @error('dokumen_lainnya')
                             <div
                                 class="flex gap-1 px-1 py-1 mb-2 text-xs text-red-500 border border-red-200 rounded-md md:items-center bg-red-50 dark:bg-red-400/20 dark:border-red-500/50">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Admin\KategoriInstansi;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class InstansiController extends Controller
 {
@@ -21,6 +20,7 @@ class InstansiController extends Controller
         $dataInstansi = Instansi::with('kategoriInstansi')->get();
         $dataUser = User::all();
         $dataKategoriInstansi = KategoriInstansi::all();
+
         return view('admin.instansi.index', compact('dataInstansi', 'dataKategoriInstansi', 'dataUser'));
     }
 
@@ -55,51 +55,49 @@ class InstansiController extends Controller
                 'nama_resmi.unique' => 'Nama resmi sudah ada',
                 'nama_singkatan.required' => 'Nama singkatan harus diisi',
                 'nama_singkatan.unique' => 'Nama singkatan sudah ada',
-                'logo.max' => 'File melebihi batas ukuran 2 MB',
             ]
         );
 
         try {
             DB::beginTransaction();
 
-            if ($request->hasFile('logo')) {
-                $file_url = UploadFile::upload('instansi/logo', $request->file('logo'));
-                $data['logo'] = basename($file_url);
-            }
-
             $dataInstansi = new Instansi();
             $dataInstansi->kategori_instansi_id = $data['kategori_instansi_id'];
             $dataInstansi->user_id = $data['user_id'];
             $dataInstansi->nama_resmi = $data['nama_resmi'];
             $dataInstansi->nama_singkatan = $data['nama_singkatan'];
-            $dataInstansi->logo = $data['logo'];
             $dataInstansi->no_telp = $data['no_telp'];
             $dataInstansi->instagram = $data['instagram'];
             $dataInstansi->website_link = $data['website_link'];
             $dataInstansi->sejarah = $data['sejarah'];
-            $dataInstansi->save();
 
+            if ($request->hasFile('logo')) {
+                $file_url = UploadFile::upload('instansi/logo', $request->file('logo'), Auth::user()->username);
+                $dataInstansi->logo = basename($file_url);
+            }
+
+            $dataInstansi->save();
             DB::commit();
 
             Session::flash('success', 'Data Berhasil Disimpan');
             return redirect()->route('data-instansi.index');
         } catch (\Exception $e) {
             DB::rollback();
-            Session::flash('error', $e->getMessage('Data Gagal Disimpan'));
+            Session::flash('error', 'Data Gagal Disimpan: ' . $e->getMessage());
             return redirect()->route('data-instansi.index');
         }
     }
 
     public function edit($id)
     {
-        $dataInstansi = Instansi::find($id);
+        $dataInstansi = Instansi::findOrFail($id);
         $dataKategoriInstansi = KategoriInstansi::all();
+
         return response()->json(['dataInstansi' => $dataInstansi, 'dataKategoriInstansi' => $dataKategoriInstansi], 200);
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi data input
         $data = $request->validate(
             [
                 'kategori_instansi_id' => 'required|exists:kategori_instansi,id',
@@ -120,8 +118,6 @@ class InstansiController extends Controller
                 'instagram.url' => 'Instagram harus berupa link URL',
                 'website_link.url' => 'Website harus berupa link URL',
                 'sejarah.required' => 'Sejarah harus diisi',
-                'user_id.required' => 'User harus diisi',
-                'user_id.exists' => 'User tidak ditemukan',
                 'kategori_instansi_id.required' => 'Kategori Instansi harus diisi',
                 'kategori_instansi_id.exists' => 'Kategori Instansi tidak ditemukan',
                 'nama_resmi.required' => 'Nama resmi harus diisi',
@@ -131,7 +127,6 @@ class InstansiController extends Controller
             ]
         );
 
-        // Temukan instansi yang akan diperbarui
         $instansi = Instansi::findOrFail($id);
         $logoLama = $instansi->logo;
 
@@ -153,12 +148,8 @@ class InstansiController extends Controller
                     DeleteFile::delete('instansi/logo/' . $logoLama);
                 }
 
-                $file_logo = $request->file('logo');
-                $file_url = UploadFile::upload('instansi/logo', $file_logo);
+                $file_url = UploadFile::upload('instansi/logo', $request->file('logo'), Auth::user()->username);
                 $instansi->logo = basename($file_url);
-            } else {
-                // Jika tidak ada logo baru, gunakan logo lama
-                $instansi->logo = $logoLama;
             }
 
             // Simpan data instansi yang telah diperbarui
@@ -168,13 +159,13 @@ class InstansiController extends Controller
             return redirect()->route('data-instansi.index')->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', 'Data Gagal Diupdate: ' . $e->getMessage());
         }
     }
 
     public function detail($id)
     {
-        $dataInstansi = Instansi::find($id);
+        $dataInstansi = Instansi::findOrFail($id);
         return view('admin.instansi.detail', compact('dataInstansi'));
     }
 
@@ -188,11 +179,10 @@ class InstansiController extends Controller
             }
 
             $instansi->delete();
-
             Session::flash('success', 'Berhasil Menghapus Data');
             return redirect()->route('data-instansi.index');
         } catch (\Exception $e) {
-            Session::flash('error', $e->getMessage('Data Gagal Dihapus'));
+            Session::flash('error', 'Data Gagal Dihapus: ' . $e->getMessage());
             return redirect()->route('data-instansi.index');
         }
     }

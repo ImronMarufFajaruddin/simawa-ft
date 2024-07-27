@@ -33,5 +33,9 @@ class FooterSeeder extends Seeder
             'useful_links' => '/berita',
             'useful_links_title' => 'Berita',
         ]);
+        Footer::create([
+            'useful_links' => '/login',
+            'useful_links_title' => 'Login Instansi',
+        ]);
     }
 }
