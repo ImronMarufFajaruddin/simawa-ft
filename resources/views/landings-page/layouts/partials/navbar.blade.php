@@ -5,7 +5,6 @@
             <img src="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" alt="Logo" />
             <h1 class="sitename">SIMAWA FT</h1>
         </a>
-
         <nav id="navmenu" class="navmenu">
             <ul>
                 <li><a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Beranda
@@ -14,7 +13,30 @@
                     <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                 </li> --}}
 
+
                 <li class="dropdown">
+                    <a href="#"><span>ORMAWA FT-UNIMAL</span>
+                        <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        @foreach ($dataKategoriInstansi as $kategori)
+                            <li class="dropdown">
+                                <a href="#"><span>{{ $kategori->kategori_nama }}</span>
+                                    <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    @foreach ($kategori->instansi as $data)
+                                        <li><a href="{{ route('instansi.index', ['slug' => $data->slug]) }}"
+                                                class="{{ Request::is('instansi/' . $data->slug) ? 'active' : '' }}">{{ $data->nama_singkatan }}</a>
+                                        </li>
+                                    @endforeach
+                                    {{-- <li><a href="#">Deep Dropdown 1</a></li> --}}
+                                </ul>
+                            </li>
+                        @endforeach
+
+                    </ul>
+                </li>
+
+                {{-- <li class="dropdown">
                     <a href="#"><span>ORMAWA FT-UNIMAL</span>
                         <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
@@ -32,7 +54,7 @@
                             </li>
                         @endforeach
                     </ul>
-                </li>
+                </li> --}}
                 <li><a href="{{ url('/') }}#tentangkami"
                         class="{{ Request::is('tentangkami') ? 'active' : '' }}">Tentang Kami</a></li>
                 <li><a href="{{ route('berita.index') }}"

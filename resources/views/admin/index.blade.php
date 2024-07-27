@@ -210,8 +210,8 @@
                             </div>
                             <div
                                 class="hidden col-span-12 2xl:col-span-3 lg:col-span-2 lg:col-start-11 2xl:col-start-10 lg:block">
-                                <img src="{{ asset('admin-templates/assets/images/dashboard.png') }}" alt=""
-                                    class="h-40 ltr:2xl:ml-auto rtl:2xl:mr-auto">
+                                {{-- <img src="{{ asset('admin-templates/assets/images/dashboard.png') }}" alt=""
+                                    class="h-40 ltr:2xl:ml-auto rtl:2xl:mr-auto"> --}}
                             </div>
                         </div>
                     </div>

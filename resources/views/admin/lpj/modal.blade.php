@@ -35,6 +35,15 @@
                     </div>
                 </div>
 
+                <div class="mb-3">
+                    <label for="dokumen_lainnya" class="inline-block mb-2 text-base font-medium">Dokumen Lainnya</label>
+                    <div>
+                        <input type="file" id="dokumen_lainnya" name="dokumen_lainnya"
+                            class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx">
+                    </div>
+                </div>
+
                 <div class="flex p-2 justify-end mt-auto border-t border-slate-200 dark:border-zink-500">
                     <button type="button" data-modal-close="modalAdd"
                         class="me-3 text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">
@@ -128,6 +137,16 @@
                         <label for="dokumen" class="inline-block mb-2 text-base font-medium">Upload LPJ</label>
                         <div>
                             <input type="file" id="dokumen" name="dokumen"
+                                class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dokumen_lainnya" class="inline-block mb-2 text-base font-medium">Dokumen
+                            Lainnya</label>
+                        <div>
+                            <input type="file" id="dokumen_lainnya" name="dokumen_lainnya"
                                 class="cursor-pointer form-file border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500"
                                 accept=".pdf,.doc,.docx,.xls,.xlsx">
                         </div>

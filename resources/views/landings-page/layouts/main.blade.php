@@ -9,10 +9,12 @@
     </title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
+    <meta content="Simawa Ft Unimal" name="description">
+    <meta content="Imron Ma'ruf Fajaruddin" name="author">
 
     <!-- Favicons -->
     <link href="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" rel="icon" />
-    <link href="{{ asset('landing-template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" />
+    {{-- <link href="{{ asset('landing-template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" /> --}}
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -51,7 +53,6 @@
         crossorigin="anonymous"></script>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('landing-template/assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

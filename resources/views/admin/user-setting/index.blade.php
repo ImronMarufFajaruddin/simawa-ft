@@ -1,7 +1,7 @@
 @extends('admin.layouts.main')
 
 @push('title')
-    Profile Setting
+    Profile Instansi
 @endpush
 
 @push('css')
@@ -20,7 +20,7 @@
 
                 <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
                     <div class="grow">
-                        <h5 class="text-16">Pengaturan Akun</h5>
+                        <h5 class="text-16">Profile Instansi</h5>
                     </div>
                     <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                         <li
@@ -28,7 +28,7 @@
                             <p class="text-slate-400 dark:text-zink-200">Pages</p>
                         </li>
                         <li class="text-slate-700 dark:text-zink-100">
-                            Pengaturan Akun
+                            Profile Instansi
                         </li>
                     </ul>
                 </div>
@@ -72,34 +72,53 @@
                                     @endif
                                     <div
                                         class="absolute bottom-0 flex items-center justify-center rounded-full size-8 ltr:right-0 rtl:left-0 profile-photo-edit">
-                                        <input id="profile-img-file-input" type="file"
-                                            class="hidden profile-img-file-input">
-                                        <label for="profile-img-file-input"
-                                            class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
-                                            <i data-lucide="image-plus"
-                                                class="size-4 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                        </label>
+                                        <form action="{{ route('profile.updateAvatar') }}" method="POST" id="avatarForm"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <input id="profile-img-file-input" type="file" name="logo"
+                                                class="hidden profile-img-file-input" onchange="confirmUpdateAvatar()">
+                                            <label for="profile-img-file-input"
+                                                class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
+                                                <i data-lucide="image-plus"
+                                                    class="size-4 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            </label>
+                                        </form>
                                     </div>
                                 </div>
                             </div><!--end col-->
 
+
+
                             <div class="lg:col-span-10 2xl:col-span-9">
-                                <h5 class="mb-1">{{ Auth::user()->name }}<i data-lucide="badge-check"
-                                        class="inline-block size-4 text-sky-500 fill-sky-100 dark:fill-custom-500/20"></i>
-                                </h5>
+                                @foreach ($dataInstansi as $instansi)
+                                    <h5 class="mb-1">{{ $instansi->nama_singkatan }}<i data-lucide="badge-check"
+                                            class="inline-block size-4 text-sky-500 fill-sky-100 dark:fill-custom-500/20"></i>
+                                    </h5>
+
+                                    <h6 class="mb-1">{{ $instansi->nama_resmi }}</h6>
+                                @endforeach
+
                                 <div class="flex gap-3 mb-4">
                                     <p class="text-slate-500 dark:text-zink-200"><i data-lucide="user-circle"
                                             class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
                                         {{ Auth::user()->role }}</p>
+
+                                    <p class="text-slate-500 dark:text-zink-200"><i data-lucide="mail"
+                                            class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                        {{ Auth::user()->email }}</p>
+                                    @foreach ($dataInstansi as $instansi)
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="phone"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            {{ $instansi->no_telp }}</p>
+                                    @endforeach
+
                                     <p class="text-slate-500 dark:text-zink-200"><i data-lucide="map-pin"
                                             class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
                                         Jalan Batam, Bukit Indah, Lhokseumawe, Indonesia</p>
                                 </div>
-                                @foreach ($dataInstansi as $instansi)
-                                    <p class="mt-4 text-slate-500 dark:text-zink-200">
-                                        {!! $instansi->sejarah !!}
-                                    </p>
-                                @endforeach
+                                <p class="mt-4 text-slate-500 dark:text-zink-200">
+                                    {!! $instansi->sejarah !!}
+                                </p>
 
                                 <div class="flex gap-2 mt-4">
                                     @if (Auth::user()->instansi)
@@ -146,9 +165,9 @@
                                             <h6 class="mb-1 text-15">Informasi Instansi</h6>
                                             <p class="mb-4 text-slate-500 dark:text-zink-200">Update logo dan informasi instansi
                                                 anda.</p>
-
                                             @foreach ($dataInstansi as $instansi)
-                                                <form action="" method="POST">
+                                                <form action="{{ route('profile.update', ['id' => $instansi->id]) }}"
+                                                    method="POST" id="updateForm{{ $instansi->id }}">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="grid grid-cols-1 gap-5 xl:grid-cols-12">
@@ -157,70 +176,73 @@
                                                                 class="inline-block mb-2 text-base font-medium">Nama Resmi
                                                                 Lembaga</label>
                                                             <input type="text" id="nama_resmi" name="nama_resmi"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your value"
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan nama resmi lembaga"
                                                                 value="{{ old('nama_resmi', $instansi->nama_resmi) }}">
-                                                        </div><!--end col-->
+                                                        </div>
                                                         <div class="xl:col-span-6">
                                                             <label for="nama_singkatan"
                                                                 class="inline-block mb-2 text-base font-medium">Nama
                                                                 Singkatan</label>
                                                             <input type="text" id="nama_singkatan" name="nama_singkatan"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your value"
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan nama singkatan"
                                                                 value="{{ old('nama_singkatan', $instansi->nama_singkatan) }}">
-                                                        </div><!--end col-->
+                                                        </div>
                                                         <div class="xl:col-span-6">
                                                             <label for="no_telp"
                                                                 class="inline-block mb-2 text-base font-medium">Nomor
                                                                 Telepon</label>
                                                             <input type="text" id="no_telp" name="no_telp"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="+855 8456 5555 23"
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan nomor telepon"
                                                                 value="{{ old('no_telp', $instansi->no_telp) }}">
-                                                        </div><!--end col-->
+                                                        </div>
                                                         <div class="xl:col-span-6">
                                                             <label for="email"
                                                                 class="inline-block mb-2 text-base font-medium">Alamat
                                                                 Email</label>
                                                             <input type="email" id="email" name="email"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your email address"
-                                                                value="{{ old('email', Auth::user()->email) }}">
-                                                        </div><!--end col-->
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan alamat email"
+                                                                value="{{ old('email', $instansi->user->email) }}">
+                                                        </div>
                                                         <div class="xl:col-span-6">
                                                             <label for="instagram"
                                                                 class="inline-block mb-2 text-base font-medium">Instagram
                                                                 Link</label>
                                                             <input type="text" id="instagram" name="instagram"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your value"
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan link Instagram"
                                                                 value="{{ old('instagram', $instansi->instagram) }}">
-                                                        </div><!--end col-->
+                                                        </div>
                                                         <div class="xl:col-span-6">
-                                                            <label for="website"
+                                                            <label for="website_link"
                                                                 class="inline-block mb-2 text-base font-medium">Website</label>
-                                                            <input type="text" id="website" name="website"
-                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your value"
-                                                                value="{{ old('website', $instansi->website_link) }}">
-                                                        </div><!--end col-->
+                                                            <input type="text" id="website_link" name="website_link"
+                                                                class="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan link website"
+                                                                value="{{ old('website_link', $instansi->website_link) }}">
+                                                        </div>
                                                         <div class="xl:col-span-12">
                                                             <label for="sejarah"
                                                                 class="block mb-2 text-base font-medium">Sejarah</label>
                                                             <textarea id="sejarah" name="sejarah"
-                                                                class="w-full form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                                                placeholder="Enter your description" rows="3">{{ old('sejarah', $instansi->sejarah) }}</textarea>
-                                                        </div><!--end col-->
-                                                    </div><!--end grid-->
-                                                    <div class="flex justify-end mt-6 gap-x-4">
-                                                        <button type="submit"
-                                                            class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">Update</button>
-                                                        <button type="button"
-                                                            class="text-red-500 bg-red-100 btn hover:text-white hover:bg-red-600 focus:text-white focus:bg-red-600 focus:ring focus:ring-red-100 active:text-white active:bg-red-600 active:ring active:ring-red-100 dark:bg-red-500/20 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:bg-red-500 dark:focus:text-white dark:active:bg-red-500 dark:active:text-white dark:ring-red-400/20">Cancel</button>
+                                                                class="w-full form-textarea border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 placeholder-text-slate-400 dark:placeholder-text-zink-200"
+                                                                placeholder="Masukkan sejarah lembaga" rows="3">{{ old('sejarah', $instansi->sejarah) }}</textarea>
+                                                        </div>
                                                     </div>
-                                                </form><!--end form-->
+                                                    <div class="flex justify-end mt-6 gap-x-4">
+                                                        <button type="button" onclick="confirmUpdate({{ $instansi->id }})"
+                                                            class="btn bg-custom-500 border-custom-500 text-white hover:bg-custom-600 hover:border-custom-600 focus:bg-custom-600 focus:border-custom-600">Update</button>
+                                                        <button type="button" onclick="openConfirmationModal()"
+                                                            class="btn bg-red-100 text-red-500 hover:bg-red-600 hover:text-white focus:bg-red-600 focus:text-white">Cancel</button>
+                                                    </div>
+                                                </form>
                                             @endforeach
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -430,10 +452,50 @@
         </div>
         <!-- End Page-content -->
     @endsection
+
     @push('js')
         <script src="{{ asset('admin-template') }}/assets/js/pages/pages-account-setting.init.js"></script>
-
         <script>
+            function confirmUpdateAvatar() {
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Anda akan mengupdate avatar",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    confirmButtonText: 'Update'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        document.getElementById('avatarForm').submit();
+                    } else {
+                        document.getElementById('profile-img-file-input').value = null;
+                    }
+                });
+            }
+
+
+            function confirmUpdate(id) {
+                let form = document.getElementById('updateForm' + id);
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data akan disimpan",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Batal',
+                    confirmButtonText: 'Simpan'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 ClassicEditor
                     .create(document.querySelector('#sejarah'), {
@@ -447,5 +509,26 @@
                         console.error(error);
                     });
             });
+
+            let errorMessage = '{{ session('error') }}';
+            if (errorMessage !== '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ooops!",
+                    text: errorMessage,
+                    showConfirmButton: true,
+                });
+            }
+
+            let successMessage = '{{ session('success') }}';
+            if (successMessage !== '') {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: successMessage,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         </script>
     @endpush

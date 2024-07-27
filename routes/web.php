@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\LandingFooterController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\LandingSettingController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Landings\LandingBeritaController;
 use App\Http\Controllers\Landings\LandingGaleriController;
 use App\Http\Controllers\Landings\LandingInstansiController;
@@ -36,13 +37,7 @@ use App\Http\Controllers\Landings\LandingKontakController;
 |
 */
 
-// function set_active($route)
-// {
-//     if (is_array($route)) {
-//         return in_array(Request::path(), $route) ? 'active' : '';
-//     }
-//     return Request::path() == $route ? 'active' : '';
-// }
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -93,14 +88,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/update/{id}', [KategoriInstansiController::class, 'update'])->name('data-kategori-instansi.update');
         Route::delete('/destroy/{id}', [KategoriInstansiController::class, 'destroy'])->name('data-kategori-instansi.destroy');
     });
-
-    Route::group(['prefix' => 'user-setting'], function () {
-        Route::get('/', [UserSettingController::class, 'index'])->name('user-setting.index');
-        Route::post('/store', [UserSettingController::class, 'store'])->name('user-setting.store');
-        Route::get('/edit/{id}', [UserSettingController::class, 'edit'])->name('user-setting.edit');
-        Route::post('/update', [UserSettingController::class, 'update'])->name('user-setting.update');
-        Route::delete('/destroy/{id}', [UserSettingController::class, 'destroy'])->name('user-setting.destroy');
+    Route::group(['prefix' => 'profile'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/store', [ProfileController::class, 'store'])->name('profile.store');
+        Route::put('/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/update-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.updateAvatar');
     });
+
 
     Route::group(['prefix' => 'data-kategori-berita'], function () {
         Route::get('/', [KategoriBeritaController::class, 'index'])->name('data-kategori-berita.index');
@@ -199,26 +193,15 @@ Route::group(['prefix' => 'instansi'], function () {
 });
 
 Route::group(['prefix' => 'berita'], function () {
-    // Route::resource('/', LandingBeritaController::class)->only([
-    //     'index'
-    // ]);
     Route::get('/', [LandingBeritaController::class, 'index'])->name('berita.index');
     Route::get('/{slug}', [LandingBeritaController::class, 'show'])->name('berita.show');
 });
 
 Route::group(['prefix' => 'gallery'], function () {
-    // Route::resource('/', LandingGaleriController::class)->only([
-    //     'index'
-    // ]);
     Route::get('/', [LandingGaleriController::class, 'index'])->name('gallery.index');
 });
 
-
-
 Route::group(['prefix' => 'kontak'], function () {
-    // Route::resource('/', LandingGaleriController::class)->only([
-    //     'index'
-    // ]);
     Route::get('/', [LandingKontakController::class, 'index'])->name('kontak.index');
 });
 
