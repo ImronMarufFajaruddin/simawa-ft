@@ -81,8 +81,9 @@ class ProfileController extends Controller
                 DeleteFile::delete('instansi/logo/' . $logoLama);
             }
 
+            $username = $user->username; // Mengambil username pengguna yang sedang login
             $file_logo = $request->file('logo');
-            $file_url = UploadFile::upload('instansi/logo', $file_logo);
+            $file_url = UploadFile::upload('instansi/logo', $file_logo, $username);
             $instansi->logo = basename($file_url);
 
             $instansi->save();

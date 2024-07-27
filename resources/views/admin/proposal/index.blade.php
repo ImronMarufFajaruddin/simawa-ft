@@ -46,6 +46,12 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="mb-4 text-15">Data Proposal</h6>
+                    <p class="mb-4 text-slate-400">Upload Proposal dan Dokumen lainnya seperti : <br> <code
+                            class="text-xs text-pink-500 select-all">- Dokumen berformat : .doc, .docx, .pdf dan atau .xlsx
+                            dengan ukuran maksimal 5 MB<br>- Surat Izin Kegiatan atau surat-surat lainnya <br> -
+                            Dokumen lainnya dapat di upload di lain waktu pada halaman ini </code>.
+                    </p>
+
                     <div class="shrink-0 mb-3">
                         <button data-modal-target="modalAdd" type="button"
                             class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><svg
@@ -63,6 +69,7 @@
                                 <th>Penyelenggara</th>
                                 <th>Kegiatan</th>
                                 <th>Dokumen</th>
+                                <th>Dokumen lain</th>
                                 <th>Status</th>
                                 <th>Komentar</th>
                                 <th>Action</th>
@@ -88,6 +95,21 @@
                                             @endif
                                         </div>
                                     </td>
+
+                                    <td>
+                                        <div class="flex items-center justify-center">
+                                            @if ($data->dokumen_lainnya)
+                                                <a href="{{ asset('dokumen/proposal/lainnya/' . $data->dokumen_lainnya) }} "
+                                                    download="{{ $data->dokumen_lainnya }}" type="button"
+                                                    class="flex items-center text-center justify-center size-[37.5px] transition-all duration-200 ease-linear p-0 text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-600 active:ring active:ring-sky-100 dark:bg-sky-500/20 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white dark:focus:bg-sky-500 dark:focus:text-white dark:active:bg-sky-500 dark:active:text-white dark:ring-sky-400/20">
+                                                    <i class="ri-download-2-line"></i>
+                                                </a>
+                                            @else
+                                                <span>No Document</span>
+                                            @endif
+                                        </div>
+                                    </td>
+
 
                                     @if (Gate::allows('superadmin-only'))
                                         <td>

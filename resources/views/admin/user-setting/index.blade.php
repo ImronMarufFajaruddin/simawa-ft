@@ -106,10 +106,11 @@
                                     <p class="text-slate-500 dark:text-zink-200"><i data-lucide="mail"
                                             class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
                                         {{ Auth::user()->email }}</p>
-
-                                    <p class="text-slate-500 dark:text-zink-200"><i data-lucide="phone"
-                                            class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                        {{ $instansi->no_telp }}</p>
+                                    @foreach ($dataInstansi as $instansi)
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="phone"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            {{ $instansi->no_telp }}</p>
+                                    @endforeach
 
                                     <p class="text-slate-500 dark:text-zink-200"><i data-lucide="map-pin"
                                             class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>

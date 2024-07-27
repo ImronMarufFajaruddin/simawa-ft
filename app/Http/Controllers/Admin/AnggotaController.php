@@ -58,10 +58,12 @@ class AnggotaController extends Controller
                 throw new \Exception('Anda Tidak Memiliki Instansi.');
             }
 
+            $username = $data['nim']; // Gunakan nim sebagai nama file
+
             if ($request->hasFile('foto')) {
                 $folderPath = 'instansi/anggota/' . $instansi->nama_singkatan;
-                $file_url = UploadFile::upload($folderPath, $request->file('foto'));
-                $data['foto'] = $folderPath . '/' . basename($file_url);
+                $file_url = UploadFile::upload($folderPath, $request->file('foto'), $username);
+                $data['foto'] = $file_url; // Simpan URL foto
             }
 
             $dataAnggota = new Anggota();
@@ -82,6 +84,7 @@ class AnggotaController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
     public function edit($id)
     {
         $dataAnggota = Anggota::findOrFail($id);
@@ -110,10 +113,12 @@ class AnggotaController extends Controller
                 throw new \Exception('Anda Tidak Memiliki Instansi.');
             }
 
+            $username = $data['nim']; // Gunakan nim sebagai nama file
+
             if ($request->hasFile('foto')) {
                 $folderPath = 'instansi/anggota/' . $instansi->nama_singkatan;
-                $file_url = UploadFile::upload($folderPath, $request->file('foto'));
-                $data['foto'] = $folderPath . '/' . basename($file_url);
+                $file_url = UploadFile::upload($folderPath, $request->file('foto'), $username);
+                $data['foto'] = $file_url; // Simpan URL foto
             }
 
             $dataAnggota->level_jabatan_id = $data['level_jabatan_id'];

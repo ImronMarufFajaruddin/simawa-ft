@@ -67,13 +67,14 @@
                                 </td>
                             </tr>
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
-                                <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
-                                    Gambar</th>
+                                <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">Gambar
+                                </th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
                                     <img src="{{ asset('uploads/berita/foto/' . $dataBerita->gambar) }}" alt="gambar"
                                         style="width:50%">
                                 </td>
                             </tr>
+
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Dokumen :</th>

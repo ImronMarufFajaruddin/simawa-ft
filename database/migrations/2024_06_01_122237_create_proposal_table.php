@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->unsignedInteger('kegiatan_id')->unsigned();
             $table->string('dokumen');
+            $table->string('dokumen_lainnya')->nullable();
             $table->enum('status', ['menunggu', 'revisi', 'ditolak', 'diterima'])->default('menunggu');
             $table->text('komentar')->nullable();
             $table->timestamps();
