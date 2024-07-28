@@ -141,6 +141,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'data-statistik', 'middleware' => ['auth', 'can:all-access']], function () {
         Route::get('/', [StatistikController::class, 'index'])->name('data-statistik.index');
+        Route::get('/cetak-pdf', [StatistikController::class, 'cetakPdf'])->name('data-statistik.cetak-pdf');
     });
 
     Route::group(['prefix' => 'data-proposal', 'middleware' => ['auth', 'can:all-access']], function () {
