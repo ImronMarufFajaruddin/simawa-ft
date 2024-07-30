@@ -210,8 +210,8 @@
                             </div>
                             <div
                                 class="hidden col-span-12 2xl:col-span-3 lg:col-span-2 lg:col-start-11 2xl:col-start-10 lg:block">
-                                <img src="{{ asset('admin-templates/assets/images/dashboard.png') }}" alt=""
-                                    class="h-40 ltr:2xl:ml-auto rtl:2xl:mr-auto">
+                                {{-- <img src="{{ asset('admin-templates/assets/images/dashboard.png') }}" alt=""
+                                    class="h-40 ltr:2xl:ml-auto rtl:2xl:mr-auto"> --}}
                             </div>
                         </div>
                     </div>
@@ -284,6 +284,18 @@
                         <h5 class="mt-4 mb-2"><span class="counter-value" data-target="{{ $proposalCount }}">0</span>
                         </h5>
                         <p class="text-slate-500 dark:text-zink-200">Total Proposal</p>
+                    </div>
+                </div><!--end col-->
+
+                <div class="col-span-12 card md:col-span-6 lg:col-span-3 2xl:col-span-2">
+                    <div class="text-center card-body">
+                        <div
+                            class="flex items-center justify-center mx-auto text-yellow-500 bg-yellow-100 rounded-full size-14 dark:bg-yellow-500/20">
+                            <i data-lucide="image"></i>
+                        </div>
+                        <h5 class="mt-4 mb-2"><span class="counter-value" data-target="{{ $galeriCount }}">0</span>
+                        </h5>
+                        <p class="text-slate-500 dark:text-zink-200">Total Galeri</p>
                     </div>
                 </div><!--end col-->
             </div>

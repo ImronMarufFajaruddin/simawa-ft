@@ -19,6 +19,12 @@ class LandingHeroController extends Controller
         return view('admin.landing-setting.heroIndex', compact('dataHero'));
     }
 
+    public function heroShow($id)
+    {
+        $dataHero = HeroModel::findOrFail($id);
+        return view('admin.landing-setting.heroShow', compact('dataHero'));
+    }
+
     public function heroCreate()
     {
         return view('admin.landing-setting.heroCreate');
@@ -30,10 +36,10 @@ class LandingHeroController extends Controller
             [
                 'title' => 'required',
                 'hero_deskripsi' => 'required',
-                'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'logo' => 'required|mimes:png,jpg,jpeg|max:6048',
                 'about_title' => 'required',
                 'about' => 'required',
-                'about_foto' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'about_foto' => 'required|mimes:png,jpg,jpeg|max:6048',
             ],
             [
                 'title.required' => 'Judul harus diisi',
@@ -42,27 +48,34 @@ class LandingHeroController extends Controller
                 'about_foto.required' => 'Foto harus diisi',
             ]
         );
+
         try {
             DB::beginTransaction();
 
+            $username = auth()->user()->username; // Mengambil username pengguna yang sedang login
+
+            // Upload logo
             if ($request->hasFile('logo')) {
-                $file_url = UploadFile::upload('landing/hero/logo', $request->file('logo'));
+                $file_url = UploadFile::upload('landing/hero/logo', $request->file('logo'), $username);
                 $data['logo'] = basename($file_url);
             }
 
+            // Upload foto about
             if ($request->hasFile('about_foto')) {
-                $file_url = UploadFile::upload('landing/hero/about', $request->file('about_foto'));
+                $file_url = UploadFile::upload('landing/hero/about', $request->file('about_foto'), $username);
                 $data['about_foto'] = basename($file_url);
             }
 
-            $newHero = new HeroModel();
-            $newHero->title = $data['title'];
-            $newHero->hero_deskripsi = $data['hero_deskripsi'];
-            $newHero->logo = $data['logo'];
-            $newHero->about_title = $data['about_title'];
-            $newHero->about = $data['about'];
-            $newHero->about_foto = $data['about_foto'];
-            $newHero->save();
+            // Simpan data Hero
+            HeroModel::create([
+                'title' => $data['title'],
+                'hero_deskripsi' => $data['hero_deskripsi'],
+                'logo' => $data['logo'],
+                'about_title' => $data['about_title'],
+                'about' => $data['about'],
+                'about_foto' => $data['about_foto'],
+            ]);
+
             DB::commit();
 
             Session::flash('success', 'Data Berhasil Disimpan');
@@ -85,10 +98,10 @@ class LandingHeroController extends Controller
             [
                 'title' => 'required',
                 'hero_deskripsi' => 'required',
-                'logo' => 'mimes:png,jpg,jpeg|max:2048',
+                'logo' => 'nullable|mimes:png,jpg,jpeg|max:2048',
                 'about_title' => 'required',
                 'about' => 'required',
-                'about_foto' => 'mimes:png,jpg,jpeg|max:2048',
+                'about_foto' => 'nullable|mimes:png,jpg,jpeg|max:2048',
             ],
             [
                 'title.required' => 'Judul harus diisi',
@@ -103,33 +116,39 @@ class LandingHeroController extends Controller
         try {
             DB::beginTransaction();
 
+            $username = auth()->user()->username; // Mengambil username pengguna yang sedang login
+
+            // Update logo
             if ($request->hasFile('logo')) {
                 if ($logoLama) {
                     DeleteFile::delete('landing/hero/logo/' . $logoLama);
                 }
-                $file_url = UploadFile::upload('landing/hero/logo', $request->file('logo'));
+                $file_url = UploadFile::upload('landing/hero/logo', $request->file('logo'), $username);
                 $data['logo'] = basename($file_url);
             } else {
                 $data['logo'] = $logoLama; // Gunakan logo lama jika tidak ada file baru
             }
 
+            // Update foto about
             if ($request->hasFile('about_foto')) {
                 if ($aboutFotoLama) {
                     DeleteFile::delete('landing/hero/about/' . $aboutFotoLama);
                 }
-                $file_url = UploadFile::upload('landing/hero/about', $request->file('about_foto'));
+                $file_url = UploadFile::upload('landing/hero/about', $request->file('about_foto'), $username);
                 $data['about_foto'] = basename($file_url);
             } else {
                 $data['about_foto'] = $aboutFotoLama; // Gunakan foto lama jika tidak ada file baru
             }
 
-            $dataHero->title = $data['title'];
-            $dataHero->hero_deskripsi = $data['hero_deskripsi'];
-            $dataHero->logo = $data['logo'];
-            $dataHero->about_title = $data['about_title'];
-            $dataHero->about = $data['about'];
-            $dataHero->about_foto = $data['about_foto'];
-            $dataHero->save();
+            // Simpan perubahan
+            $dataHero->update([
+                'title' => $data['title'],
+                'hero_deskripsi' => $data['hero_deskripsi'],
+                'logo' => $data['logo'],
+                'about_title' => $data['about_title'],
+                'about' => $data['about'],
+                'about_foto' => $data['about_foto'],
+            ]);
 
             DB::commit();
             Session::flash('success', 'Data Berhasil Disimpan');
@@ -137,7 +156,7 @@ class LandingHeroController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Session::flash('error', $e->getMessage());
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 
@@ -147,9 +166,11 @@ class LandingHeroController extends Controller
             DB::beginTransaction();
             $dataHero = HeroModel::findOrFail($id);
 
+            // Hapus file logo jika ada
             if ($dataHero->logo) {
                 DeleteFile::delete('landing/hero/logo/' . $dataHero->logo);
             }
+            // Hapus file foto about jika ada
             if ($dataHero->about_foto) {
                 DeleteFile::delete('landing/hero/about/' . $dataHero->about_foto);
             }

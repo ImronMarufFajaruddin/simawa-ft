@@ -9,10 +9,12 @@
     </title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
+    <meta content="Simawa Ft Unimal" name="description">
+    <meta content="Imron Ma'ruf Fajaruddin" name="author">
 
     <!-- Favicons -->
     <link href="{{ asset('landing-template/assets/img/logo_ormawa/maskot.png') }}" rel="icon" />
-    <link href="{{ asset('landing-template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" />
+    {{-- <link href="{{ asset('landing-template/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon" /> --}}
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -27,22 +29,11 @@
     <link href="{{ asset('landing-template/assets/vendor/aos/aos.css') }}" rel="stylesheet" />
     <link href="{{ asset('landing-template/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('landing-template/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('landings-template2/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ asset('landing-template/assets/vendor/') }}" rel="stylesheet" /> --}}
 
     <!-- Main CSS File -->
     <link href="{{ asset('landing-template/assets/css/main.css') }}" rel="stylesheet" />
-    {{-- <link rel="stylesheet" href="{{ asset('landings-template/assets/css/custom.css') }}"> --}}
-
-
     @stack('css')
-
-    <!-- =======================================================
-  * Template Name: FlexStart
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Updated: Jun 06 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="index-page">
@@ -62,7 +53,6 @@
         crossorigin="anonymous"></script>
 
     <!-- Vendor JS Files -->
-    <script src="{{ asset('landing-template/assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('landing-template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

@@ -20,7 +20,7 @@
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                        <a href="#" class="text-slate-400 dark:text-zink-200">Tables</a>
+                        <a href="#" class="text-slate-400 dark:text-zink-200">Page</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100">
                         Hero Setting
@@ -51,8 +51,27 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mb-4 text-2xl">Landing Footer Setting</h6>
-                    </p>
+                    <h6 class="mb-1 text-2xl">Landing Footer Setting</h6>
+                    <div class="flex gap-3 mb-4 p-4 text-sm rounded-md text-custom-500 bg-custom-50 dark:bg-custom-400/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" data-lucide="alert-circle"
+                            class="lucide lucide-alert-circle inline-block size-4 mt-0.5 shrink-0">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" x2="12" y1="8" y2="12"></line>
+                            <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                        </svg>
+                        <div>
+                            <h6 class="mb-1">Info!</h6>
+                            <ul class="ml-2 list-disc list-inside">
+                                <li>Icon Media Sosial dapat dilihat di link <a href=""
+                                        class="text-custom-500 underline">Bootstrap Icon</a>.</li>
+                                <li>contoh mengisi icon : < i class="bi bi-instagram"></>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <form action="{{ route('data-landings.footerUpdate', $dataFooter->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf

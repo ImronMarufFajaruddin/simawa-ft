@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AnggotaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
@@ -8,19 +7,24 @@ use App\Http\Controllers\Admin\LpjController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\GaleriController;
+use App\Http\Controllers\Admin\AnggotaController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\ProposalController;
+use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Landings\LandingController;
+use App\Http\Controllers\Admin\LandingHeroController;
 use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\LevelJabatanController;
-use App\Http\Controllers\Admin\KategoriBeritaController;
-use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Admin\LandingFooterController;
-use App\Http\Controllers\Admin\LandingHeroController;
+use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\LandingSettingController;
+use App\Http\Controllers\Admin\KategoriInstansiController;
 use App\Http\Controllers\Landings\LandingBeritaController;
+use App\Http\Controllers\Landings\LandingGaleriController;
+use App\Http\Controllers\Landings\LandingKontakController;
 use App\Http\Controllers\Landings\LandingInstansiController;
 
 /*
@@ -34,13 +38,7 @@ use App\Http\Controllers\Landings\LandingInstansiController;
 |
 */
 
-// function set_active($route)
-// {
-//     if (is_array($route)) {
-//         return in_array(Request::path(), $route) ? 'active' : '';
-//     }
-//     return Request::path() == $route ? 'active' : '';
-// }
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -53,6 +51,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('data-landings')->middleware('can:superadmin-only')->group(function () {
         Route::get('/heroSetting', [LandingHeroController::class, 'heroIndex'])->name('data-landings.heroIndex');
         Route::get('/heroCreate', [LandingHeroController::class, 'heroCreate'])->name('data-landings.heroCreate');
+        Route::get('/heroShow/{id}', [LandingHeroController::class, 'heroShow'])->name('data-landings.heroShow');
         Route::post('/heroStore', [LandingHeroController::class, 'heroStore'])->name('data-landings.heroStore');
         Route::get('/heroEdit/{id}', [LandingHeroController::class, 'heroEdit'])->name('data-landings.heroEdit');
         Route::put('/heroUpdate/{id}', [LandingHeroController::class, 'heroUpdate'])->name('data-landings.heroUpdate');
@@ -90,14 +89,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('/update/{id}', [KategoriInstansiController::class, 'update'])->name('data-kategori-instansi.update');
         Route::delete('/destroy/{id}', [KategoriInstansiController::class, 'destroy'])->name('data-kategori-instansi.destroy');
     });
-
-    Route::group(['prefix' => 'user-setting'], function () {
-        Route::get('/', [UserSettingController::class, 'index'])->name('user-setting.index');
-        Route::post('/store', [UserSettingController::class, 'store'])->name('user-setting.store');
-        Route::get('/edit/{id}', [UserSettingController::class, 'edit'])->name('user-setting.edit');
-        Route::post('/update', [UserSettingController::class, 'update'])->name('user-setting.update');
-        Route::delete('/destroy/{id}', [UserSettingController::class, 'destroy'])->name('user-setting.destroy');
+    Route::group(['prefix' => 'profile'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/store', [ProfileController::class, 'store'])->name('profile.store');
+        Route::put('/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/update-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.updateAvatar');
     });
+
 
     Route::group(['prefix' => 'data-kategori-berita'], function () {
         Route::get('/', [KategoriBeritaController::class, 'index'])->name('data-kategori-berita.index');
@@ -141,6 +139,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', [KegiatanController::class, 'destroy'])->name('data-kegiatan.destroy');
     });
 
+    Route::group(['prefix' => 'data-statistik', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [StatistikController::class, 'index'])->name('data-statistik.index');
+        Route::get('/cetak-pdf', [StatistikController::class, 'cetakPdf'])->name('data-statistik.cetak-pdf');
+        Route::get('/chart', [StatistikController::class, 'chart'])->name('data-statistik.chart');
+    });
+
     Route::group(['prefix' => 'data-proposal', 'middleware' => ['auth', 'can:all-access']], function () {
         Route::get('/', [ProposalController::class, 'index'])->name('data-proposal.index');
         Route::get('/show/{id}', [ProposalController::class, 'show'])->name('data-proposal.show');
@@ -172,14 +176,17 @@ Route::group(['middleware' => ['auth']], function () {
     // });
 
     Route::group(['prefix' => 'data-galeri', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('get-judul', [GaleriController::class, 'getJudul'])->name('get-judul');
+        Route::get('filter-galeri', [GaleriController::class, 'filterGaleri'])->name('filter-galeri');
+
         Route::get('/', [GaleriController::class, 'index'])->name('data-galeri.index');
         Route::get('/create', [GaleriController::class, 'create'])->name('data-galeri.create');
         Route::post('/store', [GaleriController::class, 'store'])->name('data-galeri.store');
-        Route::post('/upload-temporary', [GaleriController::class, 'uploadTemporary'])->name('data-galeri.uploadTemporary');
-        Route::delete('/revert-temporary/{filename}', [GaleriController::class, 'revertTemporary'])->name('data-galeri.revertTemporary');
         Route::get('/edit/{id}', [GaleriController::class, 'edit'])->name('data-galeri.edit');
         Route::put('/update/{id}', [GaleriController::class, 'update'])->name('data-galeri.update');
         Route::delete('/delete/{id}', [GaleriController::class, 'destroy'])->name('data-galeri.destroy');
+        Route::post('/upload-temporary', [GaleriController::class, 'uploadTemporary'])->name('data-galeri.uploadTemporary');
+        Route::delete('/revert-temporary/{filename}', [GaleriController::class, 'revertTemporary'])->name('data-galeri.revertTemporary');
     });
 });
 
@@ -193,11 +200,16 @@ Route::group(['prefix' => 'instansi'], function () {
 });
 
 Route::group(['prefix' => 'berita'], function () {
-    // Route::resource('/', LandingBeritaController::class)->only([
-    //     'index'
-    // ]);
     Route::get('/', [LandingBeritaController::class, 'index'])->name('berita.index');
-    Route::get('/{id}', [LandingBeritaController::class, 'show'])->name('berita.show');
+    Route::get('/{slug}', [LandingBeritaController::class, 'show'])->name('berita.show');
+});
+
+Route::group(['prefix' => 'gallery'], function () {
+    Route::get('/', [LandingGaleriController::class, 'index'])->name('gallery.index');
+});
+
+Route::group(['prefix' => 'kontak'], function () {
+    Route::get('/', [LandingKontakController::class, 'index'])->name('kontak.index');
 });
 
 // Route::group(['prefix' => 'landing-page'], function () {

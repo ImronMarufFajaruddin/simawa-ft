@@ -358,7 +358,7 @@
     <script src="{{ asset('admin-template/assets/js/datatables/data-tables.tailwindcss.min.js') }}"></script>
 
     <!--buttons dataTables-->
-    {{-- <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script> --}}
+    <script src="{{ asset('admin-template/assets/js/datatables/datatables.buttons.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/jszip.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/pdfmake.min.js') }}"></script>
     <script src="{{ asset('admin-template/assets/js/datatables/buttons.html5.min.js') }}"></script>

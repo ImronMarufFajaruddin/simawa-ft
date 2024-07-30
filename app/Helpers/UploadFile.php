@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\File;
 
 class UploadFile
 {
-  public static function upload($storageLocation, $file)
+  public static function upload($storageLocation, $file, $username)
   {
     $file_extension = $file->getClientOriginalExtension();
-    $file_name = time() . '.' . $file_extension;
+    $file_name = $username . '_' . time() . '.' . $file_extension;
 
     // upload file
     $file->move($storageLocation, $file_name);

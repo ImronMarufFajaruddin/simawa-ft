@@ -13,10 +13,8 @@ class LandingFooterController extends Controller
 {
     public function footerIndex()
     {
-        $dataHero = HeroModel::all();
         $dataFooter = Footer::all();
-
-        return view('admin.landing-setting.footerIndex', compact('dataFooter', 'dataHero'));
+        return view('admin.landing-setting.footerIndex', compact('dataFooter'));
     }
 
     public function footerCreate()
@@ -33,7 +31,7 @@ class LandingFooterController extends Controller
                 'email' => 'nullable|email',
                 'medsos_links' => 'nullable|url',
                 'medsos_icon' => 'nullable',
-                'useful_links' => 'nullable|url',
+                'useful_links' => 'nullable',
                 'useful_links_title' => 'nullable',
             ],
             [
@@ -79,7 +77,7 @@ class LandingFooterController extends Controller
                 'email' => 'nullable|email',
                 'medsos_links' => 'nullable|url',
                 'medsos_icon' => 'nullable',
-                'useful_links' => 'nullable|url',
+                'useful_links' => 'nullable',
                 'useful_links_title' => 'nullable',
             ],
             [

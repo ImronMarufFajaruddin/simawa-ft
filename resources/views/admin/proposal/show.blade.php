@@ -8,7 +8,8 @@
     <style>
         .pdf-viewer {
             width: 100%;
-            height: 600px;
+            height: 500px;
+            /* Sesuaikan tinggi iframe sesuai kebutuhan Anda */
             border: 1px solid #ccc;
         }
     </style>
@@ -34,6 +35,17 @@
                 <div class="card-body">
                     <h6 class="mb-4 text-2xl text-green-500">Detail Proposal</h6>
 
+                    <p class="mb-4 text-slate-400">
+                        Untuk Melihat preview dengan file .doc, .docx, .xlsx silahkan install
+                        extension terlebih dahulu pada
+                        browser anda. Berikut link extension yang disarankan, silahkan klik dan install : <br>
+                        <code class="text-xs text-pink-500 select-all">
+                            <a class="underline text-pink-500" target="_blank"
+                                href="https://chromewebstore.google.com/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj">office-editing-for-docs-s</a>
+                        </code>.
+                    </p>
+
+
                     <div class="overflow-x-auto">
                         <table class="w-full">
 
@@ -56,7 +68,11 @@
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
                                     Komentar</th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    {!! $dataProposal->komentar !!}
+                                    @if ($dataProposal->komentar)
+                                        {!! $dataProposal->komentar !!}
+                                    @else
+                                        <span>Belum ada komentar</span>
+                                    @endif
                                 </td>
                             </tr>
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
@@ -69,16 +85,47 @@
                             </tr>
                             <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
                                 <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
-                                    Dokumen Proposal</th>
+                                    Dokumen Proposal
+                                </th>
                                 <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
-                                    <iframe src="{{ url('dokumen/proposal/' . $dataProposal->dokumen) }}"
-                                        class="pdf-viewer"></iframe>
+                                    <a href="{{ asset('dokumen/proposal/' . $dataProposal->dokumen) }}"
+                                        download="{{ $dataProposal->dokumen }}" target="_blank">
+                                        <span class="text-custom-500 underline">Download</span>
+                                    </a>
+                                    <br>
+                                    <iframe src="{{ asset('dokumen/proposal/' . $dataProposal->dokumen) }}"
+                                        class="pdf-viewer w-full h-96 mt-2" frameborder="0">
+                                        Your browser does not support PDFs.
+                                        <a href="{{ asset('dokumen/proposal/' . $dataProposal->dokumen) }}">Download the
+                                            PDF</a>
+                                    </iframe>
                                 </td>
                             </tr>
+
+                            <tr class="odd:bg-slate-50 even:bg-white dark:odd:bg-zink-600 dark:even:bg-zink-700">
+                                <th class="px-3.5 py-2.5 font-semibold border border-slate-200 dark:border-zink-500">
+                                    Dokumen Lainnya
+                                </th>
+                                <td class="px-3.5 py-2.5 border border-slate-200 dark:border-zink-500">
+                                    <a href="{{ asset('dokumen/proposal/lainnya/' . $dataProposal->dokumen_lainnya) }}"
+                                        download="{{ $dataProposal->dokumen_lainnya }}" target="_blank">
+                                        <span class="text-custom-500 underline">Download</span>
+                                    </a>
+                                    <br>
+                                    <iframe src="{{ asset('dokumen/proposal/lainnya/' . $dataProposal->dokumen_lainnya) }}"
+                                        class="pdf-viewer w-full h-96 mt-2" frameborder="0">
+                                        Your browser does not support PDFs.
+                                        <a
+                                            href="{{ asset('dokumen/proposal/lainnya/' . $dataProposal->dokumen_lainnya) }}">Download
+                                            the PDF</a>
+                                    </iframe>
+                                </td>
+                            </tr>
+
                         </table>
 
-                        <button type="button" class="bg-custom-500 hover:bg-custom-600 text-white btn mt-6">
-                            <a href="{{ route('data-proposal.index') }}">Kembali</a>
+                        <button type="button" class="bg-slate-500 hover:bg-slate-600 text-white btn mt-6">
+                            <a href="{{ route('data-proposal.index') }}">&laquo; Kembali</a>
                         </button>
                     </div>
                 </div>
