@@ -50,7 +50,7 @@ class ProposalController extends Controller
             [
                 'kegiatan_id' => 'required|exists:kegiatan,id',
                 'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
-                'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             ],
             [
                 'kegiatan_id.required' => 'Kegiatan Harus Diisi',
@@ -58,14 +58,12 @@ class ProposalController extends Controller
                 'dokumen.required' => 'Dokumen Wajib Diisi',
                 'dokumen.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
                 'dokumen.max' => 'File melebihi batas ukuran 5 MB',
-                'dokumen_lainnya.required' => 'Dokumen Lainnya Wajib Diisi',
                 'dokumen_lainnya.mimes' => 'File harus berformat .pdf, .doc, .docx, .xlx, .xlsx',
                 'dokumen_lainnya.max' => 'File melebihi batas ukuran 5 MB',
             ]
         );
 
         try {
-
             DB::beginTransaction();
 
             $user = Auth::user(); // mengambil data user yang sedang login
@@ -76,6 +74,8 @@ class ProposalController extends Controller
                 $dataProposal['dokumen'] = basename($file_url);
             }
 
+            // Inisialisasi dengan nilai null jika tidak ada file yang diunggah
+            $dataProposal['dokumen_lainnya'] = null;
             if ($request->hasFile('dokumen_lainnya')) {
                 $file_url = UploadFile::upload('dokumen/proposal/lainnya', $request->file('dokumen_lainnya'), $username);
                 $dataProposal['dokumen_lainnya'] = basename($file_url);
@@ -89,15 +89,17 @@ class ProposalController extends Controller
             $proposal->status = 'menunggu'; // status default
             $proposal->komentar = null;
             $proposal->save();
+
             DB::commit();
+
             Session::flash('success', 'Data proposal berhasil ditambahkan');
             return redirect()->route('data-proposal.index');
         } catch (\Exception $e) {
             DB::rollback();
-            // Session::flash('error', 'Data proposal gagal ditambahkan');
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
     public function edit($id)
     {
         if (Gate::denies('superadmin-only')) {
@@ -114,7 +116,7 @@ class ProposalController extends Controller
                 [
                     'kegiatan_id' => 'required|exists:kegiatan,id',
                     'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
-                    'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                    'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
                 ],
                 [
                     'kegiatan_id.required' => 'Kegiatan Harus Diisi',
