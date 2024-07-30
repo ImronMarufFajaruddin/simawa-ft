@@ -14,13 +14,14 @@ class Lpj extends Model
     protected $table = 'lpj';
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'user_id',
-    //     'kegiatan_id',
-    //     'dokumen',
-    //     'status',
-    //     'komentar',
-    // ];
+    protected $fillable = [
+        'user_id',
+        'kegiatan_id',
+        'dokumen',
+        'dokumen_lainnya',
+        'status',
+        'komentar',
+    ];
 
     public function user()
     {

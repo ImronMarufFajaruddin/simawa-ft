@@ -14,13 +14,14 @@ class Proposal extends Model
     protected $table = 'proposal';
     protected $primaryKey = 'id';
 
-    // protected $fillable = [
-    //     'user_id',
-    //     'kegiatan_id',
-    //     'dokumen',
-    //     'status',
-    //     'komentar',
-    // ];
+    protected $fillable = [
+        'user_id',
+        'kegiatan_id',
+        'dokumen',
+        'dokumen_lainnya',
+        'status',
+        'komentar',
+    ];
 
     public function user()
     {

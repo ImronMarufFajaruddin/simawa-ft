@@ -41,6 +41,7 @@ class LpjController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
         $dataLpj = $request->validate(
@@ -51,7 +52,7 @@ class LpjController extends Controller
             ],
             [
                 'dokumen.mimes' => 'File harus berupa PDF, DOC, DOCX, XLS, XLSX',
-                'dokumen_lainnya.mimes' => 'File harus berupa PDF, DOC, DOCX, XLS, XLSX',
+                'dokumen_lainnya.mimes' => 'File harus berupa PDF, DOC, DOC, XLS, XLSX',
                 'kegiatan_id.required' => 'Kegiatan harus diisi',
                 'kegiatan_id.exists' => 'Kegiatan tidak valid',
                 'dokumen.max' => 'Ukuran file tidak boleh lebih dari 5 MB',
@@ -78,7 +79,7 @@ class LpjController extends Controller
             $lpj->user_id = Auth::id();
             $lpj->kegiatan_id = $dataLpj['kegiatan_id'];
             $lpj->dokumen = $dataLpj['dokumen'];
-            $lpj->dokumen_lainnya = $dataLpj['dokumen_lainnya'];
+            $lpj->dokumen_lainnya = $dataLpj['dokumen_lainnya'] ?? null;
             $lpj->status = 'menunggu'; // status default
             $lpj->komentar = null;
             $lpj->save();
