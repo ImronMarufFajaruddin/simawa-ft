@@ -75,67 +75,88 @@
                                         <form action="{{ route('profile.updateAvatar') }}" method="POST" id="avatarForm"
                                             enctype="multipart/form-data">
                                             @csrf
-                                            <input id="profile-img-file-input" type="file" name="logo"
-                                                class="hidden profile-img-file-input" onchange="confirmUpdateAvatar()">
-                                            <label for="profile-img-file-input"
-                                                class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
-                                                <i data-lucide="image-plus"
-                                                    class="size-4 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                            </label>
+                                            @can('admin-only')
+                                                <input id="profile-img-file-input" type="file" name="logo"
+                                                    class="hidden profile-img-file-input" onchange="confirmUpdateAvatar()">
+                                                <label for="profile-img-file-input"
+                                                    class="flex items-center justify-center bg-white rounded-full shadow-lg cursor-pointer size-8 dark:bg-zink-600 profile-photo-edit">
+                                                    <i data-lucide="image-plus"
+                                                        class="size-4 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                                </label>
+                                            @endcan
                                         </form>
                                     </div>
                                 </div>
                             </div><!--end col-->
 
 
-
                             <div class="lg:col-span-10 2xl:col-span-9">
-                                @foreach ($dataInstansi as $instansi)
-                                    <h5 class="mb-1">{{ $instansi->nama_singkatan }}<i data-lucide="badge-check"
-                                            class="inline-block size-4 text-sky-500 fill-sky-100 dark:fill-custom-500/20"></i>
+                                @if (Auth::user()->role === 'superadmin')
+                                    <h5 class="mb-1">{{ Auth::user()->name }}<i data-lucide="badge-check"
+                                            class="inline-block ml-2 size-4 text-sky-500 fill-sky-100 dark:fill-custom-500/20"></i>
                                     </h5>
-
-                                    <h6 class="mb-1">{{ $instansi->nama_resmi }}</h6>
-                                @endforeach
-
-                                <div class="flex gap-3 mb-4">
-                                    <p class="text-slate-500 dark:text-zink-200"><i data-lucide="user-circle"
-                                            class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                        {{ Auth::user()->role }}</p>
-
-                                    <p class="text-slate-500 dark:text-zink-200"><i data-lucide="mail"
-                                            class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                        {{ Auth::user()->email }}</p>
-                                    @foreach ($dataInstansi as $instansi)
-                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="phone"
+                                    {{-- <h6 class="mb-1">{{ $instansi->nama_resmi }}</h6> --}}
+                                    <div class="flex gap-3 mb-4">
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="user-circle"
                                                 class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                            {{ $instansi->no_telp }}</p>
+                                            {{ Auth::user()->role }}</p>
+
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="mail"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            {{ Auth::user()->email }}</p>
+                                    </div>
+                                @else
+                                    @foreach ($dataInstansi as $instansi)
+                                        <h5 class="mb-1">{{ $instansi->nama_singkatan }}<i data-lucide="badge-check"
+                                                class="inline-block size-4 text-sky-500 fill-sky-100 dark:fill-custom-500/20"></i>
+                                        </h5>
+
+                                        <h6 class="mb-1">{{ $instansi->nama_resmi }}</h6>
                                     @endforeach
 
-                                    <p class="text-slate-500 dark:text-zink-200"><i data-lucide="map-pin"
-                                            class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
-                                        Jalan Batam, Bukit Indah, Lhokseumawe, Indonesia</p>
-                                </div>
-                                <p class="mt-4 text-slate-500 dark:text-zink-200">
-                                    {!! $instansi->sejarah !!}
-                                </p>
+                                    <div class="flex gap-3 mb-4">
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="user-circle"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            {{ Auth::user()->role }}</p>
 
-                                <div class="flex gap-2 mt-4">
-                                    @if (Auth::user()->instansi)
-                                        <a href="{{ $instansi->instagram ? $instansi->instagram : '#' }}" target="__blank"
-                                            class="flex items-center justify-center text-pink-500 transition-all duration-200 ease-linear bg-pink-100 rounded size-9 hover:bg-pink-200 dark:bg-pink-500/20 dark:hover:bg-pink-500/30"
-                                            @if (!$instansi->instagram) onclick="return false;" @endif>
-                                            <i data-lucide="instagram" class="size-4"></i>
-                                        </a>
-                                        <a href="{{ $instansi->website_link ? $instansi->website_link : '#' }}"
-                                            target="__blank"
-                                            class="flex items-center justify-center text-red-500 transition-all duration-200 ease-linear bg-red-100 rounded size-9 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30"
-                                            @if (!$instansi->website_link) onclick="return false;" @endif>
-                                            <i data-lucide="globe" class="size-4"></i>
-                                        </a>
-                                    @endif
-                                </div>
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="mail"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            {{ Auth::user()->email }}</p>
+
+                                        @foreach ($dataInstansi as $instansi)
+                                            <p class="text-slate-500 dark:text-zink-200"><i data-lucide="phone"
+                                                    class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                                {{ $instansi->no_telp }}</p>
+                                        @endforeach
+
+                                        <p class="text-slate-500 dark:text-zink-200"><i data-lucide="map-pin"
+                                                class="inline-block size-4 ltr:mr-1 rtl:ml-1 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-500"></i>
+                                            Jalan Batam, Bukit Indah, Lhokseumawe, Indonesia</p>
+                                    </div>
+
+                                    <p class="mt-4 text-slate-500 dark:text-zink-200">
+                                        {!! $dataInstansi->first()->sejarah !!}
+                                    </p>
+
+                                    <div class="flex gap-2 mt-4">
+                                        @if (Auth::user()->instansi)
+                                            <a href="{{ $instansi->instagram ? $instansi->instagram : '#' }}"
+                                                target="__blank"
+                                                class="flex items-center justify-center text-pink-500 transition-all duration-200 ease-linear bg-pink-100 rounded size-9 hover:bg-pink-200 dark:bg-pink-500/20 dark:hover:bg-pink-500/30"
+                                                @if (!$instansi->instagram) onclick="return false;" @endif>
+                                                <i data-lucide="instagram" class="size-4"></i>
+                                            </a>
+                                            <a href="{{ $instansi->website_link ? $instansi->website_link : '#' }}"
+                                                target="__blank"
+                                                class="flex items-center justify-center text-red-500 transition-all duration-200 ease-linear bg-red-100 rounded size-9 hover:bg-red-200 dark:bg-red-500/20 dark:hover:bg-red-500/30"
+                                                @if (!$instansi->website_link) onclick="return false;" @endif>
+                                                <i data-lucide="globe" class="size-4"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
+
                         </div><!--end grid-->
                     </div>
                     @can('admin-only')
@@ -163,7 +184,8 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h6 class="mb-1 text-15">Informasi Instansi</h6>
-                                            <p class="mb-4 text-slate-500 dark:text-zink-200">Update logo dan informasi instansi
+                                            <p class="mb-4 text-slate-500 dark:text-zink-200">Update logo dan informasi
+                                                instansi
                                                 anda.</p>
                                             @foreach ($dataInstansi as $instansi)
                                                 <form action="{{ route('profile.update', ['id' => $instansi->id]) }}"

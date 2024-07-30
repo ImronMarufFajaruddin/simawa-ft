@@ -8,9 +8,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\AnggotaController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\KegiatanController;
 use App\Http\Controllers\Admin\ProposalController;
+use App\Http\Controllers\Admin\StatistikController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Landings\LandingController;
 use App\Http\Controllers\Admin\LandingHeroController;
@@ -20,11 +22,10 @@ use App\Http\Controllers\Admin\LandingFooterController;
 use App\Http\Controllers\Admin\KategoriBeritaController;
 use App\Http\Controllers\Admin\LandingSettingController;
 use App\Http\Controllers\Admin\KategoriInstansiController;
-use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Landings\LandingBeritaController;
 use App\Http\Controllers\Landings\LandingGaleriController;
-use App\Http\Controllers\Landings\LandingInstansiController;
 use App\Http\Controllers\Landings\LandingKontakController;
+use App\Http\Controllers\Landings\LandingInstansiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/edit/{id}', [KegiatanController::class, 'edit'])->name('data-kegiatan.edit');
         Route::put('/update/{id}', [KegiatanController::class, 'update'])->name('data-kegiatan.update');
         Route::delete('/destroy/{id}', [KegiatanController::class, 'destroy'])->name('data-kegiatan.destroy');
+    });
+
+    Route::group(['prefix' => 'data-statistik', 'middleware' => ['auth', 'can:all-access']], function () {
+        Route::get('/', [StatistikController::class, 'index'])->name('data-statistik.index');
+        Route::get('/cetak-pdf', [StatistikController::class, 'cetakPdf'])->name('data-statistik.cetak-pdf');
+        Route::get('/chart', [StatistikController::class, 'chart'])->name('data-statistik.chart');
     });
 
     Route::group(['prefix' => 'data-proposal', 'middleware' => ['auth', 'can:all-access']], function () {
