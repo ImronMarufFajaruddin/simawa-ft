@@ -45,17 +45,24 @@
                                         type="number" id="tahun_akhir" name="tahun_akhir" placeholder="Filter Tahun Akhir"
                                         value="{{ $tahunAkhir }}">
                                 </div>
-                                <div class="flex items-end gap-2">
+                                <div class="flex items-end gap-1">
                                     <button type="submit"
-                                        class="w-24 text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
+                                        class="w-20 text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">
                                         <span class="align-middle">Filter</span>
                                     </button>
 
-                                    <button type="button"
+                                    <button type="button" data-tooltip="default" data-tooltip-content="Cetak"
                                         onclick="window.location='{{ route('data-statistik.cetak-pdf', ['tahun_mulai' => $tahunMulai, 'tahun_akhir' => $tahunAkhir]) }}'"
                                         class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-green-500 border-green-500 hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/20">
                                         <i class="ri-printer-line"></i>
                                     </button>
+
+                                    <button type="button" data-tooltip="default" data-tooltip-content="Grafik"
+                                        onclick="window.location='{{ route('data-statistik.chart', ['tahun_mulai' => $tahunMulai, 'tahun_akhir' => $tahunAkhir]) }}'"
+                                        class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-sky-400 border-sky-400 hover:text-white hover:bg-sky-500 hover:border-sky-500 focus:text-white focus:bg-sky-500 focus:border-sky-500 focus:ring focus:ring-sky-100 active:text-white active:bg-sky-500 active:border-sky-500 active:ring active:ring-sky-100 dark:ring-sky-400/20">
+                                        <i class="ri-pie-chart-2-line"></i>
+                                    </button>
+
 
                                 </div>
                             </div>
