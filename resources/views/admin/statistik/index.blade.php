@@ -136,7 +136,7 @@
                                 <th>Proposal</th>
                                 <th>Lpj</th>
                                 <th>Persentase Keaktifan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
 
@@ -149,14 +149,14 @@
                                     <td>{{ $data['jumlah_proposal'] }}</td>
                                     <td>{{ $data['jumlah_lpj'] }}</td>
                                     <td>{{ number_format($data['persentase_keaktifan'], 2) }}%</td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="flex items-center justify-center gap-2">
                                             <a href="" data-tooltip="default" data-tooltip-content="Detail"
                                                 class="flex items-center justify-center size-[37.5px] p-0 text-white btn bg-green-500 border-green-500 hover:text-white hover:bg-green-600 hover:border-green-600 focus:text-white focus:bg-green-600 focus:border-green-600 focus:ring focus:ring-green-100 active:text-white active:bg-green-600 active:border-green-600 active:ring active:ring-green-100 dark:ring-green-400/20">
                                                 <i class="ri-eye-fill"></i>
                                             </a>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

@@ -50,7 +50,7 @@ class ProposalController extends Controller
             [
                 'kegiatan_id' => 'required|exists:kegiatan,id',
                 'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
-                'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             ],
             [
                 'kegiatan_id.required' => 'Kegiatan Harus Diisi',
@@ -114,7 +114,7 @@ class ProposalController extends Controller
                 [
                     'kegiatan_id' => 'required|exists:kegiatan,id',
                     'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
-                    'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                    'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
                 ],
                 [
                     'kegiatan_id.required' => 'Kegiatan Harus Diisi',

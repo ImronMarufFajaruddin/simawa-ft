@@ -47,7 +47,7 @@ class LpjController extends Controller
             [
                 'kegiatan_id' => 'required|exists:kegiatan,id',
                 'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
-                'dokumen_lainnya' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             ],
             [
                 'dokumen.mimes' => 'File harus berupa PDF, DOC, DOCX, XLS, XLSX',
@@ -107,7 +107,7 @@ class LpjController extends Controller
         $dataLpj = $request->validate(
             [
                 'kegiatan_id' => 'required|exists:kegiatan,id',
-                'dokumen' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+                'dokumen' => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
                 'dokumen_lainnya' => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             ],
             [
