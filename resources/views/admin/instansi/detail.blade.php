@@ -106,8 +106,8 @@
 
                         </table>
 
-                        <button type="button" class="bg-custom-500 hover:bg-custom-600 text-white btn mt-6"><a
-                                href="{{ route('data-instansi.index') }}">Kembali</a></button>
+                        <button type="button" class="bg-slate-500 hover:bg-slate-600 text-white btn mt-6"><a
+                                href="{{ route('data-instansi.index') }}">&laquo; Kembali</a></button>
                     </div>
                 </div>
             </div>

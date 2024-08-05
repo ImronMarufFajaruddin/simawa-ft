@@ -63,21 +63,28 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mb-4 text-15">Data Struktur Anggota</h6>
-                    <div class="shrink-0 mb-2">
-                        <button data-modal-target="modalAdd" type="button"
-                            class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" data-lucide="plus" class="lucide lucide-plus inline-block size-4">
-                                <path d="M5 12h14"></path>
-                                <path d="M12 5v14"></path>
-                            </svg> <span class="align-middle">Tambah Data</span></button>
+                    <div class="mb-3 flex items-center">
+                        <h6 class="mb-4 text-xl grow">Data Struktur Anggota</h6>
+                        <div class="shrink-0 mb-2">
+                            <button data-modal-target="modalAdd" type="button"
+                                class="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" data-lucide="plus"
+                                    class="lucide lucide-plus inline-block size-4">
+                                    <path d="M5 12h14"></path>
+                                    <path d="M12 5v14"></path>
+                                </svg> <span class="align-middle">Tambah Data</span></button>
+                        </div>
                     </div>
+
                     <table id="dataTable" class="w-full bordered group" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                @if (Gate::allows('superadmin-only'))
+                                    <td>Instansi</td>
+                                @endif
                                 <th>Periode</th>
                                 <th>Nama Jabatan</th>
                                 <th>Nama Anggota</th>
@@ -91,6 +98,9 @@
                             @foreach ($dataAnggota as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    @if (Gate::allows('superadmin-only'))
+                                        <td>{{ $data->instansi->nama_singkatan }}</td>
+                                    @endif
                                     <td>{{ $data->levelJabatan->periode }}</td>
                                     <td>{{ $data->levelJabatan->nama_jabatan }}</td>
                                     <td>{{ $data->nama }}</td>
