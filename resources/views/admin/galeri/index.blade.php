@@ -111,7 +111,7 @@
                                                 <path d="M5 12h14"></path>
                                                 <path d="M12 5v14"></path>
                                             </svg> <span class="align-middle">Tambah Data</span></a>
-                                        <button type="button" id="listView"
+                                        {{-- <button type="button" id="listView"
                                             class="flex items-center justify-center w-[37.5px] h-[37.5px] p-0 text-sky-500 btn bg-sky-100 hover:text-white hover:bg-sky-600 focus:text-white focus:bg-sky-600 [&amp;.active]:text-white [&amp;.active]:bg-sky-600 dark:bg-sky-500/20 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white dark:focus:bg-sky-500 dark:focus:text-white dark:[&amp;.active]:bg-sky-500 dark:[&amp;.active]:text-white dark:ring-sky-400/20"><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -134,7 +134,7 @@
                                                 <rect width="7" height="7" x="14" y="3" rx="1"></rect>
                                                 <rect width="7" height="7" x="14" y="14" rx="1"></rect>
                                                 <rect width="7" height="7" x="3" y="14" rx="1"></rect>
-                                            </svg></button>
+                                            </svg></button> --}}
                                     </div>
                                 </div>
 
@@ -213,8 +213,7 @@
                                                                 <li>
                                                                     <form
                                                                         action="{{ route('data-galeri.destroy', $data->id) }}"
-                                                                        method="POST"
-                                                                        id="deleteForm{{ $data->id }}">
+                                                                        method="POST" id="deleteForm{{ $data->id }}">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <a type="button"

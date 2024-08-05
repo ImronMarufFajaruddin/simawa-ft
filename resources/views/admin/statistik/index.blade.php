@@ -41,7 +41,7 @@
                                     <label for="tahun_akhir" class="inline-block mb-2 text-base font-medium">Tahun
                                         Akhir:</label>
                                     <input
-                                        class="form-input form-control border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                                        class=" form-input form-control border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                         type="number" id="tahun_akhir" name="tahun_akhir" placeholder="Filter Tahun Akhir"
                                         value="{{ $tahunAkhir }}">
                                 </div>
@@ -114,7 +114,8 @@
                                             {{-- <td class="px-3.5 py-2.5 border-y">{{ $data['jumlah_proposal'] }}</td>
                                             <td class="px-3.5 py-2.5 border-y">{{ $data['jumlah_lpj'] }}</td> --}}
                                             <td class="px-3.5 py-2.5 border-y">
-                                                {{ number_format($data['persentase_keaktifan'], 2) }}%</td>
+                                                {{ number_format($data['total_persentase'], 2) }}%</td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -148,7 +149,9 @@
                                     <td>{{ $data['jumlah_kegiatan'] }}</td>
                                     <td>{{ $data['jumlah_proposal'] }}</td>
                                     <td>{{ $data['jumlah_lpj'] }}</td>
-                                    <td>{{ number_format($data['persentase_keaktifan'], 2) }}%</td>
+                                    <td class="px-3.5 py-2.5 border-y">
+                                        {{ number_format($data['total_persentase'], 2) }}%</td>
+
                                     {{-- <td>
                                         <div class="flex items-center justify-center gap-2">
                                             <a href="" data-tooltip="default" data-tooltip-content="Detail"
@@ -163,6 +166,33 @@
                     </table>
                 </div>
             </div><!--end card-->
+
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="mb-4 text-xl text-red-500">Instansi dan Kegiatan yang Belum Mengunggah LPJ</h6>
+                    <div class="overflow-x-auto">
+                        <table class="table-bordered w-full table-hover table-striped">
+                            <thead class="bg-red-500">
+                                <tr class="text-white">
+                                    <th scope="col" class="p-4 text-left">Nama Instansi</th>
+                                    <th scope="col" class="p-4 text-left">Nama Kegiatan</th>
+                                    <th scope="col" class="p-4 text-left">Status LPJ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($kegiatanTanpaLpj as $data)
+                                    <tr>
+                                        <td class="p-4 text-left">{{ $data['nama_instansi'] }}</td>
+                                        <td class="p-4 text-left">{{ $data['nama_kegiatan'] }}</td>
+                                        <td class="p-4 text-left">{{ $data['status_lpj'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
         <!-- container-fluid -->
