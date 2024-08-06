@@ -15,7 +15,7 @@
                 <ul class="flex items-center gap-2 text-sm font-normal shrink-0">
                     <li
                         class="relative before:content-['\ea54'] before:font-remix ltr:before:-right-1 rtl:before:-left-1 before:absolute before:text-[18px] before:-top-[3px] ltr:pr-4 rtl:pl-4 before:text-slate-400 dark:text-zink-200">
-                        <a href="#" class="text-slate-400 dark:text-zink-200">Tables</a>
+                        <a href="#" class="text-slate-400 dark:text-zink-200">Page</a>
                     </li>
                     <li class="text-slate-700 dark:text-zink-100 position-end">
                         Berita
@@ -131,8 +131,8 @@
 
                         </table>
 
-                        <button type="button" class="bg-custom-500 hover:bg-custom-600 text-white btn mt-6"><a
-                                href="{{ route('data-berita.index') }}">Kembali</a></button>
+                        <button type="button" class="bg-slate-500 hover:bg-slate-600 text-white btn mt-6"><a
+                                href="{{ route('data-berita.index') }}">&laquo; Kembali </a></button>
                     </div>
                 </div>
             </div>

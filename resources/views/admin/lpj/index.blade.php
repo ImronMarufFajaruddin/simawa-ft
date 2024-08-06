@@ -45,10 +45,11 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mb-4 text-15">Data LPJ</h6>
+                    <h6 class="mb-4 text-xl">Data LPJ</h6>
 
                     <p class="mb-4 text-slate-400">Upload LPJ dan Dokumen lainnya seperti : <br> <code
-                            class="text-xs text-pink-500 select-all">- Dokumen berformat : .doc, .docx, .pdf dan atau .xlsx
+                            class="text-xs text-custom-500 select-all">- Dokumen berformat : .doc, .docx, .pdf dan atau
+                            .xlsx
                             dengan ukuran maksimal 5 MB<br> -
                             Surat Izin Kegiatan atau surat-surat lainnya <br> -
                             Dokumen lainnya dapat di upload di lain waktu pada halaman ini </code>.

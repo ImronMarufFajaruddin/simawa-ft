@@ -3,6 +3,7 @@
 namespace App\Models\Admin;
 
 use App\Models\User;
+use App\Models\Admin\Instansi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,11 +21,16 @@ class Kegiatan extends Model
 
     public function proposal()
     {
-        return $this->hasMany(Proposal::class, 'proposal_id', 'id');
+        return $this->hasMany(Proposal::class, 'kegiatan_id', 'id');
     }
 
     public function lpj()
     {
-        return $this->hasMany(Lpj::class, 'lpj_id', 'id');
+        return $this->hasOne(Lpj::class, 'kegiatan_id', 'id');
+    }
+
+    public function instansi()
+    {
+        return $this->belongsTo(Instansi::class, 'user_id', 'user_id');
     }
 }

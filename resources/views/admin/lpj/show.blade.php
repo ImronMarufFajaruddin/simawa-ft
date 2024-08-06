@@ -37,8 +37,8 @@
                         Untuk Melihat preview dengan file .doc, .docx, .xlsx silahkan install
                         extension terlebih dahulu pada
                         browser anda. Berikut link extension yang disarankan, silahkan klik dan install : <br>
-                        <code class="text-xs text-pink-500 select-all">
-                            <a class="underline text-pink-500" target="_blank"
+                        <code class="text-xs text-custom-500 select-all">
+                            <a class="underline text-custom-500" target="_blank"
                                 href="https://chromewebstore.google.com/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj">office-editing-for-docs-s</a>
                         </code>.
                     </p>
